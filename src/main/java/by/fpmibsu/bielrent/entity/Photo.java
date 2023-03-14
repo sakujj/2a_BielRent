@@ -2,6 +2,7 @@ package by.fpmibsu.bielrent.entity;
 
 public class Photo {
     private long id;
+    int hi;
     private Listing listing;
     private String path;
 
