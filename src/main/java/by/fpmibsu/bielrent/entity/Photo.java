@@ -2,7 +2,6 @@ package by.fpmibsu.bielrent.entity;
 
 public class Photo {
     private long id;
-    private Listing listing;
     private String path;
 
     public Photo(){}
@@ -13,14 +12,6 @@ public class Photo {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Listing getListing() {
-        return listing;
-    }
-
-    public void setListing(Listing listing) {
-        this.listing = listing;
     }
 
     public String getPath() {

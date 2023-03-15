@@ -2,7 +2,6 @@ package by.fpmibsu.bielrent.entity;
 
 public class Report {
     private long id;
-    private Client client;
     private String details;
     private Client accusedClient;
 
@@ -14,14 +13,6 @@ public class Report {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     public String getDetails() {

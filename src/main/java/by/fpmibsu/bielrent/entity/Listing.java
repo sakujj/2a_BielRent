@@ -1,11 +1,13 @@
 package by.fpmibsu.bielrent.entity;
 
+import java.util.List;
+
 public class Listing {
     private long id;
-    private Client client;
     private CompositeFilter compositeFilter;
     private String address;
     private String description;
+    private List<Photo> photos;
 
     public Listing(){}
 
@@ -15,14 +17,6 @@ public class Listing {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 
     public CompositeFilter getCompositeFilter() {
