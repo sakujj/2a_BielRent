@@ -1,10 +1,10 @@
 package by.fpmibsu.bielrent.entity;
 
-public class User {
+public class User implements Entity{
     private long id;
-    private String name;
-    private String password;
     private String email;
+    private String password;
+    private String name;
 
     public User() {}
 

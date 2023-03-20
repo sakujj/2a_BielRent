@@ -1,8 +1,9 @@
 package by.fpmibsu.bielrent.entity;
 
+
 import java.util.List;
 
-public class Listing {
+public class Listing implements Entity {
     private long id;
     private CompositeFilter compositeFilter;
     private String address;
@@ -41,5 +42,13 @@ public class Listing {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 }

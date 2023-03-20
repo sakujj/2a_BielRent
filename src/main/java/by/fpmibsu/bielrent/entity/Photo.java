@@ -1,6 +1,6 @@
 package by.fpmibsu.bielrent.entity;
 
-public class Photo {
+public class Photo implements Entity{
     private long id;
     private String path;
 

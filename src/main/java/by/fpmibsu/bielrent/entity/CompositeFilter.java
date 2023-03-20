@@ -1,6 +1,6 @@
 package by.fpmibsu.bielrent.entity;
 
-public class CompositeFilter {
+public class CompositeFilter implements Entity{
     private long id;
     private String realEstateType;
     private String price;

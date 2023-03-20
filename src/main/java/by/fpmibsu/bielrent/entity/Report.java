@@ -1,6 +1,6 @@
 package by.fpmibsu.bielrent.entity;
 
-public class Report {
+public class Report implements Entity{
     private long id;
     private String details;
     private Client accusedClient;
