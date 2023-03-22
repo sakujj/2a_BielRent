@@ -3,6 +3,7 @@ package by.fpmibsu.bielrent.entity;
 public class Photo implements Entity{
     private long id;
     private String path;
+    private Listing listing;
 
     public Photo(){}
 
@@ -20,5 +21,11 @@ public class Photo implements Entity{
 
     public void setPath(String path) {
         this.path = path;
+    }
+    public void setListing(Listing list){
+        listing = list;
+    }
+    public Listing getListing(){
+        return listing;
     }
 }
