@@ -5,8 +5,12 @@ import java.util.List;
 
 public class Listing implements Entity {
     private long id;
+    private Category category;
+    private RentalType rentalType;
+    private Adress address;
     private CompositeFilter compositeFilter;
-    private String address;
+    private int price;
+
     private String description;
     private List<Photo> photos;
 
@@ -19,6 +23,28 @@ public class Listing implements Entity {
     public void setId(long id) {
         this.id = id;
     }
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public RentalType getRentalType() {
+        return rentalType;
+    }
+
+    public void setRentalType(RentalType rentalType) {
+        this.rentalType = rentalType;
+    }
+    public Adress getAddress() {
+        return address;
+    }
+
+    public void setAddress(Adress address) {
+        this.address = address;
+    }
 
     public CompositeFilter getCompositeFilter() {
         return compositeFilter;
@@ -28,12 +54,12 @@ public class Listing implements Entity {
         this.compositeFilter = compositeFilter;
     }
 
-    public String getAddress() {
-        return address;
+    public int getPrice() {
+        return price;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public String getDescription() {
