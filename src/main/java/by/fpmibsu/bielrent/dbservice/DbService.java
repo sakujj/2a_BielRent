@@ -23,13 +23,13 @@ public interface DbService {
 
     //adress functions//////////////////////////////
 
-    long insertAdress(Adress adress) throws DaoException;
-    Adress selectAdress(long id) throws DaoException;
-    List<Adress> selectAllAdresses() throws DaoException;
-    Adress selectAdressByStreet(String street) throws DaoException;
-    Adress selectAdressByCity(String city) throws DaoException;
-    Adress selectAdressByArea(String area) throws DaoException;
-    Adress selectAdressByRegion(String region) throws DaoException;
+    long insertAdress(Address address) throws DaoException;
+    Address selectAdress(long id) throws DaoException;
+    List<Address> selectAllAdresses() throws DaoException;
+    Address selectAdressByStreet(String street) throws DaoException;
+    Address selectAdressByCity(String city) throws DaoException;
+    Address selectAdressByArea(String area) throws DaoException;
+    Address selectAdressByRegion(String region) throws DaoException;
 
     boolean deleteAdress(long id)throws DaoException;
     boolean deleteAllAdresses()throws DaoException;

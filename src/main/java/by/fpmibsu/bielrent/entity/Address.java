@@ -1,6 +1,6 @@
 package by.fpmibsu.bielrent.entity;
 
-public class Adress implements Entity{
+public class Address implements Entity{
     private long id;
     private String region;
     private String city;

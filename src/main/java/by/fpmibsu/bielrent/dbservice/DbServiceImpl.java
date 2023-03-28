@@ -3,9 +3,7 @@ package by.fpmibsu.bielrent.dbservice;
 import by.fpmibsu.bielrent.connectionpool.ConnectionPool;
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.dao.*;
-import by.fpmibsu.bielrent.dbservice.DbService;
-import by.fpmibsu.bielrent.entity.Adress;
-import by.fpmibsu.bielrent.entity.Photo;
+import by.fpmibsu.bielrent.entity.Address;
 import by.fpmibsu.bielrent.entity.User;
 
 import java.sql.Connection;
@@ -91,7 +89,7 @@ public class DbServiceImpl implements DbService {
     public User selectUser(String email) throws DaoException {
         Connection conn = connectionPool.getConnection();
         UserDao userDao = new UserDaoImpl(conn);
-        User user = userDao.select(email);
+        User user = userDao.selectByEmail(email);
         try {
             conn.close();
         } catch (SQLException e) {
@@ -127,11 +125,11 @@ public class DbServiceImpl implements DbService {
     }
 //////////////////////////////////////////////////////////////////////////////////
     @Override
-    public long insertAdress(Adress adress) throws DaoException {
+    public long insertAdress(Address address) throws DaoException {
         long id = -1;
         try(Connection conn = connectionPool.getConnection()) {
-            AdressDao adressDao = new AdressDaoImpl(conn);
-            id = adressDao.insert(adress);
+            AddressDao addressDao = new AddressDaoImpl(conn);
+            id = addressDao.insert(address);
         }
         catch (SQLException e){
             throw  new DaoException();
@@ -140,56 +138,56 @@ public class DbServiceImpl implements DbService {
     }
 
     @Override
-    public Adress selectAdress(long id) throws DaoException {
-        Adress adress = null;
+    public Address selectAdress(long id) throws DaoException {
+        Address address = null;
         try(Connection conn = connectionPool.getConnection()) {
-            AdressDao adressDao = new AdressDaoImpl(conn);
-            adress = adressDao.select(id);
+            AddressDao addressDao = new AddressDaoImpl(conn);
+            address = addressDao.select(id);
         }
         catch (SQLException e){
             throw  new DaoException();
         }
-        return adress;
+        return address;
     }
 
     @Override
-    public List<Adress> selectAllAdresses() throws DaoException {
-        List<Adress> adress = null;
+    public List<Address> selectAllAdresses() throws DaoException {
+        List<Address> addresses = null;
         try(Connection conn = connectionPool.getConnection()) {
-            AdressDao adressDao = new AdressDaoImpl(conn);
-            adress = adressDao.selectAll();
+            AddressDao addressDao = new AddressDaoImpl(conn);
+            addresses = addressDao.selectAll();
         }
         catch (SQLException e){
             throw  new DaoException();
         }
-        return adress;
+        return addresses;
     }
 
     @Override
-    public Adress selectAdressByStreet(String street) throws DaoException {
+    public Address selectAdressByStreet(String street) throws DaoException {
         return null;
     }
 
     @Override
-    public Adress selectAdressByCity(String city) throws DaoException {
+    public Address selectAdressByCity(String city) throws DaoException {
         return null;
     }
 
     @Override
-    public Adress selectAdressByArea(String area) throws DaoException {
+    public Address selectAdressByArea(String area) throws DaoException {
         return null;
     }
 
     @Override
-    public Adress selectAdressByRegion(String region) throws DaoException {
+    public Address selectAdressByRegion(String region) throws DaoException {
         return null;
     }
 
     @Override
     public boolean deleteAdress(long id) throws DaoException {
         try(Connection connection = connectionPool.getConnection()){
-            AdressDao adressDao = new AdressDaoImpl(connection);
-            return adressDao.delete(id);
+            AddressDao addressDao = new AddressDaoImpl(connection);
+            return addressDao.delete(id);
         }
         catch (SQLException e){
             throw new DaoException(e);
@@ -199,8 +197,8 @@ public class DbServiceImpl implements DbService {
     @Override
     public boolean deleteAllAdresses() throws DaoException {
         try(Connection connection = connectionPool.getConnection()){
-            AdressDao adressDao = new AdressDaoImpl(connection);
-            return adressDao.deleteAllRecords();
+            AddressDao addressDao = new AddressDaoImpl(connection);
+            return addressDao.deleteAllRecords();
         }
         catch (SQLException e){
             throw new DaoException(e);

@@ -7,7 +7,7 @@ public class Listing implements Entity {
     private long id;
     private Category category;
     private RentalType rentalType;
-    private Adress address;
+    private Address address;
     private CompositeFilter compositeFilter;
     private int price;
 
@@ -38,11 +38,11 @@ public class Listing implements Entity {
     public void setRentalType(RentalType rentalType) {
         this.rentalType = rentalType;
     }
-    public Adress getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(Adress address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

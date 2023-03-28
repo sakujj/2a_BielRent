@@ -1,10 +1,32 @@
 package by.fpmibsu.bielrent.entity;
 
+import java.math.BigDecimal;
+
 public class User implements Entity{
     private long id;
     private String email;
     private String password;
     private String name;
+    private Role role;
+    private BigDecimal rating;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+
+    public BigDecimal getRating() {
+        return rating;
+    }
+
+    public void setRating(BigDecimal rating) {
+        this.rating = rating;
+    }
+
 
     public User() {}
 

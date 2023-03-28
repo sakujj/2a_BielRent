@@ -41,7 +41,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
 
     private static ConnectionPoolImpl createConnectionPoolImpl() {
         Properties props = new Properties();
-        SQLServerDataSource dataSource = new SQLServerXADataSource();
+        SQLServerXADataSource dataSource = new SQLServerXADataSource();
         try (FileReader fr = new FileReader(PATH)) {
             props.load(fr);
             dataSource.setURL(props.getProperty(URL_KEY));
