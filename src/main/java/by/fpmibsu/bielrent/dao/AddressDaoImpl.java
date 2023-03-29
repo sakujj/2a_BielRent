@@ -9,7 +9,9 @@ import java.util.List;
 import static java.sql.Types.NULL;
 
 public class AddressDaoImpl implements AddressDao {
-    private final String SQL_INSERT_ADDRESS = "INSERT INTO [dbo].[Address](region, city,area, street,house) VALUES(?, ?, ?, ?, ?)";
+    private final String SQL_INSERT_ADDRESS = "INSERT INTO [dbo].[Address](regionNumber, city, districtAdministrative" +
+            ", districtMicro, street, houseNumber)" +
+            " VALUES(?, ?, ?, ?, ?,?)";
     private final String SQL_SELECT_ALL_ADDRESSES = "SELECT * FROM [dbo].[Address]";
     private final String SQL_SELECT_ADDRESS_BY_ID = "SELECT * FROM [dbo].[Address] WHERE id = ?";
     private final String SQL_SELECT_ADDRESS_BY_STREET = "SELECT * FROM [dbo].[Address] WHERE street = ?";
@@ -34,8 +36,14 @@ public class AddressDaoImpl implements AddressDao {
             else{
                 preparedStatement.setNull(3,NULL);
             }
-            preparedStatement.setString(4,record.getStreet());
-            preparedStatement.setInt(5,record.getHouse());
+            if(record.getDistrictMicro() != null) {
+                preparedStatement.setString(4, record.getDistrictMicro());
+            }
+            else{
+                preparedStatement.setNull(4,NULL);
+            }
+            preparedStatement.setString(5,record.getStreet());
+            preparedStatement.setInt(6,record.getHouseNumber());
 
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -56,11 +64,12 @@ public class AddressDaoImpl implements AddressDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Address a = new Address();
-                a.setRegionNumber(resultSet.getInt("region"));
+                a.setRegionNumber(resultSet.getInt("regionNumber"));
                 a.setCity(resultSet.getString("city"));
-                a.setDistrictAdministrative(resultSet.getString("area"));
+                a.setDistrictAdministrative(resultSet.getString("districtAdministrative"));
+                a.setDistrictMicro(resultSet.getString("districtMicro"));
                 a.setStreet(resultSet.getString("street"));
-                a.setHouse(resultSet.getInt("house"));
+                a.setHouseNumber(resultSet.getInt("houseNumber"));
 
                 addressList.add(a);
             }
@@ -78,12 +87,13 @@ public class AddressDaoImpl implements AddressDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(resultSet.next()){
-                a = new Address();
-                a.setRegionNumber(resultSet.getInt("region"));
+                //Address a = new Address();
+                a.setRegionNumber(resultSet.getInt("regionNumber"));
                 a.setCity(resultSet.getString("city"));
-                a.setDistrictAdministrative(resultSet.getString("area"));
+                a.setDistrictAdministrative(resultSet.getString("districtAdministrative"));
+                a.setDistrictMicro(resultSet.getString("districtMicro"));
                 a.setStreet(resultSet.getString("street"));
-                a.setHouse(resultSet.getInt("house"));
+                a.setHouseNumber(resultSet.getInt("houseNumber"));
 
             }
         }
@@ -148,6 +158,5 @@ public class AddressDaoImpl implements AddressDao {
             throw new DaoException(e);
         }
     }
-
 
 }

@@ -1,11 +1,11 @@
 package by.fpmibsu.bielrent.entity;
 
 public class Report implements Entity{
-    private int id;
+    private long id;
     private User user;
     private String description;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -21,7 +21,7 @@ public class Report implements Entity{
         this.description = description;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
