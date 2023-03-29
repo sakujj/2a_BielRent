@@ -1,13 +1,17 @@
 package by.fpmibsu.bielrent.entity;
 
+import java.util.List;
+
 public class Address implements Entity{
     private long id;
-    private String region;
+    private int regionNumber;
     private String city;
-    private String area = null;
+    private String districtAdministrative = null;
+    private String districtMicro = null;
     private String street;
     private int house;
-    private Integer flat = null;
+
+    List<Listing> listingList;
 
     public void setId(long i){
         id = i;
@@ -33,22 +37,32 @@ public class Address implements Entity{
     public void setHouse(int h){
         house = h;
     }
-    public Integer getFlat(){
-        return flat;
+
+
+    public void setDistrictAdministrative(String s){
+        districtAdministrative = s;
     }
-    public void setFlat(Integer h){
-        flat = h;
+    public String getDistrictAdministrative(){
+        return districtAdministrative;
     }
-    public void setArea(String s){
-        area = s;
+    public void setRegionNumber(int s){
+        regionNumber = s;
     }
-    public String getArea(){
-        return area;
+    public int getRegionNumber(){
+        return regionNumber;
     }
-    public void setRegion(String s){
-        region = s;
+    public void setDistrictMicro(String s){
+        districtMicro = s;
     }
-    public String getRegion(){
-        return region;
+    public String getDistrictMicro(){
+        return districtMicro;
+    }
+
+    public List<Listing> getListings() {
+        return listingList;
+    }
+
+    public void setListings(List<Listing> listingList) {
+        this.listingList = listingList;
     }
 }

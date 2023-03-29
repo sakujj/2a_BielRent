@@ -1,27 +1,25 @@
 package by.fpmibsu.bielrent.entity;
 
-public class CompositeFilter implements Entity {
+public abstract class Filter implements Entity {
     private long id;
     private int roomCount;
     private int floorCount;
     private int bedRoomCount;
     private double livingSpace;
     private double kitchenArea;
-    private double landArea;
-    private int floor;
-    private int floorsOfHouse;
-    private String balcony;
-    private String renovation;
-    private String typeOfHouse;
+    private int price;
+    private int balconyCount;
+
     private int year;
     private boolean hasSeparateBathroom;
     private boolean hasWashingMachine;
     private boolean hasFurniture;
     private boolean hasWiFi;
     private boolean hasElevator;
-    private boolean hasOtherBuildings;
 
-    public CompositeFilter() {}
+
+
+    public Filter() {}
 
     public long getId() {
         return id;
@@ -71,53 +69,17 @@ public class CompositeFilter implements Entity {
         this.kitchenArea = kitchenArea;
     }
 
-    public double getLandArea() {
-        return landArea;
+
+    public int getBalconyCount() {
+        return balconyCount;
     }
 
-    public void setLandArea(double landArea) {
-        this.landArea = landArea;
+    public void setBalconyCount(int balconyCount) {
+        this.balconyCount = balconyCount;
     }
 
-    public int getFloor() {
-        return floor;
-    }
 
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
 
-    public int getFloorsOfHouse() {
-        return floorsOfHouse;
-    }
-
-    public void setFloorsOfHouse(int floorsOfHouse) {
-        this.floorsOfHouse = floorsOfHouse;
-    }
-
-    public String getBalcony() {
-        return balcony;
-    }
-
-    public void setBalcony(String balcony) {
-        this.balcony = balcony;
-    }
-
-    public String getRenovation() {
-        return renovation;
-    }
-
-    public void setRenovation(String renovation) {
-        this.renovation = renovation;
-    }
-
-    public String getTypeOfHouse() {
-        return typeOfHouse;
-    }
-
-    public void setTypeOfHouse(String typeOfHouse) {
-        this.typeOfHouse = typeOfHouse;
-    }
 
     public int getYear() {
         return year;
@@ -166,12 +128,12 @@ public class CompositeFilter implements Entity {
     public void setHasElevator(boolean hasElevator) {
         this.hasElevator = hasElevator;
     }
-
-    public boolean isHasOtherBuildings() {
-        return hasOtherBuildings;
+    public int getPrice() {
+        return price;
     }
 
-    public void setHasOtherBuildings(boolean hasOtherBuildings) {
-        this.hasOtherBuildings = hasOtherBuildings;
+    public void setPrice(int price) {
+        this.price = price;
     }
+
 }

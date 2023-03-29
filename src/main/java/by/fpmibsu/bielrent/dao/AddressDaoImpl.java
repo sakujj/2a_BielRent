@@ -9,7 +9,7 @@ import java.util.List;
 import static java.sql.Types.NULL;
 
 public class AddressDaoImpl implements AddressDao {
-    private final String SQL_INSERT_ADDRESS = "INSERT INTO [dbo].[Address](region, city,area, street,house, flat) VALUES(?, ?, ?, ?, ?, ?)";
+    private final String SQL_INSERT_ADDRESS = "INSERT INTO [dbo].[Address](region, city,area, street,house) VALUES(?, ?, ?, ?, ?)";
     private final String SQL_SELECT_ALL_ADDRESSES = "SELECT * FROM [dbo].[Address]";
     private final String SQL_SELECT_ADDRESS_BY_ID = "SELECT * FROM [dbo].[Address] WHERE id = ?";
     private final String SQL_SELECT_ADDRESS_BY_STREET = "SELECT * FROM [dbo].[Address] WHERE street = ?";
@@ -25,23 +25,18 @@ public class AddressDaoImpl implements AddressDao {
     public long insert(Address record) throws DaoException {
         long id = -1;
         try(PreparedStatement preparedStatement = conn.prepareStatement(SQL_INSERT_ADDRESS, Statement.RETURN_GENERATED_KEYS)){
-            preparedStatement.setString(1,record.getRegion());
+            preparedStatement.setInt(1,record.getRegionNumber());
 
             preparedStatement.setString(2,record.getCity());
-            if(record.getArea() != null) {
-                preparedStatement.setString(3, record.getArea());
+            if(record.getDistrictAdministrative() != null) {
+                preparedStatement.setString(3, record.getDistrictAdministrative());
             }
             else{
                 preparedStatement.setNull(3,NULL);
             }
             preparedStatement.setString(4,record.getStreet());
             preparedStatement.setInt(5,record.getHouse());
-            if(record.getFlat() != null) {
-                preparedStatement.setInt(6, record.getFlat());
-            }
-            else{
-                preparedStatement.setNull(6,NULL);
-            }
+
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if(rs.next()){
@@ -61,12 +56,12 @@ public class AddressDaoImpl implements AddressDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Address a = new Address();
-                a.setRegion(resultSet.getString("region"));
+                a.setRegionNumber(resultSet.getInt("region"));
                 a.setCity(resultSet.getString("city"));
-                a.setArea(resultSet.getString("area"));
+                a.setDistrictAdministrative(resultSet.getString("area"));
                 a.setStreet(resultSet.getString("street"));
                 a.setHouse(resultSet.getInt("house"));
-                a.setFlat(resultSet.getInt("flat"));
+
                 addressList.add(a);
             }
         }
@@ -84,12 +79,12 @@ public class AddressDaoImpl implements AddressDao {
 
             if(resultSet.next()){
                 a = new Address();
-                a.setRegion(resultSet.getString("region"));
+                a.setRegionNumber(resultSet.getInt("region"));
                 a.setCity(resultSet.getString("city"));
-                a.setArea(resultSet.getString("area"));
+                a.setDistrictAdministrative(resultSet.getString("area"));
                 a.setStreet(resultSet.getString("street"));
                 a.setHouse(resultSet.getInt("house"));
-                a.setFlat(resultSet.getInt("flat"));
+
             }
         }
         catch (SQLException e){
