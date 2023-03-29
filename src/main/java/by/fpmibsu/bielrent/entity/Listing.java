@@ -7,13 +7,9 @@ public class Listing implements Entity {
 
     private long id;
     private User user;
-
     private PropertyType propertyType;
     private Address address;
-    private Filter compositeFilter;
-
-
-
+    private Filter filter;
     private String description;
     private List<Photo> photos;
 
@@ -39,12 +35,12 @@ public class Listing implements Entity {
         this.address = address;
     }
 
-    public Filter getCompositeFilter() {
-        return compositeFilter;
+    public Filter getFilter() {
+        return filter;
     }
 
-    public void setCompositeFilter(Filter compositeFilter) {
-        this.compositeFilter = compositeFilter;
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
 

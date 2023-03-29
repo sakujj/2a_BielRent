@@ -10,29 +10,10 @@ public class User implements Entity{
     private String name;
     private Role role;
     private BigDecimal rating;
-    private List<Report> reportList;
-    private List<Notification> notificationList;
-    private List<Listing> listingList;
+    private List<Report> reports;
+    private List<Notification> notifications;
+    private List<Listing> listings;
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
-    public BigDecimal getRating() {
-        return rating;
-    }
-
-    public void setRating(BigDecimal rating) {
-        this.rating = rating;
-    }
-
-
-    public User() {}
 
     public long getId() {
         return id;
@@ -40,22 +21,6 @@ public class User implements Entity{
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -66,27 +31,59 @@ public class User implements Entity{
         this.email = email;
     }
 
-    public List<Listing> getListings() {
-        return listingList;
+    public String getPassword() {
+        return password;
     }
 
-    public List<Notification> getNotifications() {
-        return notificationList;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public BigDecimal getRating() {
+        return rating;
+    }
+
+    public void setRating(BigDecimal rating) {
+        this.rating = rating;
     }
 
     public List<Report> getReports() {
-        return reportList;
+        return reports;
     }
 
-    public void setListings(List<Listing> listingList) {
-        this.listingList = listingList;
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 
-    public void setNotifications(List<Notification> notificationList) {
-        this.notificationList = notificationList;
+    public List<Notification> getNotifications() {
+        return notifications;
     }
 
-    public void setReports(List<Report> reportList) {
-        this.reportList = reportList;
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public List<Listing> getListings() {
+        return listings;
+    }
+
+    public void setListings(List<Listing> listings) {
+        this.listings = listings;
     }
 }

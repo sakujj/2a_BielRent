@@ -1,25 +1,27 @@
 package by.fpmibsu.bielrent.entity;
 
+import java.sql.Date;
+
 public abstract class Filter implements Entity {
     private long id;
     private int roomCount;
     private int floorCount;
-    private int bedRoomCount;
-    private double livingSpace;
-    private double kitchenArea;
-    private int price;
+    private int bedroomCount;
     private int balconyCount;
+    private double squareArea;
+    private long priceMonthly;
 
-    private int year;
-    private boolean hasSeparateBathroom;
+    private int buildYear;
+    private boolean hasBathroom;
+    private Date rentalPeriodStart;
+    private Date rentalPeriodEnd;
     private boolean hasWashingMachine;
     private boolean hasFurniture;
-    private boolean hasWiFi;
+    private boolean hasWifi;
     private boolean hasElevator;
 
-
-
     public Filter() {}
+
 
     public long getId() {
         return id;
@@ -45,30 +47,13 @@ public abstract class Filter implements Entity {
         this.floorCount = floorCount;
     }
 
-    public int getBedRoomCount() {
-        return bedRoomCount;
+    public int getBedroomCount() {
+        return bedroomCount;
     }
 
-    public void setBedRoomCount(int bedRoomCount) {
-        this.bedRoomCount = bedRoomCount;
+    public void setBedroomCount(int bedroomCount) {
+        this.bedroomCount = bedroomCount;
     }
-
-    public double getLivingSpace() {
-        return livingSpace;
-    }
-
-    public void setLivingSpace(double livingSpace) {
-        this.livingSpace = livingSpace;
-    }
-
-    public double getKitchenArea() {
-        return kitchenArea;
-    }
-
-    public void setKitchenArea(double kitchenArea) {
-        this.kitchenArea = kitchenArea;
-    }
-
 
     public int getBalconyCount() {
         return balconyCount;
@@ -78,26 +63,55 @@ public abstract class Filter implements Entity {
         this.balconyCount = balconyCount;
     }
 
-
-
-
-    public int getYear() {
-        return year;
+    public double getSquareArea() {
+        return squareArea;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setSquareArea(double squareArea) {
+        this.squareArea = squareArea;
     }
 
-    public boolean isHasSeparateBathroom() {
-        return hasSeparateBathroom;
+    public long getPriceMonthly() {
+        return priceMonthly;
     }
 
-    public void setHasSeparateBathroom(boolean hasSeparateBathroom) {
-        this.hasSeparateBathroom = hasSeparateBathroom;
+    public void setPriceMonthly(long priceMonthly) {
+        this.priceMonthly = priceMonthly;
     }
 
-    public boolean isHasWashingMachine() {
+    public int getBuildYear() {
+        return buildYear;
+    }
+
+    public void setBuildYear(int buildYear) {
+        this.buildYear = buildYear;
+    }
+
+    public boolean getHasBathroom() {
+        return hasBathroom;
+    }
+
+    public void setHasBathroom(boolean hasBathroom) {
+        this.hasBathroom = hasBathroom;
+    }
+
+    public Date getRentalPeriodStart() {
+        return rentalPeriodStart;
+    }
+
+    public void setRentalPeriodStart(Date rentalPeriodStart) {
+        this.rentalPeriodStart = rentalPeriodStart;
+    }
+
+    public Date getRentalPeriodEnd() {
+        return rentalPeriodEnd;
+    }
+
+    public void setRentalPeriodEnd(Date rentalPeriodEnd) {
+        this.rentalPeriodEnd = rentalPeriodEnd;
+    }
+
+    public boolean getHasWashingMachine() {
         return hasWashingMachine;
     }
 
@@ -105,7 +119,7 @@ public abstract class Filter implements Entity {
         this.hasWashingMachine = hasWashingMachine;
     }
 
-    public boolean isHasFurniture() {
+    public boolean getHasFurniture() {
         return hasFurniture;
     }
 
@@ -113,27 +127,19 @@ public abstract class Filter implements Entity {
         this.hasFurniture = hasFurniture;
     }
 
-    public boolean isHasWiFi() {
-        return hasWiFi;
+    public boolean getHasWifi() {
+        return hasWifi;
     }
 
-    public void setHasWiFi(boolean hasWiFi) {
-        this.hasWiFi = hasWiFi;
+    public void setHasWifi(boolean hasWifi) {
+        this.hasWifi = hasWifi;
     }
 
-    public boolean isHasElevator() {
+    public boolean getHasElevator() {
         return hasElevator;
     }
 
     public void setHasElevator(boolean hasElevator) {
         this.hasElevator = hasElevator;
     }
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
 }

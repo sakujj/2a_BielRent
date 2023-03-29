@@ -3,6 +3,7 @@ package by.fpmibsu.bielrent.entity;
 public class HouseFilter extends Filter{
     private double landArea;
     private boolean hasOtherBuildings;
+
     public double getLandArea() {
         return landArea;
     }
@@ -10,7 +11,8 @@ public class HouseFilter extends Filter{
     public void setLandArea(double landArea) {
         this.landArea = landArea;
     }
-    public boolean isHasOtherBuildings() {
+
+    public boolean getHasOtherBuildings() {
         return hasOtherBuildings;
     }
 

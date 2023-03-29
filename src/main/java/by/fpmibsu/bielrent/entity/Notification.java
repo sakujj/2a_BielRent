@@ -2,17 +2,18 @@ package by.fpmibsu.bielrent.entity;
 
 public class Notification implements Entity{
     private long id;
-    private Filter compositeFilter;
+    private Filter filter;
     private PropertyType propertyType;
+    private User user;
 
     public Notification() {}
 
-    public Filter getCompositeFilter() {
-        return compositeFilter;
+    public Filter getFilter() {
+        return filter;
     }
 
-    public void setCompositeFilter(Filter compositeFilter) {
-        this.compositeFilter = compositeFilter;
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
     public long getId() {
@@ -29,5 +30,13 @@ public class Notification implements Entity{
 
     public void setPropertyType(PropertyType propertyType) {
         this.propertyType = propertyType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

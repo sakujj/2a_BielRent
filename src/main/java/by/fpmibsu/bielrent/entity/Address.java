@@ -9,60 +9,71 @@ public class Address implements Entity{
     private String districtAdministrative = null;
     private String districtMicro = null;
     private String street;
-    private int house;
+    private int houseNumber;
+    List<Listing> listings;
 
-    List<Listing> listingList;
 
-    public void setId(long i){
-        id = i;
-    }
-    public long getId(){
+    public long getId() {
         return id;
     }
-    public String getCity(){
-        return city;
-    }
-    public void setCity(String s){
-        city = s;
-    }
-    public String getStreet(){
-        return street;
-    }
-    public void setStreet(String s){
-        street = s;
-    }
-    public int getHouse(){
-        return house;
-    }
-    public void setHouse(int h){
-        house = h;
+
+    public void setId(long id) {
+        this.id = id;
     }
 
-
-    public void setDistrictAdministrative(String s){
-        districtAdministrative = s;
-    }
-    public String getDistrictAdministrative(){
-        return districtAdministrative;
-    }
-    public void setRegionNumber(int s){
-        regionNumber = s;
-    }
-    public int getRegionNumber(){
+    public int getRegionNumber() {
         return regionNumber;
     }
-    public void setDistrictMicro(String s){
-        districtMicro = s;
+
+    public void setRegionNumber(int regionNumber) {
+        this.regionNumber = regionNumber;
     }
-    public String getDistrictMicro(){
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrictAdministrative() {
+        return districtAdministrative;
+    }
+
+    public void setDistrictAdministrative(String districtAdministrative) {
+        this.districtAdministrative = districtAdministrative;
+    }
+
+    public String getDistrictMicro() {
         return districtMicro;
     }
 
-    public List<Listing> getListings() {
-        return listingList;
+    public void setDistrictMicro(String districtMicro) {
+        this.districtMicro = districtMicro;
     }
 
-    public void setListings(List<Listing> listingList) {
-        this.listingList = listingList;
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public int getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(int houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public List<Listing> getListings() {
+        return listings;
+    }
+
+    public void setListings(List<Listing> listings) {
+        this.listings = listings;
     }
 }
