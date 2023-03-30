@@ -69,7 +69,7 @@ public class ReportDaoImpl implements ReportDao {
     public Report select(long id) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_REPORT_BY_ID)) {
             statement.setLong(1, id);
-            Report report = new Report();
+            Report report = null;
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 UserDao userDao = new UserDaoImpl(conn);

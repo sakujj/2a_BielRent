@@ -1,6 +1,7 @@
 package by.fpmibsu.bielrent.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 public abstract class Filter implements Entity {
     private long id;
@@ -19,6 +20,9 @@ public abstract class Filter implements Entity {
     private boolean hasFurniture;
     private boolean hasWifi;
     private boolean hasElevator;
+
+
+    private Listing listing = null;
 
     public Filter() {}
 
@@ -141,5 +145,12 @@ public abstract class Filter implements Entity {
 
     public void setHasElevator(boolean hasElevator) {
         this.hasElevator = hasElevator;
+    }
+    public Listing getListing() {
+        return listing;
+    }
+
+    public void setListing(Listing listing) {
+        this.listing = listing;
     }
 }

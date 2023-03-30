@@ -63,7 +63,7 @@ public class Listing implements Entity {
     public void setPropertyType(PropertyType pt){
         propertyType = pt;
     }
-    public PropertyType getPropertyType(PropertyType pt){
+    public PropertyType getPropertyType(){
         return propertyType;
     }
 
