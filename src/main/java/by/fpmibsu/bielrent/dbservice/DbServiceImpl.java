@@ -9,18 +9,24 @@ import by.fpmibsu.bielrent.entity.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 public class DbServiceImpl implements DbService {
     private DbServiceImpl() {
     }
 
     private ConnectionPool connectionPool;
-    private static DbServiceImpl dbService = null;
+    private static volatile DbServiceImpl dbService = null;
+    private static final Object mutex = new Object();
 
     public static DbService getInstance() {
         if (dbService == null) {
-            dbService = new DbServiceImpl();
-            dbService.connectionPool = ConnectionPoolImpl.getInstance();
+            synchronized (mutex) {
+                if (dbService == null) {
+                    dbService = new DbServiceImpl();
+                    dbService.connectionPool = ConnectionPoolImpl.getInstance();
+                }
+            }
         }
         return dbService;
     }

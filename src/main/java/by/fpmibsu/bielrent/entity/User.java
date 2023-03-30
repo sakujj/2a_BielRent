@@ -86,4 +86,19 @@ public class User implements Entity{
     public void setListings(List<Listing> listings) {
         this.listings = listings;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", rating=" + rating +
+                ",\n reports=" + reports +
+                ",\n notifications=" + notifications +
+                ",\n listings=" + listings +
+                '}';
+    }
 }

@@ -18,15 +18,12 @@ public class ConnectionPoolImpl implements ConnectionPool {
 
     private SQLServerDataSource dataSource = null;
 
-    private static ConnectionPoolImpl connectionPool = null;
+    private static final ConnectionPoolImpl connectionPool = createConnectionPoolImpl();
 
     private ConnectionPoolImpl() {
     }
 
     public static ConnectionPoolImpl getInstance() {
-        if (connectionPool == null) {
-            connectionPool = createConnectionPoolImpl();
-        }
         return connectionPool;
     }
 

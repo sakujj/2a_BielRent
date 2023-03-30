@@ -1,5 +1,6 @@
 package by.fpmibsu.bielrent.dao;
 
+import by.fpmibsu.bielrent.entity.Report;
 import by.fpmibsu.bielrent.entity.Role;
 import by.fpmibsu.bielrent.entity.User;
 
@@ -17,6 +18,7 @@ public class UserDaoImpl implements UserDao {
     private final String SQL_UPDATE_USER = "UPDATE [dbo].[User] " +
             "SET email = ?, password = ?, name = ?, rating = ?, role = ? WHERE id = ?";
     private final String SQL_DELETE_USER_BY_ID = "DELETE FROM [dbo].[User] WHERE id = ?";
+    private final String SQL_SELECT_REPORTS_BY_USER_ID = "SELECT * FROM dbo.[Report] WHERE userId = ?";
 
     private Connection conn;
 
@@ -36,21 +38,18 @@ public class UserDaoImpl implements UserDao {
             if (record.getEmail().length() > 50
                     || record.getPassword().length() > 50
                     || record.getName().length() > 50
-                    || record.getRating().toPlainString().length() != 3) {
+                    || record.getRating().toPlainString().length() != 3
+                    || record.getRole() == null) {
                 return id;
             }
             if (selectByEmail(record.getEmail()) != null || select(record.getId()) != null) {
-                return id;
-            }
-            Role role = record.getRole();
-            if (role == null) {
                 return id;
             }
             statement.setString(1, record.getEmail());
             statement.setString(2, record.getPassword());
             statement.setString(3, record.getName());
             statement.setBigDecimal(4, record.getRating());
-            statement.setString(5, role.toString());
+            statement.setString(5, record.getRole().toString());
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -91,11 +90,40 @@ public class UserDaoImpl implements UserDao {
 
     }
 
+    /**
+     You should pass a User instance with User.id field already set.
+     The method initializes User.reports based on User.id and links every report in User.reports
+     to the User instance.
+     */
+    private void setReports(User user) throws DaoException {
+        if (user.getId() <= 0) {
+            throw new DaoException("User cant have id <= 0");
+        }
+        long id = user.getId();
+        List<Report> reports = new ArrayList<>();
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_REPORTS_BY_USER_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Report report = new Report();
+                report.setId(resultSet.getLong("id"));
+                report.setDescription(resultSet.getString("description"));
+                report.setUser(user);
+                reports.add(report);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+        user.setReports(reports);
+    }
+
     @Override
     public User select(long id) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_ID)) {
             User user = null;
             statement.setLong(1, id);
+            ReportDao rd = new ReportDaoImpl(conn);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
@@ -107,6 +135,7 @@ public class UserDaoImpl implements UserDao {
                 String stringRole = resultSet.getString("role");
                 Role role = Role.valueOf(stringRole);
                 user.setRole(role);
+                this.setReports(user);
             }
             return user;
         } catch (SQLException e) {
@@ -117,21 +146,18 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean update(User record) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_USER)) {
-            Role role = record.getRole();
-            if (role == null) {
-                return false;
-            }
             if (record.getEmail().length() > 50
                     || record.getPassword().length() > 50
-                    || record.getName().length() > 50
-                    || record.getRating().toPlainString().length() != 3) {
+                    || record.getName().codePointCount(0, record.getName().length()) > 50
+                    || record.getRating().toPlainString().length() != 3
+                    || record.getRole() == null) {
                 return false;
             }
             statement.setString(1, record.getEmail());
             statement.setString(2, record.getPassword());
             statement.setString(3, record.getName());
             statement.setBigDecimal(4, record.getRating());
-            statement.setString(5, role.toString());
+            statement.setString(5, record.getRole().toString());
             statement.setLong(6, record.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {

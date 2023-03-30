@@ -28,4 +28,13 @@ public class Report implements Entity{
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "Report{" +
+                "id=" + id +
+                ", userId=" + user.getId() +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
