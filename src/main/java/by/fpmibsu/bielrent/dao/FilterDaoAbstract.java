@@ -9,7 +9,7 @@ import java.util.List;
 
 import static java.sql.Types.NULL;
 
-public abstract class FilterDaoAbstract implements FilterDao {
+public class FilterDaoAbstract implements FilterDao {
     private final String SQL_INSERT_FILTER = "INSERT INTO Filter(roomCount,floorCount, bedroomCount,squareArea, balconyCount, buildYear, " +
             ", rentalPeriodStart, rentalPeriodEnd, priceMonthly, hasBathroom, hasWifi, hasWashingMachine, hasFurniture, hasElevator, listingId)"
             + " VALUES(?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
