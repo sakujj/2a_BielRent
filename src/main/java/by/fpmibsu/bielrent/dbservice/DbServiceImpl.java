@@ -200,14 +200,5 @@ public class DbServiceImpl implements DbService {
         }
     }
 
-    @Override
-    public boolean deleteAllAdresses() throws DaoException {
-        try(Connection connection = connectionPool.getConnection()){
-            AddressDao addressDao = new AddressDaoImpl(connection);
-            return addressDao.deleteAllRecords();
-        }
-        catch (SQLException e){
-            throw new DaoException(e);
-        }
-    }
+
 }

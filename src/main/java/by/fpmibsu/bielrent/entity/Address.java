@@ -10,7 +10,7 @@ public class Address implements Entity{
     private String districtMicro = null;
     private String street;
     private int houseNumber;
-    List<Listing> listings;
+   List<Listing> listings;
 
 
     public long getId() {
@@ -75,5 +75,18 @@ public class Address implements Entity{
 
     public void setListings(List<Listing> listings) {
         this.listings = listings;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", regionNumber=" + regionNumber +
+                ", city='" + city + '\'' +
+                ", districtAdministrative='" + districtAdministrative + '\'' +
+                ", districtMicro='" + districtMicro + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                "}\n";
     }
 }

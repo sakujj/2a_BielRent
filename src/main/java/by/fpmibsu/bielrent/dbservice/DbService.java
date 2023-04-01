@@ -32,5 +32,5 @@ public interface DbService {
     Address selectAdressByRegion(String region) throws DaoException;
 
     boolean deleteAdress(long id)throws DaoException;
-    boolean deleteAllAdresses()throws DaoException;
+
 }

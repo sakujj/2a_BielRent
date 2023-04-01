@@ -26,6 +26,25 @@ public abstract class Filter implements Entity {
 
     public Filter() {}
 
+    public Filter(long id, int roomCount, int floorCount, int bedroomCount, int balconyCount, double squareArea, long priceMonthly, int buildYear, boolean hasBathroom, Date rentalPeriodStart, Date rentalPeriodEnd, boolean hasWashingMachine, boolean hasFurniture, boolean hasWifi, boolean hasElevator, Listing listing) {
+        this.id = id;
+        this.roomCount = roomCount;
+        this.floorCount = floorCount;
+        this.bedroomCount = bedroomCount;
+        this.balconyCount = balconyCount;
+        this.squareArea = squareArea;
+        this.priceMonthly = priceMonthly;
+        this.buildYear = buildYear;
+        this.hasBathroom = hasBathroom;
+        this.rentalPeriodStart = rentalPeriodStart;
+        this.rentalPeriodEnd = rentalPeriodEnd;
+        this.hasWashingMachine = hasWashingMachine;
+        this.hasFurniture = hasFurniture;
+        this.hasWifi = hasWifi;
+        this.hasElevator = hasElevator;
+        this.listing = listing;
+    }
+
 
     public long getId() {
         return id;
@@ -152,5 +171,27 @@ public abstract class Filter implements Entity {
 
     public void setListing(Listing listing) {
         this.listing = listing;
+    }
+
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "id=" + id +
+                "\n, roomCount=" + roomCount +
+                "\n, floorCount=" + floorCount +
+                "\n, bedroomCount=" + bedroomCount +
+                "\n, balconyCount=" + balconyCount +
+                "\n, squareArea=" + squareArea +
+                "\n, priceMonthly=" + priceMonthly +
+                "\n, buildYear=" + buildYear +
+                "\n, hasBathroom=" + hasBathroom +
+                "\n, rentalPeriodStart=" + rentalPeriodStart +
+                "\n, rentalPeriodEnd=" + rentalPeriodEnd +
+                "\n, hasWashingMachine=" + hasWashingMachine +
+                "\n, hasFurniture=" + hasFurniture +
+                "\n, hasWifi=" + hasWifi +
+                "\n, hasElevator=" + hasElevator +
+                "\n, listingId=" + (listing == null ? null : listing.getId()) +
+                '}';
     }
 }

@@ -1,8 +1,7 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.entity.Filter;
-import by.fpmibsu.bielrent.entity.Role;
-import by.fpmibsu.bielrent.entity.User;
+
 
 import java.sql.*;
 import java.util.List;
@@ -10,15 +9,43 @@ import java.util.List;
 import static java.sql.Types.NULL;
 
 public class FilterDaoAbstract implements FilterDao {
-    private final String SQL_INSERT_FILTER = "INSERT INTO Filter(roomCount,floorCount, bedroomCount,squareArea, balconyCount, buildYear, " +
-            ", rentalPeriodStart, rentalPeriodEnd, priceMonthly, hasBathroom, hasWifi, hasWashingMachine, hasFurniture, hasElevator, listingId)"
-            + " VALUES(?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String SQL_SELECT_ALL_FILTERS = "SELECT * FROM Filter";
-    private final String SQL_SELECT_FILTER_BY_ID = "SELECT * FROM [dbo].[User] WHERE id = ?";
-    private final String SQL_UPDATE_FILTER = "UPDATE Filter SET roomCount = ?,floorCount = ?, bedroomCount = ?,squareArea = ?," +
-            " balconyCount = ?, buildYear = ?, rentalPeriodStart= ?, rentalPeriodEnd = ?, priceMonthly = ?, hasBathroom = ?, hasWifi = ?," +
-            " hasWashingMachine = ?, hasFurniture = ?, hasElevator = ?, listingId = ?";
-    private final String SQL_DELETE_FILTER_BY_ID = "DELETE FROM [dbo].[User] WHERE id = ?";
+    private final String SQL_INSERT_FILTER = "INSERT INTO " +
+            "dbo.[Filter](" +
+            "roomCount," +
+            "floorCount, " +
+            "bedroomCount," +
+            "squareArea, " +
+            "balconyCount, " +
+            "buildYear, " +
+            "rentalPeriodStart, " +
+            "rentalPeriodEnd, " +
+            "priceMonthly, " +
+            "hasBathroom, " +
+            "hasWifi, " +
+            "hasWashingMachine, " +
+            "hasFurniture, " +
+            "hasElevator, " +
+            "listingId)"
+            + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String SQL_UPDATE_FILTER
+            = "UPDATE dbo.[Filter] SET " +
+            "roomCount = ?," +
+            "floorCount = ?, " +
+            "bedroomCount = ?," +
+            "squareArea = ?," +
+            " balconyCount = ?, " +
+            "buildYear = ?, " +
+            "rentalPeriodStart= ?, " +
+            "rentalPeriodEnd = ?, " +
+            "priceMonthly = ?, " +
+            "hasBathroom = ?, " +
+            "hasWifi = ?," +
+            " hasWashingMachine = ?," +
+            " hasFurniture = ?, " +
+            "hasElevator = ?, " +
+            "listingId = ? " +
+            "WHERE id = ?";
+    private final String SQL_DELETE_FILTER_BY_ID = "DELETE FROM [dbo].[Filter] WHERE id = ?";
 
     private Connection conn;
 
@@ -61,75 +88,20 @@ public class FilterDaoAbstract implements FilterDao {
             throw new DaoException(e);
         }
     }
+
     @Override
     public List<Filter> selectAll() throws DaoException{
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_FILTERS)) {
-            List<Filter> filters = null;
-            Filter filter = null;
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-
-
-                filter.setId(resultSet.getLong("id"));
-                filter.setRoomCount(resultSet.getInt("roomCount"));
-                filter.setFloorCount(resultSet.getInt("floorCount"));
-                filter.setBedroomCount(resultSet.getInt("bedroomCount"));
-                filter.setSquareArea(resultSet.getDouble("squareArea"));
-                filter.setBalconyCount(resultSet.getInt("balconyCount"));
-                filter.setBuildYear(resultSet.getInt("buildYear"));
-                filter.setRentalPeriodStart(resultSet.getDate("rentalPeriodStart"));
-                filter.setRentalPeriodEnd(resultSet.getDate("rentalPeriodEnd"));
-                filter.setPriceMonthly(resultSet.getInt("priceMonthly"));
-                filter.setHasBathroom(resultSet.getBoolean("hasBathroom"));
-                filter.setHasWifi(resultSet.getBoolean("hasWifi"));
-                filter.setHasWashingMachine(resultSet.getBoolean("hasWashingMachine"));
-                filter.setHasFurniture(resultSet.getBoolean("hasFurniture"));
-                filter.setHasElevator(resultSet.getBoolean("hasElevator"));
-                ListingDao ld = new ListingDaoImpl(conn);
-                filter.setListing(ld.select(resultSet.getLong("listingId")));
-
-                filters.add(filter);
-            }
-            return filters;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        throw new UnsupportedOperationException("selectAll() is not supported in FilterDaoAbstract");
     }
+
     @Override
     public Filter select(long id) throws DaoException{
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_FILTER_BY_ID)) {
-            Filter filter = null;
-            statement.setLong(1, id);
-
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                filter.setId(id);
-                filter.setRoomCount(resultSet.getInt("roomCount"));
-                filter.setFloorCount(resultSet.getInt("floorCount"));
-                filter.setBedroomCount(resultSet.getInt("bedroomCount"));
-                filter.setSquareArea(resultSet.getDouble("squareArea"));
-                filter.setBalconyCount(resultSet.getInt("balconyCount"));
-                filter.setBuildYear(resultSet.getInt("buildYear"));
-                filter.setRentalPeriodStart(resultSet.getDate("rentalPeriodStart"));
-                filter.setRentalPeriodEnd(resultSet.getDate("rentalPeriodEnd"));
-                filter.setPriceMonthly(resultSet.getInt("priceMonthly"));
-                filter.setHasBathroom(resultSet.getBoolean("hasBathroom"));
-                filter.setHasWifi(resultSet.getBoolean("hasWifi"));
-                filter.setHasWashingMachine(resultSet.getBoolean("hasWashingMachine"));
-                filter.setHasFurniture(resultSet.getBoolean("hasFurniture"));
-                filter.setHasElevator(resultSet.getBoolean("hasElevator"));
-                ListingDao ld = new ListingDaoImpl(conn);
-                filter.setListing(ld.select(resultSet.getLong("listingId")));
-            }
-            return filter;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        throw new UnsupportedOperationException("select(long) is not supported in FilterDaoAbstract");
     }
+
     @Override
     public boolean update(Filter record) throws DaoException{
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_FILTER)) {
-            long id = -1;
             statement.setInt(1, record.getRoomCount());
             statement.setInt(2, record.getFloorCount());
             statement.setInt(3, record.getBedroomCount());
@@ -150,6 +122,7 @@ public class FilterDaoAbstract implements FilterDao {
             else {
                 statement.setLong(15, record.getListing().getId());
             }
+            statement.setLong(16, record.getId());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
