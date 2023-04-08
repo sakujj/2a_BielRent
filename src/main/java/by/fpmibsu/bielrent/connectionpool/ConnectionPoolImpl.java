@@ -22,8 +22,11 @@ public class ConnectionPoolImpl implements ConnectionPool {
     private static final ConnectionPoolImpl connectionPool = createPoolAndInitializeDataSource();
     private HikariDataSource dataSource = null;
 
+
     private ConnectionPoolImpl() {
     }
+
+
 
     public static ConnectionPoolImpl getInstance() {
         return connectionPool;
@@ -34,6 +37,13 @@ public class ConnectionPoolImpl implements ConnectionPool {
             return dataSource.getConnection();
         } catch (SQLException e) {
             throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void close() {
+        if (dataSource != null) {
+            dataSource.close();
         }
     }
 

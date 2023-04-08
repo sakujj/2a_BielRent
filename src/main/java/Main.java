@@ -1,3 +1,4 @@
+import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.dao.*;
 import by.fpmibsu.bielrent.entity.*;
 
@@ -70,5 +71,6 @@ public class Main {
 //        System.out.println("\n-------------------------------------------\n");
 //        System.out.println(photo);
 
+        ConnectionPoolImpl.getInstance().close();
     }
 }
