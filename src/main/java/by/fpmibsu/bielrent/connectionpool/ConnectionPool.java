@@ -1,7 +1,9 @@
 package by.fpmibsu.bielrent.connectionpool;
 
+import by.fpmibsu.bielrent.dao.DaoException;
+
 import java.sql.Connection;
 
 public interface ConnectionPool {
-    public Connection getConnection();
+    Connection getConnection() throws DaoException;
 }

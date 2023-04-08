@@ -31,10 +31,10 @@ public class Report implements Entity{
 
     @Override
     public String toString() {
-        return "Report{" +
+        return "\nReport{" +
                 "id=" + id +
-                ", userId=" + user.getId() +
+                ", userId=" + user +
                 ", description='" + description + '\'' +
-                '}';
+                "}\n";
     }
 }

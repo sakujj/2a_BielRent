@@ -79,7 +79,7 @@ public class Address implements Entity{
 
     @Override
     public String toString() {
-        return "Address{" +
+        return "\nAddress{" +
                 "id=" + id +
                 ", regionNumber=" + regionNumber +
                 ", city='" + city + '\'' +
@@ -87,6 +87,6 @@ public class Address implements Entity{
                 ", districtMicro='" + districtMicro + '\'' +
                 ", street='" + street + '\'' +
                 ", houseNumber=" + houseNumber +
-                "}\n";
+                "\n listings= " + listings + "}\n";
     }
 }

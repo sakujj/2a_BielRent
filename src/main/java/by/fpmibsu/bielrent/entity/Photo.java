@@ -28,4 +28,13 @@ public class Photo implements Entity{
     public Listing getListing(){
         return listing;
     }
+
+    @Override
+    public String toString() {
+        return "\nPhoto{" +
+                "id =" + id +
+                ", path='" + path + '\'' +
+                ", listing=" + listing +
+                "}\n";
+    }
 }

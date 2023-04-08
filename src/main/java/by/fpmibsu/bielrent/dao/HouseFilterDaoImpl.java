@@ -1,38 +1,44 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
-import by.fpmibsu.bielrent.entity.FlatFilter;
+import by.fpmibsu.bielrent.entity.HouseFilter;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlatFilterDaoImpl implements FlatFilterDao {
-    private final String SQL_INSERT_FLAT_FILTER
-            = "INSERT INTO dbo.[FlatFilter](filterId, floorNumber) VALUES(?, ?)";
-    private final String SQL_SELECT_ALL_FLAT_FILTERS
-            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[FlatFilter] ff ON f.id = ff.filterId";
-    private final String SQL_SELECT_FLAT_FILTER_BY_ID
-            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[FlatFilter] ff ON f.id = ff.filterId  WHERE id = ?";
-    private final String SQL_UPDATE_FLAT_FILTER
-            = "UPDATE FlatFilter SET floorNumber= ? WHERE filterId = ?";
-    private final String SQL_SELECT_FLAT_FILTER_BY_LISTING_ID
-            = "SELECT * " +
-            "FROM FlatFilter ff JOIN Filter f ON f.id = ff.filterId " +
-            "WHERE listingId = ?";
-    private static final FlatFilterDaoImpl INSTANCE = new FlatFilterDaoImpl();
+public class HouseFilterDaoImpl implements HouseFilterDao {
+    private final String SQL_INSERT_HOUSE_FILTER
+            = "INSERT INTO dbo.[HouseFilter](filterId, landArea, hasOtherBuildings) VALUES(?, ?, ?)";
+    private final String SQL_SELECT_ALL_HOUSE_FILTERS
+            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[HouseFilter] hf ON f.id = hf.filterId";
+    private final String SQL_SELECT_HOUSE_FILTER_BY_ID
+            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[HouseFilter] hf ON f.id = hf.filterId  WHERE id = ?";
+    private final String SQL_UPDATE_HOUSE_FILTER
+            = "UPDATE HouseFilter SET landArea= ?, hasOtherBuildings= ? WHERE filterId = ?";
 
-    private FlatFilterDaoImpl() {
+    private final String SQL_SELECT_HOUSE_FILTER_BY_LISTING_ID
+            = "SELECT * " +
+            "FROM HouseFilter hf JOIN Filter f ON f.id = hf.filterId " +
+            "WHERE listingId = ?";
+
+    private static final HouseFilterDaoImpl INSTANCE = new HouseFilterDaoImpl();
+
+    private HouseFilterDaoImpl() {
     }
 
-    public static FlatFilterDaoImpl getInstance() {
+    public static HouseFilterDaoImpl getInstance() {
         return INSTANCE;
     }
 
-    public long insert(FlatFilter record, Connection conn) throws DaoException {
+    public long insert(HouseFilter record, Connection conn) throws DaoException {
         try (PreparedStatement statement
-                     = conn.prepareStatement(SQL_INSERT_FLAT_FILTER)) {
+                     = conn.prepareStatement(SQL_INSERT_HOUSE_FILTER)) {
             conn.setAutoCommit(false);
+
             FilterDaoImpl filterDaoImpl = FilterDaoImpl.getInstance();
             long id = filterDaoImpl.insert(record);
             if (id == -1) {
@@ -40,8 +46,10 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
             }
 
             statement.setLong(1, id);
-            statement.setInt(2, record.getFloorNumber());
+            statement.setDouble(2, record.getLandArea());
+            statement.setBoolean(3, record.getHasOtherBuildings());
             statement.executeUpdate();
+
             conn.commit();
             return id;
         } catch (SQLException e) {
@@ -60,21 +68,20 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    public FlatFilter select(long id, Connection conn) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_FLAT_FILTER_BY_ID)) {
+    public HouseFilter select(long id, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_HOUSE_FILTER_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
-            FlatFilter flatFilter = null;
+            HouseFilter houseFilter = null;
             if (resultSet.next()) {
-                flatFilter = new FlatFilter();
-                buildFlatFilterPartly(flatFilter, resultSet);
-
+                houseFilter = new HouseFilter();
+                buildHouseFilterPartly(houseFilter, resultSet);
             }
 
             conn.commit();
-            return flatFilter;
+            return houseFilter;
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -91,21 +98,20 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    public List<FlatFilter> selectAll(Connection conn) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_FLAT_FILTERS)) {
+    public List<HouseFilter> selectAll(Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_HOUSE_FILTERS)) {
             conn.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery();
 
-            List<FlatFilter> flatFilters = new ArrayList<>();
+            List<HouseFilter> houseFilters = new ArrayList<>();
             while (resultSet.next()) {
-                FlatFilter flatFilter = new FlatFilter();
-                buildFlatFilterPartly(flatFilter, resultSet);
-
-                flatFilters.add(flatFilter);
+                HouseFilter houseFilter = new HouseFilter();
+                buildHouseFilterPartly(houseFilter, resultSet);
+                houseFilters.add(houseFilter);
             }
 
             conn.commit();
-            return flatFilters;
+            return houseFilters;
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -122,35 +128,35 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    protected FlatFilter selectWORefsByListingId(long listingId, Connection conn) throws DaoException {
+    protected HouseFilter selectWORefsByListingId(long listingId, Connection conn) throws DaoException {
         try (PreparedStatement statement
-                     = conn.prepareStatement(SQL_SELECT_FLAT_FILTER_BY_LISTING_ID)) {
+                     = conn.prepareStatement(SQL_SELECT_HOUSE_FILTER_BY_LISTING_ID)) {
             statement.setLong(1, listingId);
             ResultSet rs = statement.executeQuery();
 
-            FlatFilter flatFilter = null;
+            HouseFilter houseFilter = null;
             if (rs.next()) {
-                flatFilter = new FlatFilter();
-                buildFlatFilterPartly(flatFilter, rs);
-
+                houseFilter = new HouseFilter();
+                buildHouseFilterPartly(houseFilter, rs);
             }
 
-            return flatFilter;
+            return houseFilter;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
-    public boolean update(FlatFilter record, Connection conn) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_FLAT_FILTER)) {
+    public boolean update(HouseFilter record, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_HOUSE_FILTER)) {
             conn.setAutoCommit(false);
             FilterDaoImpl filterDaoImpl = FilterDaoImpl.getInstance();
             boolean isSuperUpdated = filterDaoImpl.update(record);
             if (!isSuperUpdated)
                 return false;
 
-            statement.setInt(1, record.getFloorNumber());
-            statement.setLong(2, record.getId());
+            statement.setDouble(1, record.getLandArea());
+            statement.setBoolean(2, record.getHasOtherBuildings());
+            statement.setLong(3, record.getId());
             boolean isUpdated = statement.executeUpdate() > 0;
             if (!isUpdated) {
                 return false;
@@ -174,8 +180,9 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
+
     public boolean delete(long id, Connection conn) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_FLAT_FILTER_BY_ID)) {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_HOUSE_FILTER_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
@@ -206,7 +213,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
     }
 
     @Override
-    public long insert(FlatFilter record) throws DaoException {
+    public long insert(HouseFilter record) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
@@ -215,7 +222,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
     }
 
     @Override
-    public List<FlatFilter> selectAll() throws DaoException {
+    public List<HouseFilter> selectAll() throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
@@ -224,7 +231,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
     }
 
     @Override
-    public FlatFilter select(long id) throws DaoException {
+    public HouseFilter select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {
@@ -233,7 +240,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
     }
 
     @Override
-    public boolean update(FlatFilter record) throws DaoException {
+    public boolean update(HouseFilter record) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
@@ -242,7 +249,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
     }
 
     @Override
-    public boolean delete(FlatFilter record) throws DaoException {
+    public boolean delete(HouseFilter record) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
@@ -259,9 +266,9 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    private void buildFlatFilterPartly(FlatFilter flatFilter, ResultSet resultSet) throws DaoException, SQLException {
-        FilterDaoImpl.buildFilterPartly(flatFilter, resultSet);
-        flatFilter.setFloorNumber(resultSet.getInt("floorNumber"));
+    private void buildHouseFilterPartly(HouseFilter houseFilter, ResultSet resultSet) throws DaoException, SQLException {
+        FilterDaoImpl.buildFilterPartly(houseFilter, resultSet);
+        houseFilter.setLandArea(resultSet.getDouble("landArea"));
+        houseFilter.setHasOtherBuildings(resultSet.getBoolean("hasOtherBuildings"));
     }
-
 }

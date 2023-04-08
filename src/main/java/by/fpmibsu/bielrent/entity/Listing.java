@@ -20,7 +20,7 @@ public class Listing implements Entity {
     }
 
     public void setId(long id) {this.id = id;}
-    public void setUser(User us){user = us;}
+    public void setUser(User user){this.user = user;}
 
     public User getUser() {
         return user;
@@ -67,4 +67,16 @@ public class Listing implements Entity {
         return propertyType;
     }
 
+    @Override
+    public String toString() {
+        return "\nListing{" +
+                "id=" + id +
+                ", user id=" +user +
+                ", propertyType=" + propertyType +
+                ", address id=" + address+
+                ", filter id=" + filter +
+                ", description='" + description + '\'' +
+                ", \nphotos=" + photos +
+                "}\n";
+    }
 }

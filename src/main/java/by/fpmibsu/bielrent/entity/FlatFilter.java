@@ -44,6 +44,9 @@ public class FlatFilter extends Filter{
 
     @Override
     public String toString() {
-        return super.toString() + "floorNumber: " +floorNumber;
+        return super.toString()
+                + "\n FlatFilter{"
+                + "\nfloorNumber: " +floorNumber
+                + "}\n";
     }
 }

@@ -1,9 +1,9 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.entity.Report;
-import by.fpmibsu.bielrent.entity.User;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public interface ReportDao extends Dao<Report> {
 }

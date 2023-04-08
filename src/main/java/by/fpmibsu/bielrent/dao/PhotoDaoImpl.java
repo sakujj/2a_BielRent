@@ -1,42 +1,78 @@
 package by.fpmibsu.bielrent.dao;
 
-import by.fpmibsu.bielrent.entity.FlatFilter;
+import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.entity.Photo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhotoDaoImpl implements PhotoDao{
+public class PhotoDaoImpl implements PhotoDao {
     private final String SQL_INSERT_PHOTO
-            = "INSERT INTO Photo(path, listingId) VALUES(?, ?)";
+            = "INSERT INTO dbo.[Photo](path, listingId) VALUES(?, ?)";
     private final String SQL_SELECT_ALL_PHOTOS
-            = "SELECT * FROM Photo";
+            = "SELECT * FROM dbo.[Photo]";
     private final String SQL_SELECT_PHOTO_BY_ID
-            = "SELECT * FROM Photo WHERE id = ?";
+            = "SELECT * FROM dbo.[Photo] WHERE id = ?";
     private final String SQL_UPDATE_PHOTO
-            = "UPDATE Photo SET path= ?,listingId = ? WHERE filterId = ?";
+            = "UPDATE dbo.[Photo] SET path= ?,listingId = ? WHERE filterId = ?";
+    private final String SQL_DELETE_PHOTOS_BY_LISTING_ID
+            = "DELETE FROM dbo.[Photo] WHERE listingId = ?";
 
+    private final String SQL_DELETE_PHOTO_BY_ID = "DELETE FROM dbo.[Photo] WHERE id = ?";
 
-    private final String SQL_DELETE_PHOTO_BY_ID = "DELETE FROM Photo WHERE id = ?";
+    private final String SQL_SELECT_PHOTOS_BY_LISTING_ID
+            = "SELECT * " +
+            "FROM PHOTO " +
+            "WHERE listingId = ?";
 
-    private Connection conn;
+    private static final PhotoDaoImpl INSTANCE = new PhotoDaoImpl();
 
-    public PhotoDaoImpl(Connection c) {
-        conn = c;
+    public static PhotoDaoImpl getInstance() {
+        return INSTANCE;
     }
-    @Override
-    public long insert(Photo record) throws DaoException {
+
+    private PhotoDaoImpl() {
+
+    }
+
+    public long insert(Photo record, Connection conn) throws DaoException {
         try (PreparedStatement statement
-                     = conn.prepareStatement(SQL_INSERT_PHOTO)) {
+                     = conn.prepareStatement(SQL_INSERT_PHOTO, Statement.RETURN_GENERATED_KEYS)) {
             long id = -1;
-            statement.setString(1,record.getPath());
-            statement.setLong(2,record.getListing().getId());
+            if (record.getPath() == null || record.getPath().length() > 255) {
+                return id;
+            }
+
+            statement.setString(1, record.getPath());
+            statement.setLong(2, record.getListing().getId());
             statement.executeUpdate();
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                id = generatedKeys.getLong(1);
+            }
+
             return id;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public Photo select(long id, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_PHOTO_BY_ID)) {
+            conn.setAutoCommit(false);
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            Photo photo = null;
+            if (resultSet.next()) {
+                photo = new Photo();
+                initPhoto(conn, resultSet, photo);
+            }
+
+            conn.commit();
+            return photo;
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -53,39 +89,108 @@ public class PhotoDaoImpl implements PhotoDao{
         }
     }
 
-    @Override
-    public List<Photo> selectAll() throws DaoException {
+    public List<Photo> selectAll(Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_PHOTOS)) {
             conn.setAutoCommit(false);
-            List<Photo> photos = new ArrayList<Photo>();
             ResultSet resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
+            List<Photo> photos = new ArrayList<>();
+            while (resultSet.next()) {
                 Photo photo = new Photo();
-                photo.setPath(resultSet.getString("path"));
-                ListingDao listingDao = new ListingDaoImpl(conn);
-                photo.setListing(listingDao.select(resultSet.getLong("listingId")));
+                buildPhotoPartly(photo, resultSet);
+                photo.setListing(ListingDaoImpl.getInstance()
+                        .selectWORefs(resultSet.getLong("listingId"), conn));
+
                 photos.add(photo);
             }
+
+            conn.commit();
+            return photos;
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                throw new DaoException(ex);
+            }
+            throw new DaoException(e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
+
+    private void initPhoto(Connection conn, ResultSet resultSet, Photo photo) throws DaoException, SQLException {
+        buildPhotoPartly(photo, resultSet);
+        photo.setListing(ListingDaoImpl.getInstance()
+                .selectWORefs(resultSet.getLong("listingId"), conn));
+    }
+
+    protected List<Photo> selectWORefsByListingId(long listingId, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_PHOTOS_BY_LISTING_ID)) {
+            statement.setLong(1, listingId);
+            ResultSet resultSet = statement.executeQuery();
+
+            List<Photo> photos = new ArrayList<>();
+            while (resultSet.next()) {
+                Photo photo = new Photo();
+                buildPhotoPartly(photo, resultSet);
+                photos.add(photo);
+            }
+
             return photos;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
+
+    public boolean update(Photo record, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_PHOTO)) {
+            if (record.getPath() == null || record.getPath().length() > 255) {
+                return false;
+            }
+
+            statement.setString(1, record.getPath());
+            statement.setLong(2, record.getListing().getId());
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean delete(long id, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_DELETE_PHOTO_BY_ID)) {
+            statement.setLong(1, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public long insert(Photo record) throws DaoException {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return insert(record, conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Photo> selectAll() throws DaoException {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return selectAll(conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
     @Override
     public Photo select(long id) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_PHOTO_BY_ID)) {
-            conn.setAutoCommit(false);
-            statement.setLong(1, id);
-            Photo photo = null;
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                photo = new Photo();
-                photo.setPath(resultSet.getString("path"));
-                ListingDao listingDao= new ListingDaoImpl(conn);
-                photo.setListing(listingDao.select(resultSet.getLong("listingId")));
-            }
-            return photo;
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return select(id, conn);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -93,30 +198,36 @@ public class PhotoDaoImpl implements PhotoDao{
 
     @Override
     public boolean update(Photo record) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_PHOTO)) {
-            conn.setAutoCommit(false);
-
-            statement.setString(1,record.getPath());
-            statement.setLong(2,record.getListing().getId());
-            return statement.executeUpdate() > 0;
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return update(record, conn);
         } catch (SQLException e) {
-
             throw new DaoException(e);
         }
     }
 
     @Override
     public boolean delete(Photo record) throws DaoException {
-        return delete(record.getId());
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return delete(record.getId(), conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public boolean delete(long id) throws DaoException {
-        try(PreparedStatement statement = conn.prepareStatement(SQL_DELETE_PHOTO_BY_ID)){
-            statement.setLong(1, id);
-            return statement.executeUpdate() > 0;
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return delete(id, conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
         }
-        catch (SQLException e) {
+    }
+
+    private void buildPhotoPartly(Photo photo, ResultSet resultSet) throws DaoException {
+        try {
+            photo.setId(resultSet.getLong("id"));
+            photo.setPath(resultSet.getString("path"));
+        } catch (SQLException e) {
             throw new DaoException(e);
         }
     }

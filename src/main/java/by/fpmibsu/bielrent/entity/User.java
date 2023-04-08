@@ -89,7 +89,7 @@ public class User implements Entity{
 
     @Override
     public String toString() {
-        return "User{" +
+        return "\nUser{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
@@ -99,6 +99,6 @@ public class User implements Entity{
                 ",\n reports=" + reports +
                 ",\n notifications=" + notifications +
                 ",\n listings=" + listings +
-                '}';
+                "}\n";
     }
 }

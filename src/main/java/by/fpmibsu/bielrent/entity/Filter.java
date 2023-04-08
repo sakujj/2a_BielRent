@@ -20,8 +20,6 @@ public abstract class Filter implements Entity {
     private boolean hasFurniture;
     private boolean hasWifi;
     private boolean hasElevator;
-
-
     private Listing listing = null;
 
     public Filter() {}
@@ -175,23 +173,23 @@ public abstract class Filter implements Entity {
 
     @Override
     public String toString() {
-        return "Filter{" +
+        return "\nFilter{" +
                 "id=" + id +
-                "\n, roomCount=" + roomCount +
-                "\n, floorCount=" + floorCount +
-                "\n, bedroomCount=" + bedroomCount +
-                "\n, balconyCount=" + balconyCount +
-                "\n, squareArea=" + squareArea +
-                "\n, priceMonthly=" + priceMonthly +
-                "\n, buildYear=" + buildYear +
-                "\n, hasBathroom=" + hasBathroom +
-                "\n, rentalPeriodStart=" + rentalPeriodStart +
-                "\n, rentalPeriodEnd=" + rentalPeriodEnd +
-                "\n, hasWashingMachine=" + hasWashingMachine +
-                "\n, hasFurniture=" + hasFurniture +
-                "\n, hasWifi=" + hasWifi +
-                "\n, hasElevator=" + hasElevator +
-                "\n, listingId=" + (listing == null ? null : listing.getId()) +
-                '}';
+                ",\n roomCount=" + roomCount +
+                ",\n floorCount=" + floorCount +
+                ",\n bedroomCount=" + bedroomCount +
+                ",\n balconyCount=" + balconyCount +
+                ",\n squareArea=" + squareArea +
+                ",\n priceMonthly=" + priceMonthly +
+                ",\n buildYear=" + buildYear +
+                ",\n hasBathroom=" + hasBathroom +
+                ",\n rentalPeriodStart=" + rentalPeriodStart +
+                ",\n rentalPeriodEnd=" + rentalPeriodEnd +
+                ",\n hasWashingMachine=" + hasWashingMachine +
+                ",\n hasFurniture=" + hasFurniture +
+                ",\n hasWifi=" + hasWifi +
+                ",\n hasElevator=" + hasElevator +
+                ",\n listingId=" + listing +
+                "}\n";
     }
 }
