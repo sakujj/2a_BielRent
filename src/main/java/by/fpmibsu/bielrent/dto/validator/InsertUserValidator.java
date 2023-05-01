@@ -1,7 +1,6 @@
 package by.fpmibsu.bielrent.dto.validator;
 
-import by.fpmibsu.bielrent.dto.UserDto;
-import by.fpmibsu.bielrent.entity.PropertyType;
+import by.fpmibsu.bielrent.dto.InsertUserDto;
 import by.fpmibsu.bielrent.entity.Role;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserValidator implements Validator<UserDto>{
+public class InsertUserValidator implements Validator<InsertUserDto>{
 
     public final Error EMAIL_LENGTH_ERROR= Error.of("invalid.email", "");
     public final Error PASSWORD_LENGTH_ERROR = Error.of("invalid.password", "");
@@ -18,14 +17,14 @@ public class UserValidator implements Validator<UserDto>{
     public final Error ROLE_NOT_FOUND_ERROR= Error.of("invalid.role","");
     public final Error RATING_FORMAT_ERROR=Error.of("invalid.rating", "");
 
-    private static final UserValidator INSTANCE = new UserValidator();
-    public static UserValidator getInstance() {
+    private static final InsertUserValidator INSTANCE = new InsertUserValidator();
+    public static InsertUserValidator getInstance() {
         return INSTANCE;
     }
 
 
     @Override
-    public ValidationResult validate(UserDto obj) {
+    public ValidationResult validate(InsertUserDto obj) {
         ValidationResult vr = new ValidationResult();
 
         if (obj.getEmail().length() > 50) {

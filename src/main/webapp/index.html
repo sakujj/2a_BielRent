@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BielRent</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fontawesome.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">BielRent</a>
+          <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button> -->
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link my-bt" aria-current="page" href="#">Добавить объявление</a>
+              </li>
+              <li class="nav-item">
+                <button class="btn my-bt" data-bs-toggle="modal" data-bs-target="#modalEnter">Войти</button>
+              </li>
+            </ul>
+        </div>
+      </nav>
+      <!--Modal-->
+      <div class="modal fade" id="modalEnter" tabindex="-1" aria-bs-labelledby="modalEnterLabel" aria-bs-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 0;">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-mont" id="modalEnter">Вход</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="row mb-3">
+                            <label for="inputEmailEnter" class="text-mont col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control my-form-input" id="inputEmailEnter">
+                            </div>
+                            <label for="inputPasswordEnter" class="text-mont col-sm-2 col-form-label">Пароль</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control my-form-input" id="inputPasswordEnter">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="modal-container">
+                        <button class="my-bt bt-form" >Войти</button>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-start">
+                    <a class="form-link" href="#">Забыли пароль?</a>
+                    <a class="form-link" href="reg.html">Зарегестрироваться</a>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!--Modal-->
+      <script src="js/bootstrap.js"></script>
+</body>
+</html>

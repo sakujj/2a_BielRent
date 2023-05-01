@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Roboto&family=Tinos&display=swap');
+
+body {
+    background-color: f2f2f2;
+    color: #f2f2f2;
+    
+}
+.navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.navbar-brand {
+    font-family: "Roboto";
+    font-weight: 400;
+    font-size: 25px;
+    color: #f2f2f2;
+}
+.my-bt {
+    font-family: "Montserrat";
+    font-weight: 300;
+    color: #f2f2f2;
+    font-size: 18px;
+    padding: 10px 10px 10px 10px;
+    background: #212529;
+    transition:all .5s;
+    border-radius: 0;
+    border: none;
+    text-decoration: none;
+}
+.my-bt:hover {
+    background: #f2f2f2;
+    color:#212529;
+}
+.my-bt-close {
+    border-radius: 0;
+}
+.text-mont {
+    font-family: "Montserrat";
+    font-weight: 300;
+    color: #212529;
+}
+.modal-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.my-form-input {
+    border: 0;
+    border-bottom:1px solid #212529;
+}
+.form-control {
+    border-radius: 0;
+    border-color: #212529;
+}
+.form-control:focus {
+    box-shadow: none;
+    border-color: #212529
+}
+.bt-form {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 20px;
+}
+.form-link {
+    transition: all .2s;
+}
+.form-link:hover {
+    color:#212529;
+    text-decoration: none;
+}
+
+/* Reg-card */
+.reg-card {
+    margin: 2rem auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 425px;
+    background-color: #f2f2f2;
+    box-shadow: 0 10px 10px 0 rgba(0,0,0,0.25);
+    
+}
+.reg-card-header {
+    background-color: #212529;
+    padding: .75rem;
+}
+.reg-text {
+    text-align: center;
+    color:#f2f2f2;
+    font-weight: 400;
+}
+.reg-form {
+    padding: 2rem 1rem 1rem;
+}
+
+.input {
+	display: flex;
+	flex-direction: column-reverse;
+	position: relative;
+	padding-top: 1.5rem;
+    margin-bottom:10px;
+}
+.input-label {
+    color:#212529;
+    font-size: 18px;
+    font-weight: 400;
+    position: absolute;
+	top: 0rem;
+}
+.input-field {
+    background-color: #f2f2f2;
+    border:0;
+    border-bottom:1px solid #212529;
+}
+.input-field:focus {
+    border: none;
+    box-shadow: none;
+    background-color: #f2f2f2;
+    border-bottom:1px solid #212529;
+}
+.reg-cart-footer {
+    background-color: #f2f2f2;
+    padding: 2rem 1rem 1rem;
+    display: flex;
+
+}
+.reg-btn {
+    text-align: center;
+}

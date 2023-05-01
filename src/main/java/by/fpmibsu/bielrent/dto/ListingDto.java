@@ -11,7 +11,6 @@ public class ListingDto {
     private long addressId;
     private long filterId;
     private long userId;
-    //photo list
 
     private String propertyType;
     private String description;
