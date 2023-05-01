@@ -1,6 +1,7 @@
 package by.fpmibsu.bielrent.entity;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@SuperBuilder
 public abstract class Filter implements Entity {
     private long id;
     private long listingId;

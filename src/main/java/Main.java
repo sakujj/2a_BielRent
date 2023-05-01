@@ -4,6 +4,7 @@ import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.*;
 import by.fpmibsu.bielrent.utility.LocalDateFormatter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
@@ -45,7 +46,21 @@ public class Main {
 //        System.out.println("\n-------------------------------------------\n");
 //        System.out.println(houseFilter);
 
-     //   System.out.println(LocalDateFormatter.format("2001-12-14"));
+        FlatFilter ff = (FlatFilter) FlatFilter
+                .builder()
+                .floorNumber(1)
+                .balconyCount(2)
+                .bedroomCount(2)
+                .floorCount(2)
+                .rentalPeriodEnd(LocalDate.now())
+                .rentalPeriodStart(LocalDate.now())
+                .priceMonthly(4000)
+                .buildYear(2000)
+                .listingId(1)
+                .build();
+        Long id = FlatFilterDaoImpl.getInstance().insert(ff);
+        System.out.println(FlatFilterDaoImpl.getInstance().select(id));
+        //   System.out.println(LocalDateFormatter.format("2001-12-14"));
 //        System.out.println("-------------------------------------------");
 //        System.out.println("FlatFilter");
 //        System.out.println("-------------------------------------------");
@@ -55,14 +70,14 @@ public class Main {
 //        System.out.println("\n-------------------------------------------\n");
 //        System.out.println(flatFilter);
 
-        System.out.println("-------------------------------------------");
-        System.out.println("Report");
-        System.out.println("-------------------------------------------");
-        List<Report> reports =ReportDaoImpl.getInstance().selectAll();
-        Report report =ReportDaoImpl.getInstance().select(1);
-        System.out.println(reports);
-        System.out.println("\n-------------------------------------------\n");
-        System.out.println(report);
+//        System.out.println("-------------------------------------------");
+//        System.out.println("Report");
+//        System.out.println("-------------------------------------------");
+//        List<Report> reports =ReportDaoImpl.getInstance().selectAll();
+//        Report report =ReportDaoImpl.getInstance().select(1);
+//        System.out.println(reports);
+//        System.out.println("\n-------------------------------------------\n");
+//        System.out.println(report);
 
 
 //        System.out.println("-------------------------------------------");

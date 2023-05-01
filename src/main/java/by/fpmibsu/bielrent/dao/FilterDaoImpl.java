@@ -86,13 +86,9 @@ public class FilterDaoImpl implements FilterDao {
             statement.setInt(5, record.getBalconyCount());
             statement.setInt(6, record.getBuildYear());
             statement.setDate(7,
-                    (Date) Date.from(record.getRentalPeriodStart()
-                            .atStartOfDay(ZoneId.of("Europe/Minsk"))
-                            .toInstant()));
+                    Date.valueOf(record.getRentalPeriodStart()));
             statement.setDate(8,
-                    (Date) Date.from(record.getRentalPeriodStart()
-                            .atStartOfDay(ZoneId.of("Europe/Minsk"))
-                            .toInstant()));
+                    Date.valueOf(record.getRentalPeriodEnd()));
             statement.setLong(9, record.getPriceMonthly());
             statement.setBoolean(10, record.getHasBathroom());
             statement.setBoolean(11, record.getHasWifi());
