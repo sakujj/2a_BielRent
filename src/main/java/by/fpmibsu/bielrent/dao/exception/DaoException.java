@@ -1,4 +1,4 @@
-package by.fpmibsu.bielrent.dao;
+package by.fpmibsu.bielrent.dao.exception;
 
 public class DaoException extends Exception {
     public DaoException() {

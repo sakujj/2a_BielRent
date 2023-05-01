@@ -1,6 +1,7 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.HouseFilter;
 
 import java.sql.Connection;
@@ -17,13 +18,10 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
             = "SELECT * FROM dbo.[Filter] f JOIN dbo.[HouseFilter] hf ON f.id = hf.filterId";
     private final String SQL_SELECT_HOUSE_FILTER_BY_ID
             = "SELECT * FROM dbo.[Filter] f JOIN dbo.[HouseFilter] hf ON f.id = hf.filterId  WHERE id = ?";
+    private final String SQL_SELECT_HOUSE_FILTER_BY_LISTING_ID
+            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[HouseFilter] hf ON f.id = hf.filterId  WHERE f.listingId = ?";
     private final String SQL_UPDATE_HOUSE_FILTER
             = "UPDATE HouseFilter SET landArea= ?, hasOtherBuildings= ? WHERE filterId = ?";
-
-    private final String SQL_SELECT_HOUSE_FILTER_BY_LISTING_ID
-            = "SELECT * " +
-            "FROM HouseFilter hf JOIN Filter f ON f.id = hf.filterId " +
-            "WHERE listingId = ?";
 
     private static final HouseFilterDaoImpl INSTANCE = new HouseFilterDaoImpl();
 
@@ -77,7 +75,37 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
             HouseFilter houseFilter = null;
             if (resultSet.next()) {
                 houseFilter = new HouseFilter();
-                buildHouseFilterPartly(houseFilter, resultSet);
+                buildHouseFilter(houseFilter, resultSet);
+            }
+
+            conn.commit();
+            return houseFilter;
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                throw new DaoException(ex);
+            }
+            throw new DaoException(e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
+
+    public HouseFilter selectByListingId(long listingId, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_HOUSE_FILTER_BY_LISTING_ID)) {
+            conn.setAutoCommit(false);
+            statement.setLong(1, listingId);
+            ResultSet resultSet = statement.executeQuery();
+
+            HouseFilter houseFilter = null;
+            if (resultSet.next()) {
+                houseFilter = new HouseFilter();
+                buildHouseFilter(houseFilter, resultSet);
             }
 
             conn.commit();
@@ -106,7 +134,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
             List<HouseFilter> houseFilters = new ArrayList<>();
             while (resultSet.next()) {
                 HouseFilter houseFilter = new HouseFilter();
-                buildHouseFilterPartly(houseFilter, resultSet);
+                buildHouseFilter(houseFilter, resultSet);
                 houseFilters.add(houseFilter);
             }
 
@@ -125,24 +153,6 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
             } catch (SQLException e) {
                 throw new DaoException(e);
             }
-        }
-    }
-
-    protected HouseFilter selectWORefsByListingId(long listingId, Connection conn) throws DaoException {
-        try (PreparedStatement statement
-                     = conn.prepareStatement(SQL_SELECT_HOUSE_FILTER_BY_LISTING_ID)) {
-            statement.setLong(1, listingId);
-            ResultSet rs = statement.executeQuery();
-
-            HouseFilter houseFilter = null;
-            if (rs.next()) {
-                houseFilter = new HouseFilter();
-                buildHouseFilterPartly(houseFilter, rs);
-            }
-
-            return houseFilter;
-        } catch (SQLException e) {
-            throw new DaoException(e);
         }
     }
 
@@ -213,6 +223,15 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
     }
 
     @Override
+    public HouseFilter selectByListingId(long listingId) throws DaoException {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return selectByListingId(listingId, conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public long insert(HouseFilter record) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
@@ -266,8 +285,8 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
         }
     }
 
-    private void buildHouseFilterPartly(HouseFilter houseFilter, ResultSet resultSet) throws DaoException, SQLException {
-        FilterDaoImpl.buildFilterPartly(houseFilter, resultSet);
+    private void buildHouseFilter(HouseFilter houseFilter, ResultSet resultSet) throws DaoException, SQLException {
+        FilterDaoImpl.buildFilter(houseFilter, resultSet);
         houseFilter.setLandArea(resultSet.getDouble("landArea"));
         houseFilter.setHasOtherBuildings(resultSet.getBoolean("hasOtherBuildings"));
     }

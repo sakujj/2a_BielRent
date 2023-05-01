@@ -1,6 +1,7 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.Address;
 
 import java.sql.*;
@@ -42,6 +43,7 @@ public class AddressDaoImpl implements AddressDao {
             "street = ?, " +
             "houseNumber = ? " +
             "WHERE id = ?";
+
     private static final AddressDaoImpl INSTANCE = new AddressDaoImpl();
 
     private AddressDaoImpl() {
@@ -54,14 +56,6 @@ public class AddressDaoImpl implements AddressDao {
     public long insert(Address record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_INSERT_ADDRESS, Statement.RETURN_GENERATED_KEYS)) {
             long id = -1;
-            if (record.getCity().codePoints().count() > 30
-                    || record.getDistrictAdministrative() != null
-                    && record.getDistrictAdministrative().codePoints().count() > 20
-                    || record.getDistrictMicro() != null
-                    && record.getDistrictMicro().codePoints().count() > 20
-                    || record.getStreet().codePoints().count() > 30) {
-                return id;
-            }
 
             statement.setInt(1, record.getRegionNumber());
             statement.setString(2, record.getCity());
@@ -90,7 +84,7 @@ public class AddressDaoImpl implements AddressDao {
     }
 
     public Address select(long id, Connection conn) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ADDRESS_BY_ID, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ADDRESS_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -98,7 +92,7 @@ public class AddressDaoImpl implements AddressDao {
             Address address = null;
             if (resultSet.next()) {
                 address = new Address();
-                initAddress(conn, resultSet, address);
+                buildAddress(address, resultSet);
             }
 
             conn.commit();
@@ -127,7 +121,7 @@ public class AddressDaoImpl implements AddressDao {
             List<Address> addresses = new ArrayList<>();
             while (resultSet.next()) {
                 Address a = new Address();
-                initAddress(conn, resultSet, a);
+                buildAddress(a, resultSet);
                 addresses.add(a);
             }
 
@@ -149,40 +143,8 @@ public class AddressDaoImpl implements AddressDao {
         }
     }
 
-    private void initAddress(Connection conn, ResultSet resultSet, Address address) throws DaoException {
-        buildAddressPartly(address, resultSet);
-        address.setListings(ListingDaoImpl.getInstance().selectWORefsByAddressId(address.getId(), conn));
-    }
-
-    protected Address selectAddressWORefs(long id, Connection conn) throws DaoException {
-        try (PreparedStatement statement
-                     = conn.prepareStatement(SQL_SELECT_ADDRESS_BY_ID)) {
-            statement.setLong(1, id);
-            ResultSet rs = statement.executeQuery();
-
-            Address address = null;
-            if (rs.next()) {
-                address = new Address();
-                buildAddressPartly(address, rs);
-            }
-
-            return address;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
     public boolean update(Address record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_ADDRESS_BY_ID)) {
-            if (record.getCity().codePoints().count() > 30
-                    || record.getDistrictAdministrative() != null
-                    && record.getDistrictAdministrative().codePoints().count() > 20
-                    || record.getDistrictMicro() != null
-                    && record.getDistrictMicro().codePoints().count() > 20
-                    || record.getStreet() == null || record.getStreet().codePoints().count() > 30) {
-                return false;
-            }
-
             statement.setByte(1, (byte) record.getRegionNumber());
             statement.setString(2, record.getCity());
             if (record.getDistrictAdministrative() == null) {
@@ -200,6 +162,7 @@ public class AddressDaoImpl implements AddressDao {
             statement.setString(5, record.getStreet());
             statement.setInt(6, record.getHouseNumber());
             statement.setLong(7, record.getId());
+
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -273,7 +236,7 @@ public class AddressDaoImpl implements AddressDao {
         }
     }
 
-    private void buildAddressPartly(Address address, ResultSet resultSet) throws DaoException {
+    private void buildAddress(Address address, ResultSet resultSet) throws DaoException {
         try {
             address.setId(resultSet.getLong("id"));
             address.setCity(resultSet.getString("city"));

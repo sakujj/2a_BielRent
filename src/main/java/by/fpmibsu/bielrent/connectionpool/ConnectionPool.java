@@ -1,6 +1,6 @@
 package by.fpmibsu.bielrent.connectionpool;
 
-import by.fpmibsu.bielrent.dao.DaoException;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 
 import java.sql.Connection;
 

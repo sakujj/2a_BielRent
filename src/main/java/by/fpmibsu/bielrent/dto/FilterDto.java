@@ -1,16 +1,14 @@
-package by.fpmibsu.bielrent.entity;
+package by.fpmibsu.bielrent.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Value;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-public abstract class Filter implements Entity {
+@Value
+@Builder
+public class FilterDto {
     private long id;
     private long listingId;
 
@@ -22,11 +20,10 @@ public abstract class Filter implements Entity {
     private long priceMonthly;
     private int buildYear;
     private boolean hasBathroom;
-    private LocalDate rentalPeriodStart;
-    private LocalDate rentalPeriodEnd;
+    private String rentalPeriodStart;
+    private String rentalPeriodEnd;
     private boolean hasWashingMachine;
     private boolean hasFurniture;
     private boolean hasWifi;
     private boolean hasElevator;
-
 }

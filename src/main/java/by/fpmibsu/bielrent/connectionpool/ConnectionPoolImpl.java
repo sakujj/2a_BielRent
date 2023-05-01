@@ -1,16 +1,14 @@
 package by.fpmibsu.bielrent.connectionpool;
 
-import by.fpmibsu.bielrent.dao.DaoException;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
+import by.fpmibsu.bielrent.utility.PropertiesUtil;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+
 
 public class ConnectionPoolImpl implements ConnectionPool {
-    private static final String PATH = "src\\main\\resources\\db.properties";
     private static final String URL_KEY = "db.url";
     private static final String USER_KEY = "db.user";
     private static final String PASSWORD_KEY = "db.password";
@@ -25,7 +23,6 @@ public class ConnectionPoolImpl implements ConnectionPool {
 
     private ConnectionPoolImpl() {
     }
-
 
 
     public static ConnectionPoolImpl getInstance() {
@@ -48,21 +45,15 @@ public class ConnectionPoolImpl implements ConnectionPool {
     }
 
     private static ConnectionPoolImpl createPoolAndInitializeDataSource() {
-        Properties props = new Properties();
         HikariDataSource dataSource = new HikariDataSource();
-        try (FileReader fr = new FileReader(PATH)) {
-            props.load(fr);
-            dataSource.setJdbcUrl(props.getProperty(URL_KEY));
-            dataSource.setUsername(props.getProperty(USER_KEY));
-            dataSource.setPassword(props.getProperty(PASSWORD_KEY));
-            dataSource.setMaximumPoolSize(MAX_POOL_SIZE);
-            dataSource.setMinimumIdle(MIN_IDLE);
-            dataSource.setMaxLifetime(MAX_LIFETIME);
-            dataSource.setIdleTimeout(IDLE_TIMEOUT);
-        }  catch (IOException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
+
+        dataSource.setJdbcUrl(PropertiesUtil.get(URL_KEY));
+        dataSource.setUsername(PropertiesUtil.get(USER_KEY));
+        dataSource.setPassword(PropertiesUtil.get(PASSWORD_KEY));
+        dataSource.setMaximumPoolSize(MAX_POOL_SIZE);
+        dataSource.setMinimumIdle(MIN_IDLE);
+        dataSource.setMaxLifetime(MAX_LIFETIME);
+        dataSource.setIdleTimeout(IDLE_TIMEOUT);
 
         ConnectionPoolImpl cp = new ConnectionPoolImpl();
         cp.dataSource = dataSource;

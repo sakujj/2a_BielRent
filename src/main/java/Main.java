@@ -1,20 +1,22 @@
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.dao.*;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.*;
+import by.fpmibsu.bielrent.utility.LocalDateFormatter;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws DaoException {
-        System.out.println("-------------------------------------------");
-        System.out.println("Address");
-        System.out.println("-------------------------------------------");
-        List<Address> addresses =AddressDaoImpl.getInstance().selectAll();
-        Address address =AddressDaoImpl.getInstance().select(1);
-        AddressDaoImpl.getInstance().update(address);
-        System.out.println(addresses);
-        System.out.println("-------------------------------------------");
-        System.out.println(address);
+//        System.out.println("-------------------------------------------");
+//        System.out.println("Address");
+//        System.out.println("-------------------------------------------");
+//        List<Address> addresses =AddressDaoImpl.getInstance().selectAll();
+//        Address address =AddressDaoImpl.getInstance().select(1);
+//        AddressDaoImpl.getInstance().update(address);
+//        System.out.println(addresses);
+//        System.out.println("-------------------------------------------");
+//        System.out.println(address);
 
 //        System.out.println("-------------------------------------------");
 //        System.out.println("User");
@@ -43,6 +45,7 @@ public class Main {
 //        System.out.println("\n-------------------------------------------\n");
 //        System.out.println(houseFilter);
 
+     //   System.out.println(LocalDateFormatter.format("2001-12-14"));
 //        System.out.println("-------------------------------------------");
 //        System.out.println("FlatFilter");
 //        System.out.println("-------------------------------------------");
@@ -52,14 +55,14 @@ public class Main {
 //        System.out.println("\n-------------------------------------------\n");
 //        System.out.println(flatFilter);
 
-//        System.out.println("-------------------------------------------");
-//        System.out.println("Report");
-//        System.out.println("-------------------------------------------");
-//        List<Report> reports =ReportDaoImpl.getInstance().selectAll();
-//        Report report =ReportDaoImpl.getInstance().select(1);
-//        System.out.println(reports);
-//        System.out.println("\n-------------------------------------------\n");
-//        System.out.println(report);
+        System.out.println("-------------------------------------------");
+        System.out.println("Report");
+        System.out.println("-------------------------------------------");
+        List<Report> reports =ReportDaoImpl.getInstance().selectAll();
+        Report report =ReportDaoImpl.getInstance().select(1);
+        System.out.println(reports);
+        System.out.println("\n-------------------------------------------\n");
+        System.out.println(report);
 
 
 //        System.out.println("-------------------------------------------");

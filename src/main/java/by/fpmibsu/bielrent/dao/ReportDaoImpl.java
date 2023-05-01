@@ -1,6 +1,7 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.Report;
 
 import java.sql.*;
@@ -33,12 +34,8 @@ public class ReportDaoImpl implements ReportDao {
         try (PreparedStatement preparedStatement
                      = conn.prepareStatement(SQL_INSERT_REPORT, Statement.RETURN_GENERATED_KEYS)) {
             long id = -1;
-            if (record.getDescription() == null
-                    || record.getDescription().codePoints().count() > 1000) {
-                return id;
-            }
 
-            preparedStatement.setLong(1, record.getUser().getId());
+            preparedStatement.setLong(1, record.getUserId());
             preparedStatement.setString(2, record.getDescription());
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -61,7 +58,7 @@ public class ReportDaoImpl implements ReportDao {
             Report report = null;
             if (resultSet.next()) {
                 report = new Report();
-                initReport(conn, resultSet, report);
+                buildReport(report, resultSet);
             }
 
             conn.commit();
@@ -90,8 +87,7 @@ public class ReportDaoImpl implements ReportDao {
             List<Report> reports = new ArrayList<>();
             while (resultSet.next()) {
                 Report report = new Report();
-                initReport(conn, resultSet, report);
-
+                buildReport(report, resultSet);
                 reports.add(report);
             }
 
@@ -114,13 +110,7 @@ public class ReportDaoImpl implements ReportDao {
 
     }
 
-    private void initReport(Connection conn, ResultSet resultSet, Report report) throws DaoException, SQLException {
-        buildReportPartly(report, resultSet);
-        report.setUser(UserDaoImpl.getInstance()
-                .selectWORefs(resultSet.getLong("userId"), conn));
-    }
-
-    protected List<Report> selectWORefsByUserId(long userId, Connection conn) throws DaoException {
+    public List<Report> selectAllByUserId(long userId, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_REPORTS_BY_USER_ID)) {
             statement.setLong(1, userId);
 
@@ -128,7 +118,7 @@ public class ReportDaoImpl implements ReportDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Report report = new Report();
-                buildReportPartly(report, resultSet);
+                buildReport(report, resultSet);
                 reports.add(report);
             }
 
@@ -140,12 +130,7 @@ public class ReportDaoImpl implements ReportDao {
 
     public boolean update(Report record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_REPORT)) {
-            if (record.getDescription() == null
-                    || record.getDescription().codePoints().count() > 1000) {
-                return false;
-            }
-
-            statement.setLong(1, record.getUser().getId());
+            statement.setLong(1, record.getUserId());
             statement.setString(2, record.getDescription());
             statement.setLong(3, record.getId());
 
@@ -159,6 +144,15 @@ public class ReportDaoImpl implements ReportDao {
         try (PreparedStatement statement = conn.prepareStatement(SQL_DELETE_REPORT_BY_ID)) {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Report> selectAllByUserId(long userId) throws DaoException {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return selectAllByUserId(userId, conn);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -218,10 +212,11 @@ public class ReportDaoImpl implements ReportDao {
         }
     }
 
-    private void buildReportPartly(Report report, ResultSet resultSet) throws DaoException {
+    private void buildReport(Report report, ResultSet resultSet) throws DaoException {
         try {
             report.setId(resultSet.getLong("id"));
             report.setDescription(resultSet.getString("description"));
+            report.setUserId(resultSet.getLong("userId"));
         } catch (SQLException e) {
             throw new DaoException(e);
         }

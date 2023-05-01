@@ -1,16 +1,11 @@
-package by.fpmibsu.bielrent.entity;
+package by.fpmibsu.bielrent.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Value;
 
-import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Value
 @Builder
-public class Address implements Entity{
+public class AddressDto {
     private long id;
     private int regionNumber;
     private String city;

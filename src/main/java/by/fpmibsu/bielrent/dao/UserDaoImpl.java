@@ -1,6 +1,7 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.Role;
 import by.fpmibsu.bielrent.entity.User;
 
@@ -42,10 +43,6 @@ public class UserDaoImpl implements UserDao {
             = "DELETE " +
             "FROM [dbo].[User] " +
             "WHERE id = ?";
-    private final String SQL_SELECT_REPORTS_BY_USER_ID
-            = "SELECT * " +
-            "FROM dbo.[Report] " +
-            "WHERE userId = ?";
 
     private static final UserDaoImpl INSTANCE = new UserDaoImpl();
 
@@ -60,18 +57,10 @@ public class UserDaoImpl implements UserDao {
      * Tries to insert user and return corresponding ID.
      * Returns -1 in case of failure.
      */
-
     public long insert(User record, Connection conn) throws DaoException {
         try (PreparedStatement statement
                      = conn.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             long id = -1;
-            if (record.getEmail() == null || record.getEmail().length() > 50
-                    || record.getPassword() == null || record.getPassword().length() > 50
-                    || record.getName() == null || record.getName().codePoints().count() > 50
-                    || record.getRating() == null || record.getRating().toPlainString().length() != 3
-                    || record.getRole() == null) {
-                return id;
-            }
 
             statement.setString(1, record.getEmail());
             statement.setString(2, record.getPassword());
@@ -99,7 +88,7 @@ public class UserDaoImpl implements UserDao {
             User user = null;
             if (resultSet.next()) {
                 user = new User();
-                initUser(conn, resultSet, user);
+                buildUser(user, resultSet);
             }
 
             conn.commit();
@@ -128,7 +117,7 @@ public class UserDaoImpl implements UserDao {
             List<User> users = new ArrayList<>();
             while (resultSet.next()) {
                 User user = new User();
-                initUser(conn, resultSet, user);
+                buildUser(user, resultSet);
                 users.add(user);
             }
 
@@ -151,30 +140,6 @@ public class UserDaoImpl implements UserDao {
 
     }
 
-    private void initUser(Connection conn, ResultSet resultSet, User user) throws DaoException {
-        buildUserPartly(user, resultSet);
-        user.setListings(ListingDaoImpl.getInstance().selectWORefsByUserId(user.getId(), conn));
-        user.setReports(ReportDaoImpl.getInstance().selectWORefsByUserId(user.getId(), conn));
-    }
-
-    protected User selectWORefs(long id, Connection conn) throws DaoException {
-        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_ID)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-
-            User user = null;
-            if (resultSet.next()) {
-                user = new User();
-                buildUserPartly(user, resultSet);
-            }
-
-            return user;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-
     public User selectByEmail(String email, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_EMAIL)) {
             conn.setAutoCommit(false);
@@ -184,7 +149,7 @@ public class UserDaoImpl implements UserDao {
             User user = null;
             if (resultSet.next()) {
                 user = new User();
-                initUser(conn, resultSet, user);
+                buildUser(user, resultSet);
             }
 
             conn.commit();
@@ -207,20 +172,13 @@ public class UserDaoImpl implements UserDao {
 
     public boolean update(User record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_USER)) {
-            if (record.getEmail() == null || record.getEmail().length() > 50
-                    || record.getPassword() == null || record.getPassword().length() > 50
-                    || record.getName() == null || record.getName().codePoints().count() > 50
-                    || record.getRating() == null || record.getRating().toPlainString().length() != 3
-                    || record.getRole() == null) {
-                return false;
-            }
-
             statement.setString(1, record.getEmail());
             statement.setString(2, record.getPassword());
             statement.setString(3, record.getName());
             statement.setBigDecimal(4, record.getRating());
             statement.setString(5, record.getRole().toString());
             statement.setLong(6, record.getId());
+
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -301,7 +259,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private void buildUserPartly(User user, ResultSet resultSet) throws DaoException {
+    private void buildUser(User user, ResultSet resultSet) throws DaoException {
         try {
             user.setId(resultSet.getLong("id"));
             user.setEmail(resultSet.getString("email"));

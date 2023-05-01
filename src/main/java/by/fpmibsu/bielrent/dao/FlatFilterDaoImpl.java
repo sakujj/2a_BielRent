@@ -1,6 +1,7 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.FlatFilter;
 
 import java.sql.*;
@@ -8,18 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlatFilterDaoImpl implements FlatFilterDao {
+    private static final String SQL_SELECT_FLAT_FILTER_BY_ID
+            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[FlatFilter] ff ON f.id = ff.filterId  WHERE id = ?";
+    private static final String SQL_SELECT_FLAT_FILTER_BY_LISTING_ID
+            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[FlatFilter] ff ON f.id = ff.filterId  WHERE f.listingId = ?";
     private final String SQL_INSERT_FLAT_FILTER
             = "INSERT INTO dbo.[FlatFilter](filterId, floorNumber) VALUES(?, ?)";
     private final String SQL_SELECT_ALL_FLAT_FILTERS
             = "SELECT * FROM dbo.[Filter] f JOIN dbo.[FlatFilter] ff ON f.id = ff.filterId";
-    private final String SQL_SELECT_FLAT_FILTER_BY_ID
-            = "SELECT * FROM dbo.[Filter] f JOIN dbo.[FlatFilter] ff ON f.id = ff.filterId  WHERE id = ?";
     private final String SQL_UPDATE_FLAT_FILTER
             = "UPDATE FlatFilter SET floorNumber= ? WHERE filterId = ?";
-    private final String SQL_SELECT_FLAT_FILTER_BY_LISTING_ID
-            = "SELECT * " +
-            "FROM FlatFilter ff JOIN Filter f ON f.id = ff.filterId " +
-            "WHERE listingId = ?";
+
     private static final FlatFilterDaoImpl INSTANCE = new FlatFilterDaoImpl();
 
     private FlatFilterDaoImpl() {
@@ -69,7 +69,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
             FlatFilter flatFilter = null;
             if (resultSet.next()) {
                 flatFilter = new FlatFilter();
-                buildFlatFilterPartly(flatFilter, resultSet);
+                buildFlatFilter(flatFilter, resultSet);
 
             }
 
@@ -99,7 +99,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
             List<FlatFilter> flatFilters = new ArrayList<>();
             while (resultSet.next()) {
                 FlatFilter flatFilter = new FlatFilter();
-                buildFlatFilterPartly(flatFilter, resultSet);
+                buildFlatFilter(flatFilter, resultSet);
 
                 flatFilters.add(flatFilter);
             }
@@ -122,7 +122,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    protected FlatFilter selectWORefsByListingId(long listingId, Connection conn) throws DaoException {
+    public FlatFilter selectByListingId(long listingId, Connection conn) throws DaoException {
         try (PreparedStatement statement
                      = conn.prepareStatement(SQL_SELECT_FLAT_FILTER_BY_LISTING_ID)) {
             statement.setLong(1, listingId);
@@ -131,13 +131,23 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
             FlatFilter flatFilter = null;
             if (rs.next()) {
                 flatFilter = new FlatFilter();
-                buildFlatFilterPartly(flatFilter, rs);
-
+                buildFlatFilter(flatFilter, rs);
             }
 
             return flatFilter;
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                throw new DaoException(ex);
+            }
             throw new DaoException(e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         }
     }
 
@@ -206,6 +216,15 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
     }
 
     @Override
+    public FlatFilter selectByListingId(long listingId) throws DaoException {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return selectByListingId(listingId, conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public long insert(FlatFilter record) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
@@ -259,8 +278,8 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    private void buildFlatFilterPartly(FlatFilter flatFilter, ResultSet resultSet) throws DaoException, SQLException {
-        FilterDaoImpl.buildFilterPartly(flatFilter, resultSet);
+    private void buildFlatFilter(FlatFilter flatFilter, ResultSet resultSet) throws DaoException, SQLException {
+        FilterDaoImpl.buildFilter(flatFilter, resultSet);
         flatFilter.setFloorNumber(resultSet.getInt("floorNumber"));
     }
 

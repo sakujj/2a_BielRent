@@ -1,12 +1,12 @@
 package by.fpmibsu.bielrent.dao;
 
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.Filter;
 
 import java.sql.*;
+import java.time.ZoneId;
 import java.util.List;
-
-import static java.sql.Types.NULL;
 
 public class FilterDaoImpl implements FilterDao {
     private final String SQL_INSERT_FILTER = "INSERT INTO " +
@@ -56,15 +56,15 @@ public class FilterDaoImpl implements FilterDao {
         return INSTANCE;
     }
 
-    public static void buildFilterPartly(Filter filter, ResultSet resultSet) throws SQLException {
+    public static void buildFilter(Filter filter, ResultSet resultSet) throws SQLException {
         filter.setId(resultSet.getLong("id"));
         filter.setBedroomCount(resultSet.getInt("bedroomCount"));
         filter.setRoomCount(resultSet.getInt("roomCount"));
         filter.setBalconyCount(resultSet.getInt("balconyCount"));
         filter.setBuildYear(resultSet.getInt("buildYear"));
         filter.setFloorCount(resultSet.getInt("floorCount"));
-        filter.setRentalPeriodStart(resultSet.getDate("rentalPeriodStart"));
-        filter.setRentalPeriodEnd(resultSet.getDate("rentalPeriodEnd"));
+        filter.setRentalPeriodStart(resultSet.getDate("rentalPeriodStart").toLocalDate());
+        filter.setRentalPeriodEnd(resultSet.getDate("rentalPeriodEnd").toLocalDate());
         filter.setPriceMonthly(resultSet.getLong("priceMonthly"));
         filter.setSquareArea(resultSet.getDouble("squareArea"));
         filter.setHasBathroom(resultSet.getBoolean("hasBathroom"));
@@ -72,10 +72,7 @@ public class FilterDaoImpl implements FilterDao {
         filter.setHasWifi(resultSet.getBoolean("hasWifi"));
         filter.setHasWashingMachine(resultSet.getBoolean("hasWashingMachine"));
         filter.setHasElevator(resultSet.getBoolean("hasElevator"));
-        long listingId = resultSet.getLong("listingId");
-        if (listingId == 0) {
-            filter.setListing(null);
-        }
+        filter.setListingId(resultSet.getLong("listingId"));
     }
 
     public long insert(Filter record, Connection conn) throws DaoException {
@@ -88,15 +85,21 @@ public class FilterDaoImpl implements FilterDao {
             statement.setDouble(4, record.getSquareArea());
             statement.setInt(5, record.getBalconyCount());
             statement.setInt(6, record.getBuildYear());
-            statement.setDate(7, record.getRentalPeriodStart());
-            statement.setDate(8, record.getRentalPeriodEnd());
+            statement.setDate(7,
+                    (Date) Date.from(record.getRentalPeriodStart()
+                            .atStartOfDay(ZoneId.of("Europe/Minsk"))
+                            .toInstant()));
+            statement.setDate(8,
+                    (Date) Date.from(record.getRentalPeriodStart()
+                            .atStartOfDay(ZoneId.of("Europe/Minsk"))
+                            .toInstant()));
             statement.setLong(9, record.getPriceMonthly());
             statement.setBoolean(10, record.getHasBathroom());
             statement.setBoolean(11, record.getHasWifi());
             statement.setBoolean(12, record.getHasWashingMachine());
             statement.setBoolean(13, record.getHasFurniture());
             statement.setBoolean(14, record.getHasElevator());
-            statement.setNull(15, NULL);
+            statement.setLong(15, record.getListingId());
             statement.executeUpdate();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -117,19 +120,21 @@ public class FilterDaoImpl implements FilterDao {
             statement.setDouble(4, record.getSquareArea());
             statement.setInt(5, record.getBalconyCount());
             statement.setInt(6, record.getBuildYear());
-            statement.setDate(7, record.getRentalPeriodStart());
-            statement.setDate(8, record.getRentalPeriodEnd());
+            statement.setDate(7,
+                    (Date) Date.from(record.getRentalPeriodStart()
+                            .atStartOfDay(ZoneId.of("Europe/Minsk"))
+                            .toInstant()));
+            statement.setDate(8,
+                    (Date) Date.from(record.getRentalPeriodStart()
+                            .atStartOfDay(ZoneId.of("Europe/Minsk"))
+                            .toInstant()));
             statement.setLong(9, record.getPriceMonthly());
             statement.setBoolean(10, record.getHasBathroom());
             statement.setBoolean(11, record.getHasWifi());
             statement.setBoolean(12, record.getHasWashingMachine());
             statement.setBoolean(13, record.getHasFurniture());
             statement.setBoolean(14, record.getHasElevator());
-            if (record.getListing() == null) {
-                statement.setNull(15, NULL);
-            } else {
-                statement.setLong(15, record.getListing().getId());
-            }
+            statement.setLong(15, record.getListingId());
             statement.setLong(16, record.getId());
 
             return statement.executeUpdate() > 0;

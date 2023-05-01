@@ -1,82 +1,24 @@
 package by.fpmibsu.bielrent.entity;
 
 
+import lombok.*;
+
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
 public class Listing implements Entity {
 
     private long id;
-    private User user;
+    private long addressId;
+    private long filterId;
+    private long userId;
+    //photo list
+
     private PropertyType propertyType;
-    private Address address;
-    private Filter filter;
     private String description;
-    private List<Photo> photos;
-
-    public Listing(){}
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {this.id = id;}
-    public void setUser(User user){this.user = user;}
-
-    public User getUser() {
-        return user;
-    }
-
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Filter getFilter() {
-        return filter;
-    }
-
-    public void setFilter(Filter filter) {
-        this.filter = filter;
-    }
-
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Photo> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
-    }
-    public void setPropertyType(PropertyType pt){
-        propertyType = pt;
-    }
-    public PropertyType getPropertyType(){
-        return propertyType;
-    }
-
-    @Override
-    public String toString() {
-        return "\nListing{" +
-                "id=" + id +
-                ", user id=" +user +
-                ", propertyType=" + propertyType +
-                ", address id=" + address+
-                ", filter id=" + filter +
-                ", description='" + description + '\'' +
-                ", \nphotos=" + photos +
-                "}\n";
-    }
 }
