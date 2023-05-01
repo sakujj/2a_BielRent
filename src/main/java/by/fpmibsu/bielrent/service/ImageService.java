@@ -27,6 +27,15 @@ public class ImageService {
         }
     }
 
+    public static String getFileExt(String fileName) {
+        int index = fileName.lastIndexOf(".");
+        String fileExt = "";
+        if (index != fileName.length() - 1 || index != -1) {
+            fileExt = fileName.substring(index);
+        }
+
+        return fileExt;
+    }
     public static ImageService getInstance() {
         return INSTANCE;
     }

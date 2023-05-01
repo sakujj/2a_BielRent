@@ -65,7 +65,10 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, record.getEmail());
             statement.setString(2, record.getPassword());
             statement.setString(3, record.getName());
-            statement.setBigDecimal(4, record.getRating());
+            if (record.getRating() != null)
+                statement.setBigDecimal(4, record.getRating());
+            else
+                statement.setNull(4, Types.NULL);
             statement.setString(5, record.getRole().toString());
             statement.executeUpdate();
 

@@ -3,8 +3,11 @@ package by.fpmibsu.bielrent.connectionpool;
 import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.utility.PropertiesUtil;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.SneakyThrows;
 
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
@@ -12,6 +15,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
     private static final String URL_KEY = "db.url";
     private static final String USER_KEY = "db.user";
     private static final String PASSWORD_KEY = "db.password";
+    private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static final int MAX_POOL_SIZE = 10;
     private static final int MIN_IDLE = 10;
     private static final int MAX_LIFETIME = 1_800_000;
@@ -44,9 +48,11 @@ public class ConnectionPoolImpl implements ConnectionPool {
         }
     }
 
+    @SneakyThrows
     private static ConnectionPoolImpl createPoolAndInitializeDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
 
+        Class.forName(DRIVER);
         dataSource.setJdbcUrl(PropertiesUtil.get(URL_KEY));
         dataSource.setUsername(PropertiesUtil.get(USER_KEY));
         dataSource.setPassword(PropertiesUtil.get(PASSWORD_KEY));

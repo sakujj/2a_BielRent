@@ -8,7 +8,5 @@ import lombok.Value;
 public class InsertUserDto {
     private String email;
     private String name;
-    private String role;
-    private String rating;
     private String password;
 }

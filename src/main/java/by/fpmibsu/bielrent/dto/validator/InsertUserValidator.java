@@ -1,5 +1,8 @@
 package by.fpmibsu.bielrent.dto.validator;
 
+import by.fpmibsu.bielrent.dao.UserDao;
+import by.fpmibsu.bielrent.dao.UserDaoImpl;
+import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.dto.InsertUserDto;
 import by.fpmibsu.bielrent.entity.Role;
 import lombok.AccessLevel;
@@ -12,10 +15,11 @@ import java.util.regex.Pattern;
 public class InsertUserValidator implements Validator<InsertUserDto>{
 
     public final Error EMAIL_LENGTH_ERROR= Error.of("invalid.email", "");
+    public final Error EMAIL_ALREADY_EXISTS_ERROR= Error.of("invalid.email", "");
     public final Error PASSWORD_LENGTH_ERROR = Error.of("invalid.password", "");
     public final Error NAME_LENGTH_ERROR = Error.of("invalid.name", "");
-    public final Error ROLE_NOT_FOUND_ERROR= Error.of("invalid.role","");
-    public final Error RATING_FORMAT_ERROR=Error.of("invalid.rating", "");
+
+    private static final UserDao userDao = UserDaoImpl.getInstance();
 
     private static final InsertUserValidator INSTANCE = new InsertUserValidator();
     public static InsertUserValidator getInstance() {
@@ -38,15 +42,11 @@ public class InsertUserValidator implements Validator<InsertUserDto>{
         }
 
         try {
-            Role r = Role.valueOf(obj.getRole());
-        } catch (IllegalArgumentException e) {
-            vr.add(ROLE_NOT_FOUND_ERROR);
-        }
-
-        Pattern pattern = Pattern.compile("[0-9].[0-9]");
-        Matcher matcher = pattern.matcher(obj.getRating());
-        if (!matcher.find()) {
-            vr.add(RATING_FORMAT_ERROR);
+            if (userDao.selectByEmail(obj.getEmail()) != null) {
+                vr.add(EMAIL_ALREADY_EXISTS_ERROR);
+            }
+        } catch (DaoException e) {
+            vr.add(Error.of("dao error", ""));
         }
 
         return vr;

@@ -21,8 +21,8 @@ public class InsertUserMapperToEntity implements Mapper<User, InsertUserDto> {
         return User.builder()
                 .email(obj.getEmail())
                 .name(obj.getName())
-                .role(Role.valueOf(obj.getRole()))
-                .rating(BigDecimal.valueOf(Double.parseDouble(obj.getRating())))
+                .role(Role.CLIENT)
+                .rating(null)
                 .password(obj.getPassword())
                 .build();
     }

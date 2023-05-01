@@ -9,38 +9,38 @@
     <title>Registration</title>
 </head>
 <body style="padding: 0 2rem;">
-    <div class="container">
-        <div class="reg-card">
-            <div class="reg-card-header">
-                <h1 class="text-mont reg-text">Регистрация</h1>
-            </div>
+<div class="container">
+    <div class="reg-card">
+        <div class="reg-card-header">
+            <h1 class="text-mont reg-text">Регистрация</h1>
+        </div>
+        <form class="reg-form" action="/registration" method="post">
             <div class="reg-card-body">
-                <form action="" class="reg-form">
-                    <div class="input">
-                        <label for="inputNameReg" class="input-label text-mont">Имя</label>
-                        <input type="text" class="input-field form-control" id="inputNameReg">
-                    </div>
-                    <div class="input">
-                        <label for="inputEmailReg" class="input-label text-mont">Email</label>
-                        <input type="email" class="input-field form-control" id="inputEmailReg">
-                    </div>
-                    <div class="input">
-                        <label for="inputPasswordReg" class="input-label text-mont">Пароль</label>
-                        <input type="password" class="input-field form-control" id="inputPasswordReg">
-                    </div>
-                    <div class="input">
-                        <label for="inputRepeatPasswordReg" class="input-label text-mont">Повторите пароль</label>
-                        <input type="password" class="input-field form-control" id="inputRepeatPasswordReg">
-                    </div>
-                </form>
+                <div class="input">
+                    <label for="inputNameReg" class="input-label text-mont">Имя</label>
+                    <input type="text" class="input-field form-control" id="inputNameReg" name="name">
+                </div>
+                <div class="input">
+                    <label for="inputEmailReg" class="input-label text-mont">Email</label>
+                    <input type="email" class="input-field form-control" id="inputEmailReg" name="email">
+                </div>
+                <div class="input">
+                    <label for="inputPasswordReg" class="input-label text-mont">Пароль</label>
+                    <input type="password" class="input-field form-control" id="inputPasswordReg" name="password1">
+                </div>
+                <div class="input">
+                    <label for="inputRepeatPasswordReg" class="input-label text-mont">Повторите пароль</label>
+                    <input type="password" class="input-field form-control" id="inputRepeatPasswordReg" name="password2">
+                </div>
             </div>
             <div class="reg-cart-footer justify-content-center">
-                <button class="button reg-btn my-bt">
+                <button type="submit" class="button reg-btn my-bt">
                     Зарегестрироваться
                 </button>
             </div>
-        </div>
+        </form>
     </div>
-    <script src="js/bootstrap.js"></script>
+</div>
+<script src="js/bootstrap.js"></script>
 </body>
 </html>
