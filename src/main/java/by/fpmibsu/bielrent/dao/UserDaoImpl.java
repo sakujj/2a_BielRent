@@ -146,7 +146,7 @@ public class UserDaoImpl implements UserDao {
     public User selectByEmail(String email, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_EMAIL)) {
             conn.setAutoCommit(false);
-            statement.setString(0, email);
+            statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
 
             User user = null;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,11 +18,11 @@
             <div class="reg-card-body">
                 <div class="input">
                     <label for="inputNameReg" class="input-label text-mont">Имя</label>
-                    <input type="text" class="input-field form-control" id="inputNameReg" name="name">
+                    <input type="text" class="input-field form-control" id="inputNameReg" name="name" th:value="${param.name}">
                 </div>
                 <div class="input">
                     <label for="inputEmailReg" class="input-label text-mont">Email</label>
-                    <input type="email" class="input-field form-control" id="inputEmailReg" name="email">
+                    <input type="email" class="input-field form-control" id="inputEmailReg" name="email" th:value="${param.email}">
                 </div>
                 <div class="input">
                     <label for="inputPasswordReg" class="input-label text-mont">Пароль</label>
@@ -33,9 +33,11 @@
                     <input type="password" class="input-field form-control" id="inputRepeatPasswordReg" name="password2">
                 </div>
             </div>
+            <div class="bg-black" style="text-align: center" th:if="${error}" th:utext="'<strong> Oops</strong> ' + ${error}">
+            </div>
             <div class="reg-cart-footer justify-content-center">
                 <button type="submit" class="button reg-btn my-bt">
-                    Зарегестрироваться
+                    Зарегистрироваться
                 </button>
             </div>
         </form>

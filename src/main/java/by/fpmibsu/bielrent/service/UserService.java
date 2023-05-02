@@ -24,16 +24,18 @@ public class UserService {
         return INSTANCE;
     }
 
-    public long insert(InsertUserDto userDto) throws DaoException {
-        long id = -1;
-
-        ValidationResult vr = insertUserValidator.validate(userDto);
+    public ValidationResult validateAndInsertIfValid(InsertUserDto insertUserDto) throws DaoException {
+        ValidationResult vr = insertUserValidator.validate(insertUserDto);
         if (!vr.isValid()) {
-            return id;
+            return vr;
         }
-        User userEntity = insertUserMapperToEntity.mapFrom(userDto);
+        User userEntity = insertUserMapperToEntity.mapFrom(insertUserDto);
         userDao.insert(userEntity);
 
-        return id;
+        return vr;
+    }
+
+    public boolean doesUserWithEmailInDB(String email) throws DaoException {
+        return userDao.selectByEmail(email) != null;
     }
 }

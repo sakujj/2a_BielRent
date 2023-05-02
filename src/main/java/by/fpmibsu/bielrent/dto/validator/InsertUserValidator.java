@@ -14,10 +14,11 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InsertUserValidator implements Validator<InsertUserDto>{
 
-    public final Error EMAIL_LENGTH_ERROR= Error.of("invalid.email", "");
-    public final Error EMAIL_ALREADY_EXISTS_ERROR= Error.of("invalid.email", "");
-    public final Error PASSWORD_LENGTH_ERROR = Error.of("invalid.password", "");
-    public final Error NAME_LENGTH_ERROR = Error.of("invalid.name", "");
+    private static final Error PASSWORD_MIN_LENGTH_ERROR = Error.of("invalid.password", "Введите пароль длиной не менее 8 символов");
+    public final Error EMAIL_LENGTH_ERROR= Error.of("invalid.email", "Введите email длиной менее 50 символов");
+    public final Error EMAIL_ALREADY_EXISTS_ERROR= Error.of("invalid.email", "Email уже существует");
+    public final Error PASSWORD_LENGTH_ERROR = Error.of("invalid.password", "Введите пароль длиной менее 50 символов");
+    public final Error NAME_LENGTH_ERROR = Error.of("invalid.name", "Введите имя длиной менее 50 символов");
 
     private static final UserDao userDao = UserDaoImpl.getInstance();
 
@@ -31,6 +32,20 @@ public class InsertUserValidator implements Validator<InsertUserDto>{
     public ValidationResult validate(InsertUserDto obj) {
         ValidationResult vr = new ValidationResult();
 
+        try {
+            System.out.println(userDao.selectByEmail(obj.getEmail()));
+            if (userDao.selectByEmail(obj.getEmail()) != null) {
+                System.out.println("3q4");
+                vr.add(EMAIL_ALREADY_EXISTS_ERROR);
+            }
+        } catch (DaoException e) {
+            e.printStackTrace();
+            vr.add(Error.of("dao error", "Ошибка в дао"));
+        }
+
+        if (obj.getPassword().length() < 8) {
+            vr.add(PASSWORD_MIN_LENGTH_ERROR);
+        }
         if (obj.getEmail().length() > 50) {
             vr.add(EMAIL_LENGTH_ERROR);
         }
@@ -39,14 +54,6 @@ public class InsertUserValidator implements Validator<InsertUserDto>{
         }
         if (obj.getPassword().codePoints().count() > 50) {
             vr.add(PASSWORD_LENGTH_ERROR);
-        }
-
-        try {
-            if (userDao.selectByEmail(obj.getEmail()) != null) {
-                vr.add(EMAIL_ALREADY_EXISTS_ERROR);
-            }
-        } catch (DaoException e) {
-            vr.add(Error.of("dao error", ""));
         }
 
         return vr;
