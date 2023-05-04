@@ -19,7 +19,7 @@ public class FirstFilter extends HttpFilter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setLocale(request.getLocale());
         super.doFilter(request, response, chain);
     }
