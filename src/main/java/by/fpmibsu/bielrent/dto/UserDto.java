@@ -5,10 +5,10 @@ import lombok.Value;
 
 @Value
 @Builder
-public class UserDto {
-    private long id;
-    private String email;
-    private String name;
-    private String role;
-    private String rating;
+public final class UserDto {
+    private final long id;
+    private final String email;
+    private final String name;
+    private final String role;
+    private final String rating;
 }
