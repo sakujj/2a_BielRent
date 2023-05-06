@@ -278,7 +278,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    private void buildFlatFilter(FlatFilter flatFilter, ResultSet resultSet) throws DaoException, SQLException {
+     void buildFlatFilter(FlatFilter flatFilter, ResultSet resultSet) throws DaoException, SQLException {
         FilterDaoImpl.buildFilter(flatFilter, resultSet);
         flatFilter.setFloorNumber(resultSet.getInt("floorNumber"));
     }

@@ -13,10 +13,10 @@ import java.util.List;
 @Builder
 public class Listing implements Entity {
 
-    private long id;
-    private long addressId;
-    private long filterId;
-    private long userId;
+    private Long id;
+    private Long addressId;
+    private Long filterId;
+    private Long userId;
     //photo list
 
     private PropertyType propertyType;

@@ -14,6 +14,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
+      <project.build.directory>out</project.build.directory>
+      <project.build.outputDirectory>out</project.build.outputDirectory>
     <junit.version>5.9.1</junit.version>
   </properties>
 
@@ -70,6 +72,15 @@
                 <configuration>
                     <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
                     <warName>myWar</warName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <directory>out</directory>
+
                 </configuration>
             </plugin>
         </plugins>

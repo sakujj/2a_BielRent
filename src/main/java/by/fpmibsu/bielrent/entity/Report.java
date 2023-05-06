@@ -9,8 +9,8 @@ import lombok.*;
 @ToString
 @Builder
 public class Report implements Entity{
-    private long id;
-    private long userId;
+    private Long id;
+    private Long userId;
 
     private String description;
 }

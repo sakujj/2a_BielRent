@@ -9,6 +9,14 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws DaoException {
+        ListingQuery query = new ListingQuery();
+        query.setFilter(FlatFilter.builder().rentalPeriodStart(LocalDateFormatter.format("2001-12-15")).build());
+       // query.setPriceTo(Long.valueOf(10000));
+        var l = ListingDaoImpl.getInstance().selectTopNByListingData(query, 10, 1);
+        for (var x : l) {
+            System.out.println(x);
+            System.out.println("_____________________");
+        }
 //        System.out.println("-------------------------------------------");
 //        System.out.println("Address");
 //        System.out.println("-------------------------------------------");
@@ -46,20 +54,7 @@ public class Main {
 //        System.out.println("\n-------------------------------------------\n");
 //        System.out.println(houseFilter);
 
-        FlatFilter ff = (FlatFilter) FlatFilter
-                .builder()
-                .floorNumber(1)
-                .balconyCount(2)
-                .bedroomCount(2)
-                .floorCount(2)
-                .rentalPeriodEnd(LocalDate.now())
-                .rentalPeriodStart(LocalDate.now())
-                .priceMonthly(4000)
-                .buildYear(2000)
-                .listingId(1)
-                .build();
-        Long id = FlatFilterDaoImpl.getInstance().insert(ff);
-        System.out.println(FlatFilterDaoImpl.getInstance().select(id));
+
         //   System.out.println(LocalDateFormatter.format("2001-12-14"));
 //        System.out.println("-------------------------------------------");
 //        System.out.println("FlatFilter");

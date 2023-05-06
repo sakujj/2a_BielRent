@@ -3,7 +3,7 @@ package by.fpmibsu.bielrent.servlet;
 import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.dto.InsertUserDto;
 import by.fpmibsu.bielrent.dto.validator.InsertUserValidator;
-import by.fpmibsu.bielrent.dto.validator.ValidationResult;
+import by.fpmibsu.bielrent.dto.validator.ValidationException;
 import by.fpmibsu.bielrent.service.UserService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -58,18 +58,16 @@ public class RegistrationServlet extends HttpServlet {
 
         try {
             if (pass1.equals(pass2)) {
-                ValidationResult vr = userService.validateAndInsertIfValid(userDto);
-
-                if (!vr.getErrors().isEmpty()) {
-                    error = vr.getErrors().get(0).getMessage();
-                }
-            } else if (userService.doesUserWithEmailInDB(userDto.getEmail())) {
+                userService.validateAndInsertIfValid(userDto);
+            } else if (userService.isUserWithEmailInDB(userDto.getEmail())) {
                 error = InsertUserValidator.getInstance().EMAIL_ALREADY_EXISTS_ERROR.getMessage();
             } else {
                 error = "Пароли не совпадают";
             }
         } catch (DaoException e) {
             e.printStackTrace();
+        } catch (ValidationException e) {
+            error = e.getErrors().get(0).getMessage();
         }
 
         if (error != null) {

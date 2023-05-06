@@ -9,8 +9,8 @@ import lombok.*;
 @ToString
 @Builder
 public class Photo implements Entity{
-    private long id;
-    private long listingId;
+    private Long id;
+    private Long listingId;
 
     private String path;
 }

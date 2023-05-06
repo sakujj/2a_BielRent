@@ -11,11 +11,11 @@ import java.util.List;
 @ToString
 @Builder
 public class Address implements Entity{
-    private long id;
-    private int regionNumber;
+    private Long id;
+    private Integer regionNumber;
     private String city;
     private String districtAdministrative = null;
     private String districtMicro = null;
     private String street;
-    private int houseNumber;
+    private Integer houseNumber;
 }

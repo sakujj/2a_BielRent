@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 @SuperBuilder
 public class FlatFilter extends Filter{
-    private int floorNumber;
+    private Integer floorNumber;
 }

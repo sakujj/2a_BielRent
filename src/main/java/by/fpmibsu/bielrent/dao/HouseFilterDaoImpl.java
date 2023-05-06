@@ -285,7 +285,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
         }
     }
 
-    private void buildHouseFilter(HouseFilter houseFilter, ResultSet resultSet) throws DaoException, SQLException {
+     void buildHouseFilter(HouseFilter houseFilter, ResultSet resultSet) throws DaoException, SQLException {
         FilterDaoImpl.buildFilter(houseFilter, resultSet);
         houseFilter.setLandArea(resultSet.getDouble("landArea"));
         houseFilter.setHasOtherBuildings(resultSet.getBoolean("hasOtherBuildings"));

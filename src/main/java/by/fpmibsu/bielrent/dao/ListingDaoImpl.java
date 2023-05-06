@@ -225,6 +225,212 @@ public class ListingDaoImpl implements ListingDao {
         }
     }
 
+    /**
+     * Selects ORM listings from database, that meet specified query
+     * @param query data to filter entities (ids other than Listing.id doesn't mean a thing)
+     * @param topN how many entities to select
+     * @param idToStartFrom Listing.id to start selection from
+     * @return List of ORM listings that meet specified query
+     * @throws DaoException
+     */
+    public List<ListingORM> selectTopNByListingData(ListingQuery query, long topN, long idToStartFrom) throws DaoException {
+        Address addressQ = query.getAddress();
+        Filter filterQ = query.getFilter();
+
+        String sqlQuery = "SELECT TOP (?) * FROM " +
+                " Listing l " +
+                " LEFT JOIN Filter f ON f.listingId = l.id " +
+                " LEFT JOIN FlatFilter ff ON ff.filterId = f.id " +
+                " LEFT JOIN HouseFilter hf ON hf.filterId = f.id " +
+                " LEFT JOIN Address a ON l.addressId = a.id " +
+                " LEFT JOIN [dbo].[User] u ON l.userId = u.id " +
+                " WHERE l.id >= ? ";
+        List<Object> params = new ArrayList<>();
+
+        params.add(topN);
+        params.add(idToStartFrom);
+
+        if (query.getPropertyType() == PropertyType.FLAT) {
+            sqlQuery += " AND propertyTypeName <> ? ";
+            params.add(PropertyType.HOUSE.toString());
+        } else if (query.getPropertyType() == PropertyType.HOUSE) {
+            sqlQuery += " AND propertyTypeName <> ? ";
+            params.add(PropertyType.FLAT.toString());
+        }
+
+        if (addressQ != null) {
+            if (addressQ.getStreet() != null) {
+                sqlQuery += " AND street = ? ";
+                params.add(addressQ.getStreet());
+            }
+            if (addressQ.getCity() != null) {
+                sqlQuery += " AND city = ? ";
+                params.add(addressQ.getCity());
+            }
+            if (addressQ.getDistrictAdministrative() != null) {
+                sqlQuery += " AND districtAdministrative = ? ";
+                params.add(addressQ.getDistrictAdministrative());
+            }
+            if (addressQ.getDistrictMicro() != null) {
+                sqlQuery += " AND districtMicro = ? ";
+                params.add(addressQ.getDistrictMicro());
+            }
+            if (addressQ.getRegionNumber() != null) {
+                sqlQuery += " AND regionNumber = ? ";
+                params.add(addressQ.getRegionNumber());
+            }
+            if (addressQ.getHouseNumber() != null) {
+                sqlQuery += " AND houseNumber = ? ";
+                params.add(addressQ.getHouseNumber());
+            }
+        }
+
+        if (filterQ != null) {
+            if (filterQ.getBedroomCount() != null) {
+                sqlQuery += " AND bedroomCount = ? ";
+                params.add(filterQ.getBedroomCount());
+            }
+            if (filterQ.getBalconyCount() != null) {
+                sqlQuery += " AND balconyCount = ? ";
+                params.add(filterQ.getBalconyCount());
+            }
+            if (filterQ.getRoomCount() != null) {
+                sqlQuery += " AND roomCount = ? ";
+                params.add(filterQ.getRoomCount());
+            }
+            if (filterQ.getFloorCount() != null) {
+                sqlQuery += " AND floorCount = ? ";
+                params.add(filterQ.getFloorCount());
+            }
+
+            if (filterQ.getHasBathroom() != null) {
+                sqlQuery += " AND hasBathroom = ? ";
+                params.add(filterQ.getHasBathroom());
+            }
+            if (filterQ.getHasFurniture() != null) {
+                sqlQuery += " AND hasFurniture = ? ";
+                params.add(filterQ.getHasFurniture());
+            }
+            if (filterQ.getHasWifi() != null) {
+                sqlQuery += " AND hasWifi = ? ";
+                params.add(filterQ.getHasWifi());
+            }
+            if (filterQ.getHasElevator() != null) {
+                sqlQuery += " AND hasElevator = ? ";
+                params.add(filterQ.getHasElevator());
+            }
+            if (filterQ.getHasWashingMachine() != null) {
+                sqlQuery += " AND hasWashingMachine = ? ";
+                params.add(filterQ.getHasWashingMachine());
+            }
+
+            if (filterQ.getBuildYear() != null) {
+                sqlQuery += " AND buildYear = ? ";
+                params.add(filterQ.getBuildYear());
+            }
+            if (filterQ.getSquareArea() != null) {
+                sqlQuery += " AND squareArea = ? ";
+                params.add(filterQ.getSquareArea());
+            }
+
+            if (filterQ.getRentalPeriodStart() != null) {
+                sqlQuery += " AND rentalPeriodStart >= ? ";
+                params.add(Date.valueOf(filterQ.getRentalPeriodStart()));
+            }
+            if (filterQ.getRentalPeriodEnd() != null) {
+                sqlQuery += " AND rentalPeriodEnd <= ? ";
+                params.add(Date.valueOf(filterQ.getRentalPeriodEnd()));
+            }
+
+        }
+
+        if (query.getPriceFrom() != null) {
+            sqlQuery += " AND priceMonthly >= ? ";
+            params.add(query.getPriceFrom());
+        }
+        if (query.getPriceTo() != null) {
+            sqlQuery += " AND priceMonthly <= ? ";
+            params.add(query.getPriceTo());
+        }
+        System.out.println(params);
+
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            try {
+                PreparedStatement statement = conn.prepareStatement(sqlQuery);
+
+
+                conn.setAutoCommit(false);
+                for (int i = 0; i < params.size(); i++) {
+                    statement.setObject(i + 1, params.get(i));
+                    System.out.println(params.get(i));
+                }
+
+                List<ListingORM> list = new ArrayList<>();
+
+                AddressDaoImpl addressDao = AddressDaoImpl.getInstance();
+                UserDaoImpl userDao = UserDaoImpl.getInstance();
+                FlatFilterDaoImpl flatFilterDao = FlatFilterDaoImpl.getInstance();
+                HouseFilterDaoImpl houseFilterDao = HouseFilterDaoImpl.getInstance();
+                PhotoDaoImpl photoDao = PhotoDaoImpl.getInstance();
+
+                System.out.println(sqlQuery);
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    ListingORM listingORM = new ListingORM();
+
+                    Address address = new Address();
+                    addressDao.buildAddress(address, rs);
+                    listingORM.setAddress(address);
+
+                    User user = new User();
+                    userDao.buildUser(user, rs);
+                    listingORM.setUser(user);
+
+
+                    listingORM.setPropertyType(PropertyType.valueOf(rs.getString("propertyTypeName")));
+
+                    if (listingORM.getPropertyType() == PropertyType.FLAT) {
+                        FlatFilter flatFilter = new FlatFilter();
+                        flatFilterDao.buildFlatFilter(flatFilter, rs);
+                        listingORM.setFilter(flatFilter);
+                    } else if (listingORM.getPropertyType() == PropertyType.HOUSE) {
+                        HouseFilter houseFilter = new HouseFilter();
+                        houseFilterDao.buildHouseFilter(houseFilter, rs);
+                        listingORM.setFilter(houseFilter);
+                    }
+
+                    listingORM.setId(rs.getLong("id"));
+                    listingORM.setDescription(rs.getString("description"));
+
+                    List<Photo> photos = photoDao.selectAllByListingId(listingORM.getId());
+                    listingORM.setPhotos(photos);
+
+                    list.add(listingORM);
+                }
+
+                conn.commit();
+                return list;
+
+            } catch (SQLException e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new DaoException(ex);
+                }
+                throw new DaoException(e);
+            } finally {
+                try {
+                    conn.setAutoCommit(true);
+                } catch (SQLException e) {
+                    throw new DaoException(e);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+    }
+
     @Override
     public List<Listing> selectAllByUserId(long userId) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {

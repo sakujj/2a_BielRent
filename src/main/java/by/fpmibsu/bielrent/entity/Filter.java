@@ -13,22 +13,22 @@ import java.time.LocalDateTime;
 @ToString
 @SuperBuilder
 public abstract class Filter implements Entity {
-    private long id;
-    private long listingId;
+    private Long id;
+    private Long listingId;
 
-    private int roomCount;
-    private int floorCount;
-    private int bedroomCount;
-    private int balconyCount;
-    private double squareArea;
-    private long priceMonthly;
-    private int buildYear;
-    private boolean hasBathroom;
+    private Integer roomCount;
+    private Integer floorCount;
+    private Integer bedroomCount;
+    private Integer balconyCount;
+    private Double squareArea;
+    private Long priceMonthly;
+    private Integer buildYear;
+    private Boolean hasBathroom;
     private LocalDate rentalPeriodStart;
     private LocalDate rentalPeriodEnd;
-    private boolean hasWashingMachine;
-    private boolean hasFurniture;
-    private boolean hasWifi;
-    private boolean hasElevator;
+    private Boolean hasWashingMachine;
+    private Boolean hasFurniture;
+    private Boolean hasWifi;
+    private Boolean hasElevator;
 
 }

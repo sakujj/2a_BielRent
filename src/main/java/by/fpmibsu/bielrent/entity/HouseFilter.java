@@ -10,6 +10,6 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 @SuperBuilder
 public class HouseFilter extends Filter{
-    private double landArea;
-    private boolean hasOtherBuildings;
+    private Double landArea;
+    private Boolean hasOtherBuildings;
 }

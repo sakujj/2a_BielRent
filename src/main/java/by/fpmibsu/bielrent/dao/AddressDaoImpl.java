@@ -145,7 +145,7 @@ public class AddressDaoImpl implements AddressDao {
 
     public boolean update(Address record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_ADDRESS_BY_ID)) {
-            statement.setByte(1, (byte) record.getRegionNumber());
+            statement.setByte(1, record.getRegionNumber().byteValue());
             statement.setString(2, record.getCity());
             if (record.getDistrictAdministrative() == null) {
                 statement.setNull(3, NULL);
@@ -236,7 +236,7 @@ public class AddressDaoImpl implements AddressDao {
         }
     }
 
-    private void buildAddress(Address address, ResultSet resultSet) throws DaoException {
+    void buildAddress(Address address, ResultSet resultSet) throws DaoException {
         try {
             address.setId(resultSet.getLong("id"));
             address.setCity(resultSet.getString("city"));
