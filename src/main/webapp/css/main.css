@@ -128,3 +128,29 @@ body {
 .reg-btn {
     text-align: center;
 }
+/* in-card */
+.in-btn{
+    text-align: center;
+    font-size: 20px;
+    padding: 10px 20px;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.reg-cart-links {
+    padding: .5rem 1rem 1rem;
+}
+.input-checkbox {
+    align-items: center;
+}
+.check-input {
+    width: 1em;
+    height: 1em;
+    margin-top: 0.25em;
+    vertical-align: top;
+    border-color: #212529;
+}
+/* in-card */
