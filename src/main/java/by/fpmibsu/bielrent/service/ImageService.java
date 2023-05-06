@@ -3,12 +3,14 @@ package by.fpmibsu.bielrent.service;
 import by.fpmibsu.bielrent.utility.PropertiesUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImageService {
@@ -35,6 +37,11 @@ public class ImageService {
         }
 
         return fileExt;
+    }
+    @SneakyThrows
+    public Optional<InputStream> get(String path){
+        return Files.exists(Path.of(BASE_PATH, path)) ? Optional.of(Files.newInputStream(Path.of(BASE_PATH, path)))
+                : Optional.empty();
     }
     public static ImageService getInstance() {
         return INSTANCE;

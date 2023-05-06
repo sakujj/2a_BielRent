@@ -18,6 +18,7 @@ public class PhotoMapperToDto implements Mapper<PhotoDto, Photo> {
         PhotoDto photoDto = PhotoDto.builder()
                 .id(obj.getId())
                 .listingId(obj.getId())
+
                 .build();
         //TODO TODO
         return photoDto;
