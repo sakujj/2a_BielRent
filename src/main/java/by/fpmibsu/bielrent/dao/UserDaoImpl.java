@@ -4,10 +4,12 @@ import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.Role;
 import by.fpmibsu.bielrent.entity.User;
+import lombok.SneakyThrows;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
     private final String SQL_INSERT_USER
@@ -43,6 +45,10 @@ public class UserDaoImpl implements UserDao {
             = "DELETE " +
             "FROM [dbo].[User] " +
             "WHERE id = ?";
+    private final String SQL_SELECT_USER_BY_EMAIL_AND_PASSWORD
+            = "SELECT *" +
+            "FROM [dbo].[User] " +
+            "WHERE email = ? AND password = ?";
 
     private static final UserDaoImpl INSTANCE = new UserDaoImpl();
 
@@ -172,6 +178,36 @@ public class UserDaoImpl implements UserDao {
             }
         }
     }
+    public Optional<User> selectByEmailAndPassword(String email,String password, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_EMAIL_AND_PASSWORD)) {
+            conn.setAutoCommit(false);
+            statement.setString(1, email);
+            statement.setString(2,password);
+            ResultSet resultSet = statement.executeQuery();
+
+            User user = null;
+            if (resultSet.next()) {
+                user = new User();
+                buildUser(user, resultSet);
+            }
+
+            conn.commit();
+            return Optional.ofNullable(user);
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                throw new DaoException(ex);
+            }
+            throw new DaoException(e);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
 
     public boolean update(User record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_USER)) {
@@ -259,6 +295,13 @@ public class UserDaoImpl implements UserDao {
             return selectByEmail(email, conn);
         } catch (SQLException e) {
             throw new DaoException(e);
+        }
+    }
+    @SneakyThrows
+    @Override
+    public Optional<User> selectByEmailAndPassword(String email, String password) {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return selectByEmailAndPassword(email, password, conn);
         }
     }
 
