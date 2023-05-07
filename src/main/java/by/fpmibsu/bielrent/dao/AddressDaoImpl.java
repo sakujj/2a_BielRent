@@ -7,6 +7,7 @@ import by.fpmibsu.bielrent.entity.Address;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.sql.Types.NULL;
 
@@ -83,7 +84,7 @@ public class AddressDaoImpl implements AddressDao {
         }
     }
 
-    public Address select(long id, Connection conn) throws DaoException {
+    public Optional<Address> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ADDRESS_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
@@ -96,7 +97,7 @@ public class AddressDaoImpl implements AddressDao {
             }
 
             conn.commit();
-            return address;
+            return Optional.ofNullable(address);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -201,7 +202,7 @@ public class AddressDaoImpl implements AddressDao {
     }
 
     @Override
-    public Address select(long id) throws DaoException {
+    public Optional<Address> select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {

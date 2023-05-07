@@ -7,6 +7,7 @@ import by.fpmibsu.bielrent.entity.FlatFilter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class FlatFilterDaoImpl implements FlatFilterDao {
     private static final String SQL_SELECT_FLAT_FILTER_BY_ID
@@ -60,7 +61,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
         }
     }
 
-    public FlatFilter select(long id, Connection conn) throws DaoException {
+    public Optional<FlatFilter> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_FLAT_FILTER_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
@@ -74,7 +75,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
             }
 
             conn.commit();
-            return flatFilter;
+            return Optional.ofNullable(flatFilter);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -243,7 +244,7 @@ public class FlatFilterDaoImpl implements FlatFilterDao {
     }
 
     @Override
-    public FlatFilter select(long id) throws DaoException {
+    public Optional<FlatFilter> select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {

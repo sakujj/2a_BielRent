@@ -7,6 +7,7 @@ import by.fpmibsu.bielrent.entity.Filter;
 import java.sql.*;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 public class FilterDaoImpl implements FilterDao {
     private final String SQL_INSERT_FILTER = "INSERT INTO " +
@@ -163,7 +164,7 @@ public class FilterDaoImpl implements FilterDao {
     }
 
     @Override
-    public Filter select(long id) throws DaoException {
+    public Optional<Filter> select(long id) throws DaoException {
         throw new UnsupportedOperationException("select(long) is not supported in FilterDaoAbstract");
     }
 

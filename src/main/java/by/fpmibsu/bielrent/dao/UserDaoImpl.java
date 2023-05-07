@@ -254,9 +254,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User select(long id) throws DaoException {
+    public Optional<User> select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
-            return select(id, conn);
+            return Optional.ofNullable(select(id, conn));
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -290,9 +290,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User selectByEmail(String email) throws DaoException {
+    public Optional<User> selectByEmail(String email) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
-            return selectByEmail(email, conn);
+            return Optional.ofNullable(selectByEmail(email, conn));
         } catch (SQLException e) {
             throw new DaoException(e);
         }

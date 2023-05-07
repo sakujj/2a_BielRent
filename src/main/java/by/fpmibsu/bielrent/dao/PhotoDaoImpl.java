@@ -7,6 +7,7 @@ import by.fpmibsu.bielrent.entity.Photo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PhotoDaoImpl implements PhotoDao {
     private final String SQL_INSERT_PHOTO
@@ -54,7 +55,7 @@ public class PhotoDaoImpl implements PhotoDao {
         }
     }
 
-    public Photo select(long id, Connection conn) throws DaoException {
+    public Optional<Photo> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_PHOTO_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
@@ -67,7 +68,7 @@ public class PhotoDaoImpl implements PhotoDao {
             }
 
             conn.commit();
-            return photo;
+            return Optional.ofNullable(photo);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -194,7 +195,7 @@ public class PhotoDaoImpl implements PhotoDao {
     }
 
     @Override
-    public Photo select(long id) throws DaoException {
+    public Optional<Photo> select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {

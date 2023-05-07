@@ -7,6 +7,7 @@ import by.fpmibsu.bielrent.entity.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ListingDaoImpl implements ListingDao {
     String SQL_INSERT_LISTING
@@ -74,7 +75,7 @@ public class ListingDaoImpl implements ListingDao {
         }
     }
 
-    public Listing select(long id, Connection conn) throws DaoException {
+    public Optional<Listing> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_LISTING_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
@@ -88,7 +89,7 @@ public class ListingDaoImpl implements ListingDao {
             }
 
             conn.commit();
-            return listing;
+            return Optional.ofNullable(listing);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -107,7 +108,7 @@ public class ListingDaoImpl implements ListingDao {
 
     private void setFilterIdForListing(long id, Connection conn, Listing listing) throws DaoException {
         if (listing.getPropertyType() == PropertyType.HOUSE) {
-            listing.setFilterId(HouseFilterDaoImpl.getInstance().selectByListingId(id, conn).getId());
+            listing.setFilterId(HouseFilterDaoImpl.getInstance().selectByListingId(id, conn).get().getId());
         } else if (listing.getPropertyType() == PropertyType.FLAT) {
             listing.setFilterId(FlatFilterDaoImpl.getInstance().selectByListingId(id, conn).getId());
         }
@@ -468,7 +469,7 @@ public class ListingDaoImpl implements ListingDao {
     }
 
     @Override
-    public Listing select(long id) throws DaoException {
+    public Optional<Listing> select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {

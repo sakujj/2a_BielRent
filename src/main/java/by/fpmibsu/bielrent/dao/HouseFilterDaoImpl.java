@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class HouseFilterDaoImpl implements HouseFilterDao {
     private final String SQL_INSERT_HOUSE_FILTER
@@ -66,7 +67,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
         }
     }
 
-    public HouseFilter select(long id, Connection conn) throws DaoException {
+    public Optional<HouseFilter> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_HOUSE_FILTER_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
@@ -79,7 +80,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
             }
 
             conn.commit();
-            return houseFilter;
+            return Optional.ofNullable(houseFilter);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -96,7 +97,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
         }
     }
 
-    public HouseFilter selectByListingId(long listingId, Connection conn) throws DaoException {
+    public Optional<HouseFilter> selectByListingId(long listingId, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_HOUSE_FILTER_BY_LISTING_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, listingId);
@@ -109,7 +110,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
             }
 
             conn.commit();
-            return houseFilter;
+            return Optional.ofNullable(houseFilter);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -223,7 +224,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
     }
 
     @Override
-    public HouseFilter selectByListingId(long listingId) throws DaoException {
+    public Optional<HouseFilter> selectByListingId(long listingId) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectByListingId(listingId, conn);
         } catch (SQLException e) {
@@ -250,7 +251,7 @@ public class HouseFilterDaoImpl implements HouseFilterDao {
     }
 
     @Override
-    public HouseFilter select(long id) throws DaoException {
+    public Optional<HouseFilter> select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {

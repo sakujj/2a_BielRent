@@ -7,6 +7,7 @@ import by.fpmibsu.bielrent.entity.Report;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ReportDaoImpl implements ReportDao {
     private final String SQL_INSERT_REPORT = "INSERT INTO dbo.[Report](userId, description) VALUES(?, ?)";
@@ -49,7 +50,7 @@ public class ReportDaoImpl implements ReportDao {
         }
     }
 
-    public Report select(long id, Connection conn) throws DaoException {
+    public Optional<Report> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_REPORT_BY_ID)) {
             conn.setAutoCommit(false);
             statement.setLong(1, id);
@@ -62,7 +63,7 @@ public class ReportDaoImpl implements ReportDao {
             }
 
             conn.commit();
-            return report;
+            return Optional.ofNullable(report);
         } catch (SQLException e) {
             try {
                 conn.rollback();
@@ -177,7 +178,7 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public Report select(long id) throws DaoException {
+    public Optional<Report> select(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {

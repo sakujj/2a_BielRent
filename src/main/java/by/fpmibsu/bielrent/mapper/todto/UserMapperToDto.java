@@ -9,22 +9,20 @@ import lombok.NoArgsConstructor;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserMapperToDto implements Mapper<Optional<UserDto>, Optional<User>> {
+public class UserMapperToDto implements Mapper<UserDto, User> {
     private static final UserMapperToDto INSTANCE = new UserMapperToDto();
     public static UserMapperToDto getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public Optional<UserDto> mapFrom(Optional<User> obj) {
-        if(obj.isEmpty()){
-            return Optional.empty();
-        }
-        return Optional.ofNullable(UserDto.builder()
-                .id(obj.get().getId())
-                .email(obj.get().getEmail())
-                .role(obj.get().getRole().toString())
-                .rating(obj.get().getRating() == null ? null: obj.get().getRating().toString())
-                .build());
+    public UserDto mapFrom(User obj) {
+
+        return UserDto.builder()
+                .id(obj.getId())
+                .email(obj.getEmail())
+                .role(obj.getRole().toString())
+                .rating(obj.getRating() == null ? null: obj.getRating().toString())
+                .build();
     }
 }

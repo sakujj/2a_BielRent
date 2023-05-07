@@ -57,7 +57,10 @@ public class UserService {
         return userDao.selectByEmail(email) != null;
     }
     public Optional<UserDto> login(String email, String password) {
-
-        return userMapperToDto.mapFrom(userDao.selectByEmailAndPassword(email, password));
+        var sel = userDao.selectByEmailAndPassword(email, password);
+        if(sel.isEmpty()){
+            return Optional.ofNullable(null);
+        }
+        return Optional.ofNullable(userMapperToDto.mapFrom(userDao.selectByEmailAndPassword(email, password).get()));
     }
 }

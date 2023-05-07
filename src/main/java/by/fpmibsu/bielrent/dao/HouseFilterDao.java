@@ -4,6 +4,8 @@ import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.FlatFilter;
 import by.fpmibsu.bielrent.entity.HouseFilter;
 
+import java.util.Optional;
+
 public interface HouseFilterDao extends Dao<HouseFilter> {
-    HouseFilter selectByListingId(long listingId) throws DaoException;
+    Optional<HouseFilter> selectByListingId(long listingId) throws DaoException;
 }
