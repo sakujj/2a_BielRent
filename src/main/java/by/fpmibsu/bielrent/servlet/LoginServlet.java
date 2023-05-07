@@ -6,7 +6,13 @@ import by.fpmibsu.bielrent.service.UserService;
 import by.fpmibsu.bielrent.utility.PropertiesUtil;
 import lombok.SneakyThrows;
 import org.apache.catalina.manager.JspHelper;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.WebApplicationTemplateResolver;
+import org.thymeleaf.web.servlet.JavaxServletWebApplication;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +21,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    private JavaxServletWebApplication webApplication;
+    private TemplateEngine templateEngine;
     UserService userService = UserService.getInstance();
+    /*@Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        webApplication = JavaxServletWebApplication.buildApplication(this.getServletContext());
+
+        WebApplicationTemplateResolver templateResolver
+                = new WebApplicationTemplateResolver(webApplication);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setPrefix("/");
+        templateResolver.setSuffix("");
+        templateResolver.setCacheTTLMs(Long.valueOf(3600000L));
+
+        templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+    }*/
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/enter.html").forward(req,resp);
@@ -36,7 +59,15 @@ public class LoginServlet extends HttpServlet {
     @SneakyThrows
     private void onLoginFailed(HttpServletRequest req, HttpServletResponse resp){
 
-        resp.sendRedirect("/login?email=" + req.getParameter("email"));
+        //TODO (show error on page)
+        /*var webExchange = webApplication.buildExchange(req, resp);
+        var webContext = new WebContext(webExchange, webExchange.getLocale());
+        webContext.setVariable("error", "Invalid password or email!");
+        templateEngine.process("enter.html", webContext, resp.getWriter());
+        resp.sendRedirect("/login");*/
+        req.setAttribute("error", "invalid password or email, please retry");
+        resp.sendRedirect("/login");
+
 
     }
 }

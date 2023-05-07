@@ -24,7 +24,7 @@ public class UserMapperToDto implements Mapper<Optional<UserDto>, Optional<User>
                 .id(obj.get().getId())
                 .email(obj.get().getEmail())
                 .role(obj.get().getRole().toString())
-                .rating(obj.get().getRating().toString())
+                .rating(obj.get().getRating() == null ? null: obj.get().getRating().toString())
                 .build());
     }
 }
