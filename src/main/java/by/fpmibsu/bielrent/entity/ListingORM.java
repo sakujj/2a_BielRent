@@ -12,10 +12,11 @@ import java.util.List;
 @Builder
 public class ListingORM implements Entity {
         private Long id;
+        private String name;
         private Address address;
         private Filter filter;
         private User user;
         private List<Photo> photos;
-        private PropertyType propertyType;
+        private PropertyType propertyTypeName;
         private String description;
 }

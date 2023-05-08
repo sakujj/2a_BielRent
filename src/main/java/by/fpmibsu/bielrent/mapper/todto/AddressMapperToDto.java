@@ -20,7 +20,7 @@ public class AddressMapperToDto implements Mapper<AddressDto, Address> {
                 .houseNumber(obj.getHouseNumber())
                 .street(obj.getStreet())
                 .city(obj.getCity())
-                .regionNumber(obj.getRegionNumber())
+                .regionName(obj.getRegionName().toString())
                 .districtAdministrative(obj.getDistrictAdministrative())
                 .districtMicro(obj.getDistrictMicro())
                 .build();

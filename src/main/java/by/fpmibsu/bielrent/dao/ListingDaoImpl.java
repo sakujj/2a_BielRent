@@ -16,8 +16,9 @@ public class ListingDaoImpl implements ListingDao {
             "propertyTypeName, " +
             "userId, " +
             "addressId, " +
-            "description) " +
-            "VALUES (?, ?, ?, ?)";
+            "description, " +
+            " name) " +
+            "VALUES (?, ?, ?, ?, ?)";
     String SQL_SELECT_LISTING_BY_ID
             = "SELECT * " +
             "FROM Listing " +
@@ -36,7 +37,8 @@ public class ListingDaoImpl implements ListingDao {
             "userId = ?, " +
             "addressId = ?," +
             "filterId = ?, " +
-            "description = ? ";
+            "description = ?, " +
+            "name = ? ";
     String SQL_SELECT_LISTINGS_BY_USER_ID
             = "SELECT * " +
             "FROM dbo.[Listing] " +
@@ -59,10 +61,11 @@ public class ListingDaoImpl implements ListingDao {
                      = conn.prepareStatement(SQL_INSERT_LISTING, Statement.RETURN_GENERATED_KEYS)) {
             long id = -1;
 
-            statement.setString(1, record.getPropertyType().toString());
+            statement.setString(1, record.getPropertyTypeName().toString());
             statement.setLong(2, record.getUserId());
             statement.setLong(3, record.getAddressId());
             statement.setString(4, record.getDescription());
+            statement.setString(5, record.getName());
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -85,7 +88,7 @@ public class ListingDaoImpl implements ListingDao {
             if (resultSet.next()) {
                 listing = new Listing();
                 buildListingWOFilterId(listing, resultSet);
-                this.setFilterIdForListing(id, conn, listing);
+                listing.setFilterId(FilterDaoImpl.getInstance().selectByListingId(listing.getId()).getId());
             }
 
             conn.commit();
@@ -106,24 +109,17 @@ public class ListingDaoImpl implements ListingDao {
         }
     }
 
-    private void setFilterIdForListing(long id, Connection conn, Listing listing) throws DaoException {
-        if (listing.getPropertyType() == PropertyType.HOUSE) {
-            listing.setFilterId(HouseFilterDaoImpl.getInstance().selectByListingId(id, conn).get().getId());
-        } else if (listing.getPropertyType() == PropertyType.FLAT) {
-            listing.setFilterId(FlatFilterDaoImpl.getInstance().selectByListingId(id, conn).getId());
-        }
-    }
-
     public List<Listing> selectAll(Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_LISTINGS)) {
             conn.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery();
 
             List<Listing> listings = new ArrayList<>();
+            var filterDao = FilterDaoImpl.getInstance();
             while (resultSet.next()) {
                 Listing listing = new Listing();
                 buildListingWOFilterId(listing, resultSet);
-                this.setFilterIdForListing(listing.getId(), conn, listing);
+                listing.setFilterId(filterDao.selectByListingId(listing.getId()).getId());
                 listings.add(listing);
             }
 
@@ -147,17 +143,20 @@ public class ListingDaoImpl implements ListingDao {
 
     public List<Listing> selectAllByUserId(long userId, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_LISTINGS_BY_USER_ID)) {
+            conn.setAutoCommit(false);
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
 
             List<Listing> listings = new ArrayList<>();
+            var filterDao = FilterDaoImpl.getInstance();
             while (resultSet.next()) {
                 Listing listing = new Listing();
                 buildListingWOFilterId(listing, resultSet);
-                this.setFilterIdForListing(listing.getId(), conn, listing);
+                listing.setFilterId(filterDao.selectByListingId(listing.getId()).getId());
                 listings.add(listing);
             }
 
+            conn.commit();
             return listings;
         } catch (SQLException e) {
             try {
@@ -177,16 +176,20 @@ public class ListingDaoImpl implements ListingDao {
 
     public List<Listing> selectAllByAddressId(long addressId, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_LISTINGS_BY_ADDRESS_ID)) {
+            conn.setAutoCommit(false);
             statement.setLong(1, addressId);
             ResultSet resultSet = statement.executeQuery();
+
             List<Listing> listings = new ArrayList<>();
+            var filterDao = FilterDaoImpl.getInstance();
             while (resultSet.next()) {
                 Listing listing = new Listing();
                 buildListingWOFilterId(listing, resultSet);
-                this.setFilterIdForListing(listing.getId(), conn, listing);
+                listing.setFilterId(filterDao.selectByListingId(listing.getId()).getId());
                 listings.add(listing);
             }
 
+            conn.commit();
             return listings;
         } catch (SQLException e) {
             try {
@@ -206,10 +209,11 @@ public class ListingDaoImpl implements ListingDao {
 
     public boolean update(Listing record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_LISTING_BY_ID)) {
-            statement.setString(1, record.getPropertyType().toString());
+            statement.setString(1, record.getPropertyTypeName().toString());
             statement.setLong(2, record.getUserId());
             statement.setLong(3, record.getAddressId());
             statement.setString(4, record.getDescription());
+            statement.setString(5, record.getName());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -228,8 +232,9 @@ public class ListingDaoImpl implements ListingDao {
 
     /**
      * Selects ORM listings from database, that meet specified query
-     * @param query data to filter entities (ids other than Listing.id doesn't mean a thing)
-     * @param topN how many entities to select
+     *
+     * @param query         data to filter entities (ids other than Listing.id doesn't mean a thing)
+     * @param topN          how many entities to select
      * @param idToStartFrom Listing.id to start selection from
      * @return List of ORM listings that meet specified query
      * @throws DaoException
@@ -241,8 +246,6 @@ public class ListingDaoImpl implements ListingDao {
         String sqlQuery = "SELECT TOP (?) * FROM " +
                 " Listing l " +
                 " LEFT JOIN Filter f ON f.listingId = l.id " +
-                " LEFT JOIN FlatFilter ff ON ff.filterId = f.id " +
-                " LEFT JOIN HouseFilter hf ON hf.filterId = f.id " +
                 " LEFT JOIN Address a ON l.addressId = a.id " +
                 " LEFT JOIN [dbo].[User] u ON l.userId = u.id " +
                 " WHERE l.id >= ? ";
@@ -251,12 +254,9 @@ public class ListingDaoImpl implements ListingDao {
         params.add(topN);
         params.add(idToStartFrom);
 
-        if (query.getPropertyType() == PropertyType.FLAT) {
-            sqlQuery += " AND propertyTypeName <> ? ";
-            params.add(PropertyType.HOUSE.toString());
-        } else if (query.getPropertyType() == PropertyType.HOUSE) {
-            sqlQuery += " AND propertyTypeName <> ? ";
-            params.add(PropertyType.FLAT.toString());
+        if (query.getPropertyTypeName() != null) {
+            sqlQuery += " AND propertyTypeName = ? ";
+            params.add(query.getPropertyTypeName().toString());
         }
 
         if (addressQ != null) {
@@ -276,9 +276,9 @@ public class ListingDaoImpl implements ListingDao {
                 sqlQuery += " AND districtMicro = ? ";
                 params.add(addressQ.getDistrictMicro());
             }
-            if (addressQ.getRegionNumber() != null) {
-                sqlQuery += " AND regionNumber = ? ";
-                params.add(addressQ.getRegionNumber());
+            if (addressQ.getRegionName() != null) {
+                sqlQuery += " AND regionName = ? ";
+                params.add(addressQ.getRegionName().toString());
             }
             if (addressQ.getHouseNumber() != null) {
                 sqlQuery += " AND houseNumber = ? ";
@@ -370,8 +370,7 @@ public class ListingDaoImpl implements ListingDao {
 
                 AddressDaoImpl addressDao = AddressDaoImpl.getInstance();
                 UserDaoImpl userDao = UserDaoImpl.getInstance();
-                FlatFilterDaoImpl flatFilterDao = FlatFilterDaoImpl.getInstance();
-                HouseFilterDaoImpl houseFilterDao = HouseFilterDaoImpl.getInstance();
+                FilterDaoImpl filterDao = FilterDaoImpl.getInstance();
                 PhotoDaoImpl photoDao = PhotoDaoImpl.getInstance();
 
                 System.out.println(sqlQuery);
@@ -388,17 +387,11 @@ public class ListingDaoImpl implements ListingDao {
                     listingORM.setUser(user);
 
 
-                    listingORM.setPropertyType(PropertyType.valueOf(rs.getString("propertyTypeName")));
+                    listingORM.setPropertyTypeName(PropertyType.valueOf(rs.getString("propertyTypeName")));
 
-                    if (listingORM.getPropertyType() == PropertyType.FLAT) {
-                        FlatFilter flatFilter = new FlatFilter();
-                        flatFilterDao.buildFlatFilter(flatFilter, rs);
-                        listingORM.setFilter(flatFilter);
-                    } else if (listingORM.getPropertyType() == PropertyType.HOUSE) {
-                        HouseFilter houseFilter = new HouseFilter();
-                        houseFilterDao.buildHouseFilter(houseFilter, rs);
-                        listingORM.setFilter(houseFilter);
-                    }
+                    Filter filter = new Filter();
+                    filterDao.buildFilter(filter, rs);
+                    listingORM.setFilter(filter);
 
                     listingORM.setId(rs.getLong("id"));
                     listingORM.setDescription(rs.getString("description"));
@@ -507,8 +500,9 @@ public class ListingDaoImpl implements ListingDao {
     private void buildListingWOFilterId(Listing listing, ResultSet resultSet) throws DaoException {
         try {
             listing.setId(resultSet.getLong("id"));
+            listing.setName(resultSet.getString("name"));
             listing.setDescription(resultSet.getString("description"));
-            listing.setPropertyType(PropertyType.valueOf(resultSet.getString("propertyTypeName")));
+            listing.setPropertyTypeName(PropertyType.valueOf(resultSet.getString("propertyTypeName")));
             listing.setAddressId(resultSet.getLong("addressId"));
             listing.setUserId(resultSet.getLong("userId"));
         } catch (SQLException e) {
@@ -516,7 +510,3 @@ public class ListingDaoImpl implements ListingDao {
         }
     }
 }
-//try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
-//        } catch (SQLException e) {
-//        throw new DaoException(e);
-//        }

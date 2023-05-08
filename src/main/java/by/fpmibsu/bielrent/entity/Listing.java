@@ -14,11 +14,12 @@ import java.util.List;
 public class Listing implements Entity {
 
     private Long id;
+    private String name;
     private Long addressId;
     private Long filterId;
     private Long userId;
     //photo list
 
-    private PropertyType propertyType;
+    private PropertyType propertyTypeName;
     private String description;
 }

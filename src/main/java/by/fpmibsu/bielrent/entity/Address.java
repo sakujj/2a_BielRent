@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 public class Address implements Entity{
     private Long id;
-    private Integer regionNumber;
+    private Region regionName;
     private String city;
     private String districtAdministrative = null;
     private String districtMicro = null;

@@ -52,7 +52,6 @@ public class ReportDaoImpl implements ReportDao {
 
     public Optional<Report> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_REPORT_BY_ID)) {
-            conn.setAutoCommit(false);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -62,27 +61,14 @@ public class ReportDaoImpl implements ReportDao {
                 buildReport(report, resultSet);
             }
 
-            conn.commit();
             return Optional.ofNullable(report);
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 
     public List<Report> selectAll(Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_REPORTS)) {
-            conn.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery();
 
             List<Report> reports = new ArrayList<>();
@@ -92,23 +78,10 @@ public class ReportDaoImpl implements ReportDao {
                 reports.add(report);
             }
 
-            conn.commit();
             return reports;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
-
     }
 
     public List<Report> selectAllByUserId(long userId, Connection conn) throws DaoException {

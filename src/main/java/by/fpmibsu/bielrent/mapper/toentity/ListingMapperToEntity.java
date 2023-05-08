@@ -18,10 +18,11 @@ public class ListingMapperToEntity implements Mapper<Listing, ListingDto> {
     public Listing mapFrom(ListingDto obj) {
         return Listing.builder()
                 .id(obj.getId())
+                .name(obj.getName())
                 .addressId(obj.getAddressId())
                 .filterId(obj.getFilterId())
                 .userId(obj.getUserId())
-                .propertyType(PropertyType.valueOf(obj.getPropertyType()))
+                .propertyTypeName(PropertyType.valueOf(obj.getPropertyTypeName()))
                 .description(obj.getDescription())
                 .build();
     }

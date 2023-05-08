@@ -6,10 +6,14 @@ import by.fpmibsu.bielrent.entity.Filter;
 
 import java.sql.*;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class FilterDaoImpl implements FilterDao {
+    private static final String SQL_SELECT_FILTER_BY_LISTING_ID = "SELECT * FROM [dbo].[Filter] WHERE listingId = ?";
+    private static final String SQL_SELECT_ALL_FILTERS = "SELECT * FROM [dbo].[Filter]";
+    private static final String SQL_SELECT_FILTER_BY_ID = "SELECT * FROM [dbo].[Filter] WHERE id = ?";
     private final String SQL_INSERT_FILTER = "INSERT INTO " +
             "dbo.[Filter](" +
             "roomCount," +
@@ -57,7 +61,7 @@ public class FilterDaoImpl implements FilterDao {
         return INSTANCE;
     }
 
-    public static void buildFilter(Filter filter, ResultSet resultSet) throws SQLException {
+    public void buildFilter(Filter filter, ResultSet resultSet) throws SQLException {
         filter.setId(resultSet.getLong("id"));
         filter.setBedroomCount(resultSet.getInt("bedroomCount"));
         filter.setRoomCount(resultSet.getInt("roomCount"));
@@ -149,6 +153,58 @@ public class FilterDaoImpl implements FilterDao {
         }
     }
 
+    public Filter selectByListingId(long listingId, Connection conn) throws DaoException {
+        try (PreparedStatement statement
+                     = conn.prepareStatement(SQL_SELECT_FILTER_BY_LISTING_ID)) {
+            statement.setLong(1, listingId);
+            ResultSet rs = statement.executeQuery();
+
+            Filter filter = null;
+            if (rs.next()) {
+                filter = new Filter();
+                buildFilter(filter, rs);
+            }
+
+            return filter;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public List<Filter> selectAll(Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_FILTERS)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            List<Filter> filters = new ArrayList<>();
+            while (resultSet.next()) {
+                Filter filter = new Filter();
+                buildFilter(filter, resultSet);
+
+                filters.add(filter);
+            }
+            return filters;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public Optional<Filter> select(long id, Connection conn) throws DaoException {
+        try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_FILTER_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            Filter filter = null;
+            if (resultSet.next()) {
+                filter = new Filter();
+                buildFilter(filter, resultSet);
+            }
+
+            return Optional.ofNullable(filter);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public long insert(Filter record) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
@@ -160,12 +216,20 @@ public class FilterDaoImpl implements FilterDao {
 
     @Override
     public List<Filter> selectAll() throws DaoException {
-        throw new UnsupportedOperationException("selectAll() is not supported in FilterDaoAbstract");
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return selectAll(conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public Optional<Filter> select(long id) throws DaoException {
-        throw new UnsupportedOperationException("select(long) is not supported in FilterDaoAbstract");
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return select(id, conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -190,6 +254,15 @@ public class FilterDaoImpl implements FilterDao {
     public boolean delete(long id) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Filter selectByListingId(long listingId) throws DaoException {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            return selectByListingId(listingId, conn);
         } catch (SQLException e) {
             throw new DaoException(e);
         }

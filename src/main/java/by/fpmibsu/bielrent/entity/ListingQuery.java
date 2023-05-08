@@ -11,7 +11,7 @@ import lombok.*;
 public class ListingQuery {
     Address address;
     Filter filter;
-    PropertyType propertyType;
+    PropertyType propertyTypeName;
     Long priceFrom;
     Long priceTo;
 }

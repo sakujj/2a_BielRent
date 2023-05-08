@@ -90,7 +90,6 @@ public class UserDaoImpl implements UserDao {
 
     public User select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_ID)) {
-            conn.setAutoCommit(false);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -100,27 +99,14 @@ public class UserDaoImpl implements UserDao {
                 buildUser(user, resultSet);
             }
 
-            conn.commit();
             return user;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 
     public List<User> selectAll(Connection conn) throws DaoException {
         try (Statement statement = conn.createStatement()) {
-            conn.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_USERS);
 
             List<User> users = new ArrayList<>();
@@ -130,28 +116,15 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
 
-            conn.commit();
             return users;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
 
     }
 
     public User selectByEmail(String email, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_EMAIL)) {
-            conn.setAutoCommit(false);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
 
@@ -161,26 +134,13 @@ public class UserDaoImpl implements UserDao {
                 buildUser(user, resultSet);
             }
 
-            conn.commit();
             return user;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
     public Optional<User> selectByEmailAndPassword(String email,String password, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_USER_BY_EMAIL_AND_PASSWORD)) {
-            conn.setAutoCommit(false);
             statement.setString(1, email);
             statement.setString(2,password);
             ResultSet resultSet = statement.executeQuery();
@@ -191,21 +151,9 @@ public class UserDaoImpl implements UserDao {
                 buildUser(user, resultSet);
             }
 
-            conn.commit();
             return Optional.ofNullable(user);
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 

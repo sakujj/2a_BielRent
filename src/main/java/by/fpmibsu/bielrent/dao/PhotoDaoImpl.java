@@ -57,7 +57,6 @@ public class PhotoDaoImpl implements PhotoDao {
 
     public Optional<Photo> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_PHOTO_BY_ID)) {
-            conn.setAutoCommit(false);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -67,27 +66,14 @@ public class PhotoDaoImpl implements PhotoDao {
                 buildPhoto(photo, resultSet);
             }
 
-            conn.commit();
             return Optional.ofNullable(photo);
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 
     public List<Photo> selectAll(Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_PHOTOS)) {
-            conn.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery();
 
             List<Photo> photos = new ArrayList<>();
@@ -97,21 +83,9 @@ public class PhotoDaoImpl implements PhotoDao {
                 photos.add(photo);
             }
 
-            conn.commit();
             return photos;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 
@@ -129,18 +103,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return photos;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 

@@ -2,6 +2,7 @@ package by.fpmibsu.bielrent.mapper.toentity;
 
 import by.fpmibsu.bielrent.dto.AddressDto;
 import by.fpmibsu.bielrent.entity.Address;
+import by.fpmibsu.bielrent.entity.Region;
 import by.fpmibsu.bielrent.mapper.Mapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class AddressMapperToEntity implements Mapper<Address, AddressDto> {
                 .houseNumber(obj.getHouseNumber())
                 .street(obj.getStreet())
                 .city(obj.getCity())
-                .regionNumber(obj.getRegionNumber())
+                .regionName(Region.valueOf(obj.getRegionName()))
                 .districtAdministrative(obj.getDistrictAdministrative())
                 .districtMicro(obj.getDistrictMicro())
                 .build();

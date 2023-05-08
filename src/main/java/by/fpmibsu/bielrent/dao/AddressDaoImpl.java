@@ -3,6 +3,7 @@ package by.fpmibsu.bielrent.dao;
 import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.dao.exception.DaoException;
 import by.fpmibsu.bielrent.entity.Address;
+import by.fpmibsu.bielrent.entity.Region;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import static java.sql.Types.NULL;
 public class AddressDaoImpl implements AddressDao {
     private final String SQL_INSERT_ADDRESS
             = "INSERT INTO [dbo].[Address](" +
-            "regionNumber, " +
+            "regionName, " +
             "city, " +
             "districtAdministrative, " +
             "districtMicro, " +
@@ -37,7 +38,7 @@ public class AddressDaoImpl implements AddressDao {
             = "UPDATE " +
             "[dbo].[Address] " +
             "SET " +
-            "regionNumber = ?, " +
+            "regionName = ?, " +
             "city = ?, " +
             "districtAdministrative = ?, " +
             "districtMicro = ?, " +
@@ -58,7 +59,7 @@ public class AddressDaoImpl implements AddressDao {
         try (PreparedStatement statement = conn.prepareStatement(SQL_INSERT_ADDRESS, Statement.RETURN_GENERATED_KEYS)) {
             long id = -1;
 
-            statement.setInt(1, record.getRegionNumber());
+            statement.setString(1, record.getRegionName().toString());
             statement.setString(2, record.getCity());
             if (record.getDistrictAdministrative() != null) {
                 statement.setString(3, record.getDistrictAdministrative());
@@ -86,7 +87,6 @@ public class AddressDaoImpl implements AddressDao {
 
     public Optional<Address> select(long id, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ADDRESS_BY_ID)) {
-            conn.setAutoCommit(false);
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -96,27 +96,14 @@ public class AddressDaoImpl implements AddressDao {
                 buildAddress(address, resultSet);
             }
 
-            conn.commit();
             return Optional.ofNullable(address);
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 
     public List<Address> selectAll(Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_SELECT_ALL_ADDRESSES)) {
-            conn.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery();
 
             List<Address> addresses = new ArrayList<>();
@@ -126,27 +113,15 @@ public class AddressDaoImpl implements AddressDao {
                 addresses.add(a);
             }
 
-            conn.commit();
             return addresses;
         } catch (SQLException e) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                throw new DaoException(ex);
-            }
             throw new DaoException(e);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
         }
     }
 
     public boolean update(Address record, Connection conn) throws DaoException {
         try (PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_ADDRESS_BY_ID)) {
-            statement.setByte(1, record.getRegionNumber().byteValue());
+            statement.setString(1, record.getRegionName().toString());
             statement.setString(2, record.getCity());
             if (record.getDistrictAdministrative() == null) {
                 statement.setNull(3, NULL);
@@ -244,7 +219,7 @@ public class AddressDaoImpl implements AddressDao {
             address.setDistrictAdministrative(resultSet.getString("districtAdministrative"));
             address.setDistrictMicro(resultSet.getString("districtMicro"));
             address.setHouseNumber(resultSet.getInt("houseNumber"));
-            address.setRegionNumber(resultSet.getInt("regionNumber"));
+            address.setRegionName(Region.valueOf(resultSet.getString("regionName")));
             address.setStreet(resultSet.getString("street"));
         } catch (SQLException e) {
             throw new DaoException(e);

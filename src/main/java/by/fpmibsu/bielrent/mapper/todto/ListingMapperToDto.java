@@ -18,10 +18,11 @@ public class ListingMapperToDto implements Mapper<ListingDto, Listing> {
     public ListingDto mapFrom(Listing obj) {
         return ListingDto.builder()
                 .id(obj.getId())
+                .name(obj.getName())
                 .addressId(obj.getAddressId())
                 .filterId(obj.getFilterId())
                 .userId(obj.getUserId())
-                .propertyType(obj.getPropertyType().toString())
+                .propertyTypeName(obj.getPropertyTypeName().toString())
                 .description(obj.getDescription())
                 .build();
     }

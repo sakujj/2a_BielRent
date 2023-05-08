@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
-public abstract class Filter implements Entity {
+@Builder
+public class Filter implements Entity {
     private Long id;
     private Long listingId;
 
