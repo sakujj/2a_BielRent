@@ -54,7 +54,7 @@ public class UserService {
      * @throws DaoException if database management system can not perform selection.
      */
     public boolean isUserWithEmailInDB(String email) throws DaoException {
-        return userDao.selectByEmail(email) != null;
+        return !userDao.selectByEmail(email).isEmpty();
     }
     public Optional<UserDto> login(String email, String password) {
         var sel = userDao.selectByEmailAndPassword(email, password);

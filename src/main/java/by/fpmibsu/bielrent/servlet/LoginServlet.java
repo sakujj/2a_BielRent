@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
     private JavaxServletWebApplication webApplication;
     private TemplateEngine templateEngine;
     UserService userService = UserService.getInstance();
-    /*@Override
+    @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         webApplication = JavaxServletWebApplication.buildApplication(this.getServletContext());
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 
         templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
-    }*/
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/enter.html").forward(req,resp);
@@ -53,19 +53,19 @@ public class LoginServlet extends HttpServlet {
     }
     @SneakyThrows
     private void onLoginSuccess(HttpServletRequest req, HttpServletResponse resp, UserDto us){
-        req.getSession().setAttribute("user",us);
+
         resp.sendRedirect("/");
     }
     @SneakyThrows
     private void onLoginFailed(HttpServletRequest req, HttpServletResponse resp){
 
         //TODO (show error on page)
-        /*var webExchange = webApplication.buildExchange(req, resp);
+        var webExchange = webApplication.buildExchange(req, resp);
         var webContext = new WebContext(webExchange, webExchange.getLocale());
-        webContext.setVariable("error", "Invalid password or email!");
+        String error = "error";
+        webContext.setVariable("error", error);
         templateEngine.process("enter.html", webContext, resp.getWriter());
-        resp.sendRedirect("/login");*/
-        req.setAttribute("error", "invalid password or email, please retry");
+        //req.setAttribute("error", "invalid password or email, please retry");
         resp.sendRedirect("/login");
 
 
