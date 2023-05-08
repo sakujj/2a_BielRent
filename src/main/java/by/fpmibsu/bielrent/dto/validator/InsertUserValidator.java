@@ -33,8 +33,8 @@ public class InsertUserValidator implements Validator<InsertUserDto>{
         ValidationResult vr = new ValidationResult();
 
         try {
-            System.out.println(userDao.selectByEmail(obj.getEmail()));
-            if (userDao.selectByEmail(obj.getEmail()) != null) {
+            System.out.println(userDao.selectByEmail(obj.getEmail()).isPresent());
+            if (userDao.selectByEmail(obj.getEmail()).isPresent()) {
                 System.out.println("3q4");
                 vr.add(EMAIL_ALREADY_EXISTS_ERROR);
             }

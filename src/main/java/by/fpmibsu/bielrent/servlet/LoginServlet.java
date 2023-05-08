@@ -23,13 +23,14 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     private JavaxServletWebApplication webApplication;
     private TemplateEngine templateEngine;
+    private WebApplicationTemplateResolver templateResolver;
     UserService userService = UserService.getInstance();
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         webApplication = JavaxServletWebApplication.buildApplication(this.getServletContext());
 
-        WebApplicationTemplateResolver templateResolver
+        templateResolver
                 = new WebApplicationTemplateResolver(webApplication);
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setPrefix("/");
@@ -39,6 +40,12 @@ public class LoginServlet extends HttpServlet {
         templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
     }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/enter.html").forward(req,resp);
@@ -62,11 +69,10 @@ public class LoginServlet extends HttpServlet {
         //TODO (show error on page)
         var webExchange = webApplication.buildExchange(req, resp);
         var webContext = new WebContext(webExchange, webExchange.getLocale());
-        String error = "error";
+        String error = "Invalid password or email, please retry";
         webContext.setVariable("error", error);
         templateEngine.process("enter.html", webContext, resp.getWriter());
-        //req.setAttribute("error", "invalid password or email, please retry");
-        resp.sendRedirect("/login");
+        //resp.sendRedirect("/login");
 
 
     }
