@@ -75,7 +75,7 @@
 
     <main class="container container-fluid justify-content-center">
       <div class="row justify-content-center">
-        <form class="col-md-10  justify-content-center">
+        <form action="/createListing" method="post" class="col-md-10  justify-content-center">
           <div class="container-md bg-secondary text-dark justify-content-center">
             <div class="row justify-content-center">
               <p class="text-center fw-bold mt-4 my-md-4 col-xl-8 col-md-6 text-md-nowrap">
@@ -90,6 +90,7 @@
                   id="floatingInput"
                   placeholder="Название объявления"
                   required
+                  name="listingTitle"
                 />
                 <label for="floatingInput" class="text-dark py-2">&nbsp;&nbsp;Название:</label>
               </div>
@@ -127,6 +128,7 @@
                         class="form-control col-8 bg-secondary border border-1 border-dark"
                         placeholder="Минск"
                         required
+                        name="city"
                       />
                     </div>
                   </div>
@@ -146,6 +148,7 @@
                         class="form-control col-8 bg-secondaryborder border-1 border-dark"
                         placeholder="Фрунзенский"
                         required
+                        name="districtAdministrative"
                       />
                     </div>
                   </div>
@@ -161,6 +164,7 @@
                         type="text"
                         class="form-control col-7 bg-secondary border border-1 border-dark"
                         placeholder="Сухарево"
+                        name="districtMicro"
                         required
                       />
                     </div>
@@ -180,6 +184,7 @@
                         type="text"
                         class="form-control col-8 bg-secondary border border-1 border-dark"
                         placeholder="Шамякина"
+                        name="street"
                         required
                       />
                     </div>
@@ -197,6 +202,7 @@
                         class="form-control bg-secondary col-8 border border-1 border-dark"
                         placeholder="14"
                         required
+                        name="houseNumber"
                       />
                     </div>
                   </div>
@@ -293,6 +299,7 @@
                     value=""
                     name="hasElevator"
                     id="checkWashingMachine"
+                    name="hasBathroom"
                   />
                   <label class="form-check-label" for="checkWashingMachine">
                     Есть посудомоечная машина</label
@@ -311,6 +318,7 @@
                     value="0"
                     pattern="[0-9]*"
                     min="0"
+                    name="roomCount"
                     required
                   />
                 </div>
@@ -325,6 +333,7 @@
                     pattern="[0-9]*"
                     id="bedroomCount"
                     class="form-control border border-1 border-dark"
+                    name="bedroomCount"
                     required
                   />
                 </div>
@@ -340,6 +349,7 @@
                     value="0"
                     min="0"
                     class="form-control border border-1 border-dark"
+                    name="floorCount"
                     required
                   />
                 </div>
@@ -354,6 +364,7 @@
                     min="0"
                     id="balconyCount"
                     class="form-control border border-1 border-dark"
+                    name="balconyCount"
                     required
                   />
                 </div>
@@ -367,6 +378,7 @@
                     id="buildYear"
                     pattern="[12][0-9][0-9][0-9]"
                     class="form-control border border-1 border-dark"
+                    name="buildYear"
                     required
                   />
                   <label for="buildYear" class="form-label pt-1"
@@ -382,6 +394,7 @@
                     id="squareArea"
                     pattern="[0-9]*(\.[0-9]*)?"
                     class="form-control border border-1 border-dark"
+                    name="squareArea"
                     required
                   />
                   <label for="squareArea" class="form-label pt-1"
@@ -394,10 +407,11 @@
                   <input
                     type="text"
                     placeholder="64.6"
-                    id="squareArea"
+                    id="priceMonthly"
                     pattern="[0-9]*(\.[0-9]*)?"
                     class="form-control border border-1 border-dark"
                     required
+                    name="priceMonthly"
                   />
                   <label for="squareArea" class="form-label pt-1"
                     >&nbsp;&nbsp;Месячная стоимость аренды:</label
@@ -414,6 +428,7 @@
                     type="date"
                     id="rentalPeriodStart"
                     class="form-control border border-1 border-dark"
+                    name="rentalPeriodStart"
                   />
                 </div>
 
@@ -423,6 +438,7 @@
                     type="date"
                     id="rentalPeriodEnd"
                     class="form-control border border-1 border-dark"
+                    name="rentalPeriodEnd"
                   />
                 </div>
               </div>
@@ -435,6 +451,7 @@
                       class="form-control border border-1 border-dark mt-0"
                       type="file"
                       id="formFile"
+                      name="image"
                       required
                     />
                   </div>
