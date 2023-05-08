@@ -6,23 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BielRent</title>
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/fontawesome.css">
+    <link rel="stylesheet" href="css/all.css">
     <link rel="stylesheet" href="css/main.css">
+    <style>
+      * {
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+      }
+    </style>
 </head>
-<body>
-   <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top p-0">
+        <div class="container-xxl">
           <a class="navbar-brand" href="#">BielRent</a>
-          <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+          <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav">
             <span class="navbar-toggler-icon"></span>
-          </button> -->
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link my-bt" aria-current="page" href="#">Добавить объявление</a>
+          </button>
+
+          <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
+            <ul class="navbar-nav align-items-center m-0 p-0">
+              <li class="nav-item my-1 my-md-0">
+                <a class="nav-link p-0" href="#">
+                  <button type="button" class="my-bt p-2 m-0">
+                    <i class="fa-regular fa-plus"></i>  Добавить объявление
+                  </button>
+                </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link my-bt" aria-current="page" href="/login">Войти</a>
+              <li class="nav-item my-1 my-md-0">
+                <a class="nav-link p-0" href="enter.html">
+                  <button type="button" class="my-bt p-2 m-0"><i class="fa-sharp fa-solid fa-right-to-bracket"></i> Войти</button>
+                </a>
+              </li>
+              <li class="nav-item my-1 my-md-0">
+                <a class="nav-link p-0" href="#">
+                  <button type="button" class="my-bt p-2 m-0"><i class="fa-regular fa-user"></i>  Профиль</button>
+                </a>
               </li>
             </ul>
           </div>
@@ -60,6 +80,59 @@
         </div>
       </div> -->
       <!--Modal-->
+    <main class="container-xxl">
+      <div class="py-5 px-3">
+        <div class="row main-header">
+          <div class="col py-2 main-h1">Все объявления:</div>
+        </div>
+        <div class="row justify-content-start main-body my-2 py-2">
+          <a class="listing my-4" href="listing.html">
+            <div class="card col-md-9 listing-card" >
+              <div class="row d-flex g-0 p-2">
+                <div class="col-md-4 align-self-center img-container">
+                  <div class="img">
+                    <img src="https://pro-dachnikov.com/uploads/posts/2023-01/1674014062_pro-dachnikov-com-p-vstroennii-kholodilnik-v-koridore-dizain-f-68.jpg" alt="" class="img-fluid">
+                  </div>
+                </div>
+                <div class="col-md-8 px-2">
+                  <div class="card-body">
+                    <h5 class="card-title mt-md-2 pb-1">Квартира прайс</h5>
+                    <div class="description px-2 mt-md-2">
+                      <div class="parameters card-text">3 комн., 60м кв</div>
+                      <br>
+                      <br>
+                      <p class="card-text"><i class="fa-solid fa-location-dot"></i> Квартира адрес</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+          <a class="listing my-4" href="listing.html">
+            <div class="card col-md-9 listing-card" >
+              <div class="row d-flex g-0 p-2">
+                <div class="col-md-4 align-self-center img-container">
+                  <div class="img">
+                    <img src="img/default-image.png" alt="" class="img-fluid">
+                  </div>
+                </div>
+                <div class="col-md-8 px-2">
+                  <div class="card-body">
+                    <h5 class="card-title mt-md-2 pb-1">Квартира прайс</h5>
+                    <div class="description px-2 mt-md-2">
+                      <div class="parameters card-text">3 комн., 60м кв</div>
+                      <br>
+                      <br>
+                      <p class="card-text"><i class="fa-solid fa-location-dot"></i> Квартира адрес</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
       <script src="js/bootstrap.js"></script>
-</body>
+  </body>
 </html>
