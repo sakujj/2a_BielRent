@@ -54,6 +54,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var email = req.getParameter("email");
         var password = req.getParameter("password");
+        req.getSession().setAttribute("email", email);
         userService.login(email,password).ifPresentOrElse(
                 user->onLoginSuccess(req,resp,user),()->onLoginFailed(req,resp)
         );
@@ -65,8 +66,6 @@ public class LoginServlet extends HttpServlet {
     }
     @SneakyThrows
     private void onLoginFailed(HttpServletRequest req, HttpServletResponse resp){
-
-        //TODO (show error on page)
         var webExchange = webApplication.buildExchange(req, resp);
         var webContext = new WebContext(webExchange, webExchange.getLocale());
         String error = "Invalid password or email, please retry";
