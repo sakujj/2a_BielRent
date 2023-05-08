@@ -1,3 +1,10 @@
 target/
 out/
 .idea/
+src/main/webapp/custom.css.map
+src/main/webapp/custom.scss
+src/main/webapp/package.json
+src/main/webapp/package-lock.json
+src/main/webapp/node_modules/
+src/main/webapp/imgs/
+src/main/webapp/index2.html
