@@ -16,8 +16,8 @@ public class AddressMapperToDto implements Mapper<AddressDto, Address> {
     @Override
     public AddressDto mapFrom(Address obj) {
         return AddressDto.builder()
-                .id(obj.getId())
-                .houseNumber(obj.getHouseNumber())
+                //.id(obj.getId())
+                .houseNumber(String.valueOf(obj.getHouseNumber()))
                 .street(obj.getStreet())
                 .city(obj.getCity())
                 .regionName(obj.getRegionName().toString())

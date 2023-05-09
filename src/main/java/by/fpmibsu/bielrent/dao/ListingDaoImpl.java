@@ -66,7 +66,7 @@ public class ListingDaoImpl implements ListingDao {
             statement.setLong(3, record.getAddressId());
             statement.setString(4, record.getDescription());
             statement.setString(5, record.getName());
-
+            statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 id = generatedKeys.getLong(1);

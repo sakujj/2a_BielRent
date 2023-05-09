@@ -17,10 +17,10 @@ public class ListingMapperToEntity implements Mapper<Listing, ListingDto> {
     @Override
     public Listing mapFrom(ListingDto obj) {
         return Listing.builder()
-                .id(obj.getId())
+                //.id(obj.getId())
                 .name(obj.getName())
                 .addressId(obj.getAddressId())
-                .filterId(obj.getFilterId())
+                //.filterId(obj.getFilterId())
                 .userId(obj.getUserId())
                 .propertyTypeName(PropertyType.valueOf(obj.getPropertyTypeName()))
                 .description(obj.getDescription())

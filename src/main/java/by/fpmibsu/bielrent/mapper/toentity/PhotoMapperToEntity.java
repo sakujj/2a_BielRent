@@ -29,7 +29,7 @@ public class PhotoMapperToEntity implements Mapper<Photo, PhotoDto> {
                 + ImageService.getFileExt(obj.getPhoto().getSubmittedFileName());
 
         Photo photo = Photo.builder()
-                .id(obj.getId())
+                //.id(obj.getId())
                 .listingId(obj.getListingId())
                 .path(fileName)
                 .build();

@@ -39,7 +39,7 @@ public class AddressValidator implements Validator<AddressDto> {
         if (obj.getStreet().codePoints().count() > 30) {
             validationResult.add(STREET_LENGTH_ERROR);
         }
-        if (obj.getHouseNumber() < 0) {
+        if (Integer.valueOf(obj.getHouseNumber()) < 0) {
             validationResult.add(HOUSE_NUMBER_ERROR);
         }
         try {

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+//TODO(зачем он???)
+
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 20, maxFileSize = 1024 * 1024 * 20)
 @WebServlet("/inda")
@@ -23,7 +25,7 @@ public class UploadServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PhotoDto photoDto = PhotoDto.builder()
-                .id(1)
+                //.id(1)
                 .listingId(1)
                 .photo(req.getPart("photo"))
                 .build();

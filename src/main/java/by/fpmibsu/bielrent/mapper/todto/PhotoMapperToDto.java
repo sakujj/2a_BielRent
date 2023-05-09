@@ -16,9 +16,9 @@ public class PhotoMapperToDto implements Mapper<PhotoDto, Photo> {
     @Override
     public PhotoDto mapFrom(Photo obj) {
         PhotoDto photoDto = PhotoDto.builder()
-                .id(obj.getId())
+                //.id(obj.getId())
                 .listingId(obj.getId())
-
+                //.photo()
                 .build();
         //TODO TODO
         return photoDto;

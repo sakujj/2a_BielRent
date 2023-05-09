@@ -54,7 +54,7 @@ public class FilterDaoImpl implements FilterDao {
 
     private static final FilterDaoImpl INSTANCE = new FilterDaoImpl();
 
-    private FilterDaoImpl() {
+    public FilterDaoImpl() {
     }
 
     public static FilterDaoImpl getInstance() {

@@ -7,11 +7,11 @@ import lombok.Value;
 @Value
 @Builder
 public final class AddressDto {
-    private final long id;
+    //private final Long id;
     private final String regionName;
     private final String city;
     private final String districtAdministrative;
     private final String districtMicro;
     private final String street;
-    private final int houseNumber;
+    private final String houseNumber;
 }

@@ -8,10 +8,10 @@ import lombok.Value;
 @Builder
 public class ListingDto {
     private String name;
-    private long id;
-    private long addressId;
-    private long filterId;
-    private long userId;
+    //private Long id;
+    private Long addressId;
+    //private Long filterId;
+    private Long userId;
 
     private String propertyTypeName;
     private String description;

@@ -9,14 +9,14 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws DaoException {
-        ListingQuery query = new ListingQuery();
-        query.setFilter(FlatFilter.builder().rentalPeriodStart(LocalDateFormatter.format("2001-12-15")).build());
-       // query.setPriceTo(Long.valueOf(10000));
-        var l = ListingDaoImpl.getInstance().selectTopNByListingData(query, 10, 1);
-        for (var x : l) {
-            System.out.println(x);
-            System.out.println("_____________________");
-        }
+//        ListingQuery query = new ListingQuery();
+//        query.setFilter(FlatFilter.builder().rentalPeriodStart(LocalDateFormatter.format("2001-12-15")).build());
+//        query.setPriceTo(Long.valueOf(10000));
+//        var l = ListingDaoImpl.getInstance().selectTopNByListingData(query, 10, 1);
+//        for (var x : l) {
+//            System.out.println(x);
+//            System.out.println("_____________________");
+//        }
 //        System.out.println("-------------------------------------------");
 //        System.out.println("Address");
 //        System.out.println("-------------------------------------------");

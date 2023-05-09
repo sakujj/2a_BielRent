@@ -9,21 +9,24 @@ import java.time.LocalDateTime;
 @Value
 @Builder
 public class FilterDto {
-    private long id;
+    //private String id;
     private long listingId;
 
-    private int roomCount;
-    private int floorCount;
-    private int bedroomCount;
-    private int balconyCount;
-    private double squareArea;
-    private long priceMonthly;
-    private int buildYear;
-    private boolean hasBathroom;
+    private String roomCount;
+    private String floorCount;
+    private String bedroomCount;
+    private String balconyCount;
+    private String squareArea;
+    private String priceMonthly;
+    private String buildYear;
+    private String hasBathroom;
+    //????????????????
+
     private String rentalPeriodStart;
     private String rentalPeriodEnd;
-    private boolean hasWashingMachine;
-    private boolean hasFurniture;
-    private boolean hasWifi;
-    private boolean hasElevator;
+    //???????????????????
+    private String hasWashingMachine;
+    private String hasFurniture;
+    private String hasWifi;
+    private String hasElevator;
 }

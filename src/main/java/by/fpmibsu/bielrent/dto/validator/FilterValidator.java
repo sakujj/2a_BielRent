@@ -39,25 +39,25 @@ public class FilterValidator implements Validator<FilterDto>{
                 validationResult.add(RENTAL_PERIOD_ERROR);
             }
         }
-        if (obj.getRoomCount() <= 0) {
+        if (Integer.valueOf(obj.getRoomCount()) <= 0) {
             validationResult.add(ROOM_COUNT_ERROR);
         }
-        if (obj.getFloorCount() <= 0) {
+        if (Integer.valueOf(obj.getFloorCount()) <= 0) {
             validationResult.add(FLOOR_COUNT_ERROR);
         }
-        if (obj.getBedroomCount() < 0) {
+        if (Integer.valueOf(obj.getBedroomCount()) < 0) {
             validationResult.add(BEDROOM_COUNT_ERROR);
         }
-        if (obj.getBuildYear() < 1700 || obj.getBuildYear() > LocalDate.now().getYear()) {
+        if (Integer.valueOf(obj.getBuildYear()) < 1700 || Integer.valueOf(obj.getBuildYear()) > LocalDate.now().getYear()) {
             validationResult.add(BUILD_YEAR_ERROR);
         }
-        if (obj.getPriceMonthly() <= 0) {
+        if (Integer.valueOf(obj.getPriceMonthly()) <= 0) {
             validationResult.add(PRICE_MONTHLY_ERROR);
         }
-        if (obj.getSquareArea() <= 0) {
+        if (Double.valueOf(obj.getSquareArea()) <= 0) {
             validationResult.add(SQUARE_AREA_ERROR);
         }
-        if (obj.getBalconyCount() < 0) {
+        if (Integer.valueOf(obj.getBalconyCount()) < 0) {
             validationResult.add(BALCONY_COUNT_ERROR);
         }
 

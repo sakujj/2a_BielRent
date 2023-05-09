@@ -75,7 +75,7 @@
 
     <main class="container container-fluid justify-content-center">
       <div class="row justify-content-center">
-        <form action="/createListing" method="post" class="col-md-10  justify-content-center">
+        <form action="/createListing" method="post" class="col-md-10  justify-content-center" enctype="multipart/form-data">
           <div class="container-md bg-secondary text-dark justify-content-center">
             <div class="row justify-content-center">
               <p class="text-center fw-bold mt-4 my-md-4 col-xl-8 col-md-6 text-md-nowrap">
@@ -103,14 +103,14 @@
                         class="input-group-text col-4 justify-content-center border border-1 border-dark border-end-0"
                         >Регион</span
                       >
-                      <select id="regionSelect" class="form-select bg-secondary col-8 border border-1 border-dark">
-                        <option value="1">Брестская обл.</option>
-                        <option value="2">Витебская обл.</option>
-                        <option value="3">Гомельская обл.</option>
-                        <option value="4">Гродненская обл.</option>
-                        <option value="5">Минская обл.</option>
-                        <option value="6">Могилёвская обл.</option>
-                        <option value="7" selected>г. Минск</option>
+                      <select name="region" id="regionSelect" class="form-select bg-secondary col-8 border border-1 border-dark">
+                        <option value="BREST_REGION">Брестская обл.</option>
+                        <option value="VITEBSK_REGION">Витебская обл.</option>
+                        <option value="GOMEL_REGION">Гомельская обл.</option>
+                        <option value="GRODNO_REGION">Гродненская обл.</option>
+                        <option value="MINSK_REGION">Минская обл.</option>
+                        <option value="MOGILEV_REGION">Могилёвская обл.</option>
+                        <option value="MINSK_CITY" selected>г. Минск</option>
                       </select>
                     </div>
                   </div>
@@ -214,6 +214,7 @@
                     style="height: 150px"
                     maxlength="1000"
                     placeholder="Оставьте описание."
+                    name="description"
                   ></textarea>
                   <label for="floatingTextarea2" class="py-2">Описание:</label>
                 </div>
@@ -272,7 +273,7 @@
                     type="checkbox"
                     value=""
                     id="checkFurniture"
-                    name="hasWiFi"
+                    name="hasFurniture"
                   />
                   <label class="form-check-label text-nowrap" for="checkFurniture">
                     Есть мебель
@@ -284,7 +285,7 @@
                     type="checkbox"
                     value=""
                     id="checkBathroom"
-                    name="hasWiFi"
+                    name="hasBathroom"
                   />
                   <label class="form-check-label text-nowrap" for="checkBathroom">
                     Есть ванная
@@ -295,9 +296,8 @@
                     class="form-check-input border border-2 border-dark"
                     type="checkbox"
                     value=""
-                    name="hasElevator"
+                    name="hasWashingMachine"
                     id="checkWashingMachine"
-                    name="hasBathroom"
                   />
                   <label class="form-check-label" for="checkWashingMachine">
                     Есть посудомоечная машина</label
@@ -411,7 +411,7 @@
                     required
                     name="priceMonthly"
                   />
-                  <label for="squareArea" class="form-label pt-1"
+                  <label for="priceMonthly" class="form-label pt-1"
                     >&nbsp;&nbsp;Месячная стоимость аренды:</label
                   >
                 </div>

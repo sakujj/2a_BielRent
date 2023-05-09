@@ -12,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.nio.file.Files;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PhotoService {
     private static final ImageService imageService = ImageService.getInstance();
@@ -34,7 +36,7 @@ public class PhotoService {
         }
         Photo photoEntity = photoMapperToEntity.mapFrom(photoDto);
         imageService.upload(photoEntity.getPath(), photoDto.getPhoto().getInputStream());
-        photoDao.insert(photoEntity);
+        id = photoDao.insert(photoEntity);
 
         return id;
     }
