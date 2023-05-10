@@ -1,14 +1,9 @@
-import by.fpmibsu.bielrent.connectionpool.ConnectionPoolImpl;
-import by.fpmibsu.bielrent.dao.*;
-import by.fpmibsu.bielrent.dao.exception.DaoException;
-import by.fpmibsu.bielrent.entity.*;
-import by.fpmibsu.bielrent.utility.LocalDateFormatter;
-
-import java.time.LocalDate;
-import java.util.List;
+import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
+import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 
 public class Main {
     public static void main(String[] args) throws DaoException {
+
 //        ListingQuery query = new ListingQuery();
 //        query.setFilter(FlatFilter.builder().rentalPeriodStart(LocalDateFormatter.format("2001-12-15")).build());
 //        query.setPriceTo(Long.valueOf(10000));

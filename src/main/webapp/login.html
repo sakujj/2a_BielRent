@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Вход</title>
+</head>
+<body style="padding: 0 2rem;">
+<div class="container-my">
+    <div class="reg-card">
+        <div class="reg-card-header">
+            <h1 class="text-mont reg-text">Вход</h1>
+        </div>
+        <form class="reg-form" action="/login.html" th:action="@{|${LOGIN_URI}|}" method="post">
+            <div class="reg-card-body">
+                <div class="input">
+                    <label for="inputEmailIn" class="input-label text-mont">Email</label>
+                    <input type="email" class="input-field form-control" id="inputEmailIn" name="email" th:value="${session.email}">
+                </div>
+                <div class="input">
+                    <label for="inputPasswordIn" class="input-label text-mont">Пароль</label>
+                    <input type="password" class="input-field form-control" id="inputPasswordIn" name="password">
+                </div>
+                <div class="input input-checkbox">
+                    <label for="inputRememberMe" class="input-label text-mont"><input type="checkbox" class="check-input" id="inputRememberMe" checked>  Запомнить меня</label>
+                </div>
+            </div>
+            <div class="bg-black" style="text-align: center" th:if="${error}" th:utext="'<strong> Oops</strong> ' + ${error}"></div>
+
+            <div class="reg-cart-footer justify-content-center">
+                <button type="submit" class="button in-btn my-bt">
+                    Войти
+                </button>
+            </div>
+        </form>
+        <div class="reg-cart-links">
+            <a href="#" class="form-link">Забыли пароль?</a>
+            <a href="/register.html" th:href="@{|${REGISTRATION_URI}|}" class="form-link">Зарегестрироваться</a>
+        </div>
+    </div>
+</div>
+<script src="js/bootstrap.js"></script>
+</body>
+</html>
