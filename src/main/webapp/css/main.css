@@ -156,7 +156,7 @@ body {
 }
 .main-h1 {
     font-family: "Montserrat";
-    color:#212529;
+    color:#000;
     font-size: 25px;
     font-weight: 400;
 }
@@ -172,25 +172,26 @@ body {
 .listing-card:hover {
     box-shadow: 10px 10px 0 rgba(33, 37, 41, 0.15); 
 }
-.img-container {
+/* .img-container {
     overflow: hidden;
-}
-.img {
-    width: 100%;
-    height: 100%
-}
+} */
+
 @media (min-width: 768px) {
-    .img-container {
-        max-width: 260px;
-        overflow: hidden;
-        max-height: 146px;
+    .img-main-page {
+        width: 100%;
+        object-fit: scale-down;
+        object-position: center;
+        height: 18vh;
+        background-color: rgba(33, 37, 41, 0.15);
     }
 }
 @media (max-width: 767px) {
-    .img-container {
-        overflow: hidden;
-        max-width: 686px;
-        max-height: 386px;
+    .img-main-page {
+        width: 100%;
+        object-fit: scale-down;
+        object-position: center;
+        height: 30vh;
+        background-color: rgba(33, 37, 41, 0.15);
     }
 }
 .card-title {
@@ -207,3 +208,56 @@ body {
     color:#212529;
 }
 /* main */
+/*listing*/
+.listing-information {
+    border-left: 1px solid rgba(33, 37, 41, 0.25);
+}
+.img-listing{
+    object-fit: scale-down;
+    object-position: center;
+    height: 60vh;
+    background-color: #f2f2f2;
+}
+.listing-price {
+    font-family: "Montserrat";
+    font-size: 24px;
+    font-weight: 400;
+    color:#000;
+}
+@media (max-width: 767px) {
+    .listing-information {
+        border-left: none;
+        margin-top: 1em;
+    }
+}
+.text-roboto-400 {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+}
+.listing-text {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color:#000; 
+}
+.listing-description{
+    font-size: 1rem;
+}
+.listing-main{
+    font-family: "Montserrat";
+    color:#000;
+    font-size: 25px;
+    font-weight: 400;
+}
+.listing-title{
+    font-family: "Montserrat";
+    font-size: 24px;
+    font-weight: 400;
+    color:#000;
+    border-bottom: 1px solid rgba(33, 37, 41, 0.25);
+}
+.map {
+    border: 1px solid rgba(33, 37, 41, 0.25);
+    box-shadow: 10px 10px 0 rgba(33, 37, 41, 0.15); 
+}
+/*listing*/

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BielRent</title>
     <link rel="stylesheet" href="css/custom.css" />
-    <link rel="stylesheet" href="css/fontawesome.css" />
+    <link rel="stylesheet" href="css/main.css">
     <style>
       textarea {
         resize: none;
@@ -37,40 +37,36 @@
   <body class="bg-success">
     <header>
       <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top p-0">
-        <div class="container-fluid">
-          <a class="navbar-brand text-secondary" href="#" th:href="@{|${HOME_URI}|}" >BielRent</a>
-          <button
-            class="navbar-toggler my-2 border-secondary"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#main-nav"
-          >
+        <div class="container-xxl">
+          <a class="navbar-brand" href="#" th:href="@{|${HOME_URI}|}">BielRent</a>
+
+          <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav">
             <span class="navbar-toggler-icon"></span>
           </button>
 
-          <div
-            class="collapse navbar-collapse justify-content-end align-items-center"
-            id="main-nav"
-          >
+          <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
             <ul class="navbar-nav align-items-center m-0 p-0">
               <li class="nav-item my-1 my-md-0">
-                <a class="nav-link p-0" href="#" th:href="@{|${CREATE_LISTING_URI}|}">
-                  <button type="button" class="btn p-2 m-0 btn-outline-light border-0">
+                <a class="nav-link p-0" href="/create-listing.html" th:href="@{|${CREATE_LISTING_URI}|}">
+                  <button type="button" class="my-bt p-2 m-0">
                     Добавить объявление
                   </button>
                 </a>
               </li>
               <li class="nav-item my-1 my-md-0">
                 <a class="nav-link p-0" href="/login.html" th:href="@{|${LOGIN_URI}|}">
-                  <button type="button" class="btn p-2 m-0 btn-outline-light border-0">
-                    Войти
-                  </button>
+                  <button type="button" class="my-bt p-2 m-0">Войти</button>
+                </a>
+              </li>
+              <li class="nav-item my-1 my-md-0">
+                <a class="nav-link p-0" href="creation-page.html">
+                  <button type="button" class="my-bt p-2 m-0">Профиль</button>
                 </a>
               </li>
             </ul>
           </div>
         </div>
-      </nav>
+    </nav>
     </header>
 
     <main class="container container-fluid justify-content-center">

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BielRent</title>
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/all.css">
     <link rel="stylesheet" href="css/main.css">
     <style>
       * {
@@ -30,18 +29,18 @@
               <li class="nav-item my-1 my-md-0">
                 <a class="nav-link p-0" href="/create-listing.html" th:href="@{|${CREATE_LISTING_URI}|}">
                   <button type="button" class="my-bt p-2 m-0">
-                    <i class="fa-regular fa-plus"></i>  Добавить объявление
+                    Добавить объявление
                   </button>
                 </a>
               </li>
               <li class="nav-item my-1 my-md-0">
                 <a class="nav-link p-0" href="/login.html" th:href="@{|${LOGIN_URI}|}">
-                  <button type="button" class="my-bt p-2 m-0"><i class="fa-sharp fa-solid fa-right-to-bracket"></i> Войти</button>
+                  <button type="button" class="my-bt p-2 m-0">Войти</button>
                 </a>
               </li>
               <li class="nav-item my-1 my-md-0">
-                <a class="nav-link p-0" href="#">
-                  <button type="button" class="my-bt p-2 m-0"><i class="fa-regular fa-user"></i>  Профиль</button>
+                <a class="nav-link p-0" href="creation-page.html">
+                  <button type="button" class="my-bt p-2 m-0">Профиль</button>
                 </a>
               </li>
             </ul>
@@ -58,10 +57,10 @@
           <a class="listing my-4" href="/listing.html" >
             <div class="card col-md-9 listing-card" >
               <div class="row d-flex g-0 p-2">
-                <div class="col-md-4 align-self-center img-container">
+                <div class="col-md-4 align-self-center">
                   <div class="img">
-                    <img src="https://pro-dachnikov.com/uploads/posts/2023-01/1674014062_pro-dachnikov-com-p-vstroennii-kholodilnik-v-koridore-dizain-f-68.jpg"
-                         th:src="@{|images/${list.photos.get(0).getPath()}|}" alt="" class="img-fluid">
+                    <img src="ttps://pro-dachnikov.com/uploads/posts/2023-01/1674014062_pro-dachnikov-com-p-vstroennii-kholodilnik-v-koridore-dizain-f-68.jpg"
+                         th:src="@{|images/${list.photos.get(0).getPath()}|}" alt="" class="img-main-page">
                   </div>
                 </div>
                 <div class="col-md-8 px-2">
