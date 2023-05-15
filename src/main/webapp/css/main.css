@@ -261,3 +261,30 @@ body {
     box-shadow: 10px 10px 0 rgba(33, 37, 41, 0.15); 
 }
 /*listing*/
+.pagination {
+    font-family: "Montserrat";
+}
+.active>span{
+    background-color: #212529 !important;
+    color:#f2f2f2 !important;
+    border-color:#212529 !important;
+}
+.page-link {
+    color:#212529;
+    border-color:rgba(33, 37, 41, 0.25);
+}
+.page-link:hover {
+    background-color: #f2f2f2;
+    color:#212529;
+}
+.page-link:focus {
+    background-color: #f2f2f2;
+    color:#212529;
+    box-shadow: 0 1px 0 rgba(33, 37, 41, 0.15);
+}
+.page-item:first-child>.page-link:focus {
+    box-shadow: -1px 1px 0 rgba(33, 37, 41, 0.15);
+}
+.page-item:last-child>.page-link:focus {
+    box-shadow: 1px 1px 0 rgba(33, 37, 41, 0.15);
+}
