@@ -14,16 +14,23 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ListingService {
+
     private static final ListingService INSTANCE = new ListingService();
     public static ListingService getInstance() {
         return INSTANCE;
     }
     private static final ListingMapperToEntity listingMapperToEntity = ListingMapperToEntity.getInstance();
-    private static final ListingDaoImpl listingDao = ListingDaoImpl.getInstance();
+    private static final ListingDaoImpl listingDao  = ListingDaoImpl.getInstance();;
+    private static final AtomicInteger listingCount = new AtomicInteger(listingDao.countListings());;
+
+
+
     private static final ListingValidator listingValidator = ListingValidator.getInstance();
+
     public Long validateAndInsertIfValid(ListingDto listingDto) throws DaoException, ValidationException {
         ValidationResult vr = listingValidator.validate(listingDto);
         if (!vr.isValid()) {
@@ -31,11 +38,16 @@ public class ListingService {
         }
         Listing listingEntity = listingMapperToEntity.mapFrom(listingDto);
         Long id = Long.valueOf(listingDao.insert(listingEntity));
+        listingCount.incrementAndGet();
 
         return id;
     }
 
-    public List<ListingORM> getTopNByQuery(ListingQuery query, int topN, int idToStartFrom) throws DaoException {
-        return listingDao.selectTopNByListingData(query, topN, idToStartFrom);
+    public List<ListingORM> getRowsByQueryWithOffset(ListingQuery query, int rowsNumber, int offset) throws DaoException {
+        return listingDao.selectRowsByListingDataWithOffset(query, rowsNumber, offset);
+    }
+
+    public int getListingCount() {
+        return listingCount.get();
     }
 }

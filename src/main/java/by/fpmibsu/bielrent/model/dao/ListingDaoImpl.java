@@ -3,6 +3,7 @@ package by.fpmibsu.bielrent.model.dao;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.*;
+import lombok.SneakyThrows;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,6 +55,18 @@ public class ListingDaoImpl implements ListingDao {
 
     public static ListingDaoImpl getInstance() {
         return INSTANCE;
+    }
+
+    @SneakyThrows
+    public int countListings() {
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT COUNT(id) AS cnt FROM Listing");
+            rs.next();
+            return rs.getInt("cnt");
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     public long insert(Listing record, Connection conn) throws DaoException {
@@ -234,25 +247,25 @@ public class ListingDaoImpl implements ListingDao {
      * Selects ORM listings from database, that meet specified query
      *
      * @param query         data to filter entities (ids other than Listing.id doesn't mean a thing)
-     * @param topN          how many entities to select
-     * @param idToStartFrom Listing.id to start selection from
+     * @param rowsNumber          how many entities to select
+     * @param offset  how many entities to skip
      * @return List of ORM listings that meet specified query
      * @throws DaoException
      */
-    public List<ListingORM> selectTopNByListingData(ListingQuery query, long topN, long idToStartFrom) throws DaoException {
+    public List<ListingORM> selectRowsByListingDataWithOffset(ListingQuery query, long rowsNumber, long offset) throws DaoException {
         Address addressQ = query.getAddress();
         Filter filterQ = query.getFilter();
 
-        String sqlQuery = "SELECT TOP (?) * FROM " +
+        String sqlQuery = "SELECT * FROM " +
                 " Listing l " +
                 " LEFT JOIN Filter f ON f.listingId = l.id " +
                 " LEFT JOIN Address a ON l.addressId = a.id " +
                 " LEFT JOIN [dbo].[User] u ON l.userId = u.id " +
-                " WHERE l.id >= ? ";
+                " ORDER BY l.id DESC OFFSET (?) ROWS " +
+                " FETCH NEXT (?) ROWS ONLY ";
         List<Object> params = new ArrayList<>();
 
-        params.add(topN);
-        params.add(idToStartFrom);
+
 
         if (query.getPropertyTypeName() != null) {
             sqlQuery += " AND propertyTypeName = ? ";
@@ -353,6 +366,9 @@ public class ListingDaoImpl implements ListingDao {
             sqlQuery += " AND priceMonthly <= ? ";
             params.add(query.getPriceTo());
         }
+
+        params.add(offset);
+        params.add(rowsNumber);
         System.out.println(params);
 
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
