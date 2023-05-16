@@ -5,103 +5,182 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BielRent</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/main.css">
     <style>
-      * {
-        -webkit-border-radius: 0 !important;
-        -moz-border-radius: 0 !important;
-        border-radius: 0 !important;
-      }
+        * {
+            -webkit-border-radius: 0 !important;
+            -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
+        }
     </style>
 </head>
-  <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top p-0">
-        <div class="container-xxl">
-          <a class="navbar-brand" href="#" th:href="@{|${HOME_URI}|}">BielRent</a>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top p-0">
+    <div class="container-xxl">
+        <a class="navbar-brand" href="#" th:href="@{|${HOME_URI}|}">BielRent</a>
 
-          <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav">
+        <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav">
             <span class="navbar-toggler-icon"></span>
-          </button>
+        </button>
 
-          <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
+        <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
             <ul class="navbar-nav align-items-center m-0 p-0">
-              <li class="nav-item my-1 my-md-0">
-                <a class="nav-link p-0" href="/create-listing.html" th:href="@{|${CREATE_LISTING_URI}|}">
-                  <button type="button" class="my-bt p-2 m-0">
-                    Добавить объявление
-                  </button>
-                </a>
-              </li>
-              <li class="nav-item my-1 my-md-0">
-                <a class="nav-link p-0" href="/login.html" th:href="@{|${LOGIN_URI}|}">
-                  <button type="button" class="my-bt p-2 m-0">Войти</button>
-                </a>
-              </li>
-              <li class="nav-item my-1 my-md-0">
-                <a class="nav-link p-0" href="creation-page.html">
-                  <button type="button" class="my-bt p-2 m-0">Профиль</button>
-                </a>
-              </li>
+                <li class="nav-item my-1 my-md-0">
+                    <a class="nav-link p-0" href="/create-listing.html" th:href="@{|${CREATE_LISTING_URI}|}">
+                        <button type="button" class="my-bt p-2 m-0">
+                            Добавить объявление
+                        </button>
+                    </a>
+                </li>
+                <li class="nav-item my-1 my-md-0">
+                    <a class="nav-link p-0" href="/login.html" th:href="@{|${LOGIN_URI}|}">
+                        <button type="button" class="my-bt p-2 m-0">Войти</button>
+                    </a>
+                </li>
+                <li class="nav-item my-1 my-md-0">
+                    <a class="nav-link p-0" href="creation-page.html">
+                        <button type="button" class="my-bt p-2 m-0">Профиль</button>
+                    </a>
+                </li>
             </ul>
-          </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <main class="container-xxl">
-      <div class="py-5 px-3">
+<main class="container-xxl">
+    <div class="py-5 px-3">
         <div class="row main-header">
-          <div class="col py-2 main-h1">Все объявления:</div>
+            <div class="col py-2 main-h1">Все объявления:</div>
         </div>
-        <div class="row justify-content-start main-body my-2 py-2" th:each="list:${listings}">
-          <a class="listing my-4" href="/listing.html" >
-            <div class="card col-md-9 listing-card" >
-              <div class="row d-flex g-0 p-2">
-                <div class="col-md-4 align-self-center">
-                  <div class="img">
-                    <img src="ttps://pro-dachnikov.com/uploads/posts/2023-01/1674014062_pro-dachnikov-com-p-vstroennii-kholodilnik-v-koridore-dizain-f-68.jpg"
-                         th:src="@{|images/${list.photos.get(0).getPath()}|}" alt="" class="img-main-page">
-                  </div>
-                </div>
-                <div class="col-md-8 px-2">
-                  <div class="card-body">
-                    <h5 class="card-title mt-md-2 pb-1" th:text="|${list.getName()} - ${list.getFilter().getPriceMonthly()} BYN|">Замечательная квартира - 1000 BYN/месяц</h5>
-                    <div class="description px-2 mt-md-2">
-                      <div class="parameters card-text" th:text="|Площадь ${list.getFilter().getSquareArea()} кв. м|">Площадь: 64 кв. м</div>
-                      <div class="parameters card-text" th:text="|Комнат: ${list.getFilter().getRoomCount()}|">Комнат: 3</div>
-                      <div class="parameters card-text" th:text="|Год строительства: ${list.getFilter().getBuildYear()}|">Год строительства: 2000</div>
-                      <p class="card-text" >
-                        <i class="fa-solid fa-location-dot"
-                                               th:text="|${list.getAddress().getCity()},
+        <div class="mt-2 mb-0 pb-0 pt-2" th:insert="~{::copy-pagination}"></div>
+        <div class="row justify-content-start main-body mt-2 pt-2" th:each="list, iterStat:${listings}"
+        >
+            <a class="listing my-4" href="/listing.html" th:classappend="${iterStat.index == 0 ? 'mt-0' :_}">
+                <div class="card col-md-9 listing-card">
+                    <div class="row d-flex g-0 p-2">
+                        <div class="col-md-4 align-self-center">
+                            <div class="img">
+                                <img src="ttps://pro-dachnikov.com/uploads/posts/2023-01/1674014062_pro-dachnikov-com-p-vstroennii-kholodilnik-v-koridore-dizain-f-68.jpg"
+                                     th:src="@{|images/${list.photos.get(0).getPath()}|}" alt="" class="img-main-page">
+                            </div>
+                        </div>
+                        <div class="col-md-8 px-2">
+                            <div class="card-body">
+                                <h5 class="card-title mt-md-2 pb-1"
+                                    th:text="|${list.getName()} - ${list.getFilter().getPriceMonthly()} BYN|">
+                                    Замечательная квартира - 1000 BYN/месяц</h5>
+                                <div class="description px-2 mt-md-2">
+                                    <div class="parameters card-text"
+                                         th:text="|Площадь ${list.getFilter().getSquareArea()} кв. м|">Площадь: 64 кв. м
+                                    </div>
+                                    <div class="parameters card-text"
+                                         th:text="|Комнат: ${list.getFilter().getRoomCount()}|">Комнат: 3
+                                    </div>
+                                    <div class="parameters card-text"
+                                         th:text="|Год строительства: ${list.getFilter().getBuildYear()}|">Год
+                                        строительства: 2000
+                                    </div>
+                                    <p class="card-text">
+                                        <i class="fa-solid fa-location-dot"
+                                           th:text="|${list.getAddress().getCity()},
                                                ул. ${list.getAddress().getStreet()},
                                                д. ${list.getAddress().getHouseNumber()}|">
-                        Минск, ул. Иванова, д.43
-                        </i>
-                      </p>
+                                            Минск, ул. Иванова, д.43
+                                        </i>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </a>
+            </a>
         </div>
-        <div class="page">
-          <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <a class="page-link" href="#">Предыдущая</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active" aria-current="page">
-              <span class="page-link">2</span>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Следующая</a>
-            </li>
-          </ul>
+        <div class="page row  justify-content-start" th:fragment="copy-pagination">
+            <ul class="pagination mb-0 justify-content-center col-md-9">
+                <li
+                        class="page-item "
+                >
+                    <a
+                            class="page-link"
+                            th:classappend="${disabledPaginationNumbers.contains(-1)}
+                            ? 'disabled'
+                            : _"
+                            href="#"
+                            th:href="@{/(page=${pageMap.get(1).intValue()})}"
+                    >
+                        Предыдущая
+                    </a>
+                </li>
+
+                <li
+                        class="page-item"
+                        th:classappend="${pageMap.get(1).intValue() == pageMap.get(0).intValue()}
+                        ? 'active bg-dark'
+                        : _"
+                >
+                    <a
+                            class="page-link"
+                            th:text="${pageMap.get(1).intValue()}"
+                            href="#"
+                            th:href="@{/(page=${pageMap.get(1).intValue()})}"
+
+                    >
+                        1
+                    </a>
+                </li>
+
+                <li
+                        class="page-item"
+                        aria-current="page"
+                        th:classappend="${pageMap.get(1).intValue() != pageMap.get(0).intValue()}
+                        ? 'active bg-dark'
+                        : _"
+                >
+                    <a
+                            class="page-link"
+                            th:href="@{/(page=${pageMap.get(2).intValue()})}"
+                            th:text="${pageMap.get(2).intValue()}"
+                            th:classappend="${disabledPaginationNumbers.contains(2)}
+                            ? 'disabled'
+                            : _"
+                    >
+                        2
+                    </a>
+                </li>
+
+                <li class="page-item">
+                    <a
+                            class="page-link"
+                            href="#"
+                            th:href="@{/(page=${pageMap.get(3).intValue()})}"
+                            th:text="${pageMap.get(3).intValue()}"
+                            th:classappend="${disabledPaginationNumbers.contains(3)}
+                            ? 'disabled'
+                            : _"
+                    >
+                        3
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a
+                            class="page-link"
+                            href="#"
+                            th:href="@{/(page=${pageMap.get(1).intValue() != pageMap.get(0).intValue()
+                            ? pageMap.get(3).intValue()
+                            : pageMap.get(2).intValue()})}"
+                            th:classappend="${disabledPaginationNumbers.contains(0)}
+                            ? 'disabled'
+                            : _"
+                    >
+                        Следующая
+                    </a>
+                </li>
+            </ul>
         </div>
-      </div>
-    </main>
-      <script src="js/bootstrap.js"></script>
-  </body>
+    </div>
+</main>
+<script src="js/bootstrap.js"></script>
+<script src="js/index.js"></script>
+</body>
 </html>

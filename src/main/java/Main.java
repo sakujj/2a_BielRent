@@ -1,9 +1,9 @@
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
+import by.fpmibsu.bielrent.model.service.ListingService;
 
 public class Main {
     public static void main(String[] args) throws DaoException {
-
 //        ListingQuery query = new ListingQuery();
 //        query.setFilter(FlatFilter.builder().rentalPeriodStart(LocalDateFormatter.format("2001-12-15")).build());
 //        query.setPriceTo(Long.valueOf(10000));

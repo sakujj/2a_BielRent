@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Roboto&family=Tinos&display=swap');
 
 body {
-    background-color: f2f2f2;
+    background-color: #f2f2f2;
     color: #f2f2f2;
     
 }
@@ -18,7 +18,7 @@ body {
     color: #f2f2f2;
     font-size: 18px;
     padding: 10px 10px 10px 10px;
-    background: #212529;
+    background: #333;
     transition:all .5s;
     border-radius: 0;
     border: none;
@@ -26,7 +26,7 @@ body {
 }
 .my-bt:hover {
     background: #f2f2f2;
-    color:#212529;
+    color:#333;
 }
 .my-bt-close {
     border-radius: 0;
@@ -34,7 +34,7 @@ body {
 .text-mont {
     font-family: "Montserrat";
     font-weight: 300;
-    color: #212529;
+    color: #333;
 }
 .modal-container {
     width: 100%;
@@ -170,7 +170,7 @@ body {
     transition: all .5s; 
 }
 .listing-card:hover {
-    box-shadow: 10px 10px 0 rgba(33, 37, 41, 0.15); 
+    box-shadow: 10px 10px 0 rgba(33, 37, 41, 0.15);
 }
 /* .img-container {
     overflow: hidden;
@@ -238,7 +238,7 @@ body {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 20px;
-    color:#000; 
+    color:#000;
 }
 .listing-description{
     font-size: 1rem;
@@ -258,28 +258,28 @@ body {
 }
 .map {
     border: 1px solid rgba(33, 37, 41, 0.25);
-    box-shadow: 10px 10px 0 rgba(33, 37, 41, 0.15); 
+    box-shadow: 10px 10px 0 rgba(33, 37, 41, 0.15);
 }
 /*listing*/
 .pagination {
     font-family: "Montserrat";
 }
 .active>span{
-    background-color: #212529 !important;
+    background-color: #333 !important;
     color:#f2f2f2 !important;
-    border-color:#212529 !important;
+    border-color:#333 !important;
 }
 .page-link {
-    color:#212529;
+    color:#333;
     border-color:rgba(33, 37, 41, 0.25);
 }
 .page-link:hover {
     background-color: #f2f2f2;
-    color:#212529;
+    color:#333;
 }
 .page-link:focus {
     background-color: #f2f2f2;
-    color:#212529;
+    color:#333;
     box-shadow: 0 1px 0 rgba(33, 37, 41, 0.15);
 }
 .page-item:first-child>.page-link:focus {
