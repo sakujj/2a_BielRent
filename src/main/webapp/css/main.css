@@ -1,19 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Roboto&family=Tinos&display=swap');
-
+@font-face {
+	font-family: 'Roboto';
+	src: url('webfonts/Roboto-Regular.woff2') format('woff2'), url('webfonts/Roboto-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Montserrat';
+	src: url('webfonts/Montserrat-Regular.woff2') format('woff2'), url('webfonts/Montserrat-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Montserrat';
+	src: url('webfonts/Montserrat-Light.woff2') format('woff2'), url('webfonts/Montserrat-Light.woff') format('woff');
+	font-weight: 300;
+	font-style: normal;
+}
 body {
     background-color: f2f2f2;
     color: #f2f2f2;
     
 }
 .navbar-brand {
-    font-family: "Roboto";
+    font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 22px;
     color: #f2f2f2;
 }
 .my-bt {
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     font-weight: 400;
     color: #f2f2f2;
     font-size: 18px;
@@ -32,7 +47,7 @@ body {
     border-radius: 0;
 }
 .text-mont {
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     font-weight: 300;
     color: #212529;
 }
@@ -155,7 +170,7 @@ body {
     border-bottom: 1px solid rgba(33, 37, 41, 0.25);
 }
 .main-h1 {
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     color:#000;
     font-size: 25px;
     font-weight: 400;
@@ -195,14 +210,14 @@ body {
     }
 }
 .card-title {
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     font-size: 24px;
     font-weight: 400;
     color:#212529;
     border-bottom: 1px solid rgba(33, 37, 41, 0.25);
 }
 .card-text {
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     font-size: 20px;
     font-weight: 400;
     color:#212529;
@@ -219,7 +234,7 @@ body {
     background-color: #f2f2f2;
 }
 .listing-price {
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     font-size: 24px;
     font-weight: 400;
     color:#000;
@@ -244,13 +259,13 @@ body {
     font-size: 1rem;
 }
 .listing-main{
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     color:#000;
     font-size: 25px;
     font-weight: 400;
 }
 .listing-title{
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
     font-size: 24px;
     font-weight: 400;
     color:#000;
@@ -262,7 +277,7 @@ body {
 }
 /*listing*/
 .pagination {
-    font-family: "Montserrat";
+    font-family: "Montserrat", sans-serif;
 }
 .active>span{
     background-color: #212529 !important;
