@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@EqualsAndHashCode
 public class Address implements Entity{
     private Long id;
     private Region regionName;

@@ -5,21 +5,51 @@
   <groupId>by.fpmibsu.bielrent</groupId>
   <artifactId>BielRent</artifactId>
   <version>1.0</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>BielRent</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
       <project.build.directory>out</project.build.directory>
       <project.build.outputDirectory>out</project.build.outputDirectory>
-    <junit.version>5.9.1</junit.version>
   </properties>
 
   <dependencies>
+      <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>2.0.6</version>
+          <scope>compile</scope>
+      </dependency>
+
+      <!--       https://mvnrepository.com/artifact/org.testng/testng -->
+      <dependency>
+          <groupId>org.testng</groupId>
+          <artifactId>testng</artifactId>
+          <version>7.7.0</version>
+          <scope>test</scope>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+      <dependency>
+          <groupId>javax</groupId>
+          <artifactId>javaee-api</artifactId>
+          <version>8.0</version>
+      </dependency>
+
+
+
       <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -34,10 +64,16 @@
       <version>12.2.0.jre11</version>
     </dependency>
 
-    <dependency>
+      <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>5.0.1</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
@@ -45,18 +81,18 @@
           <groupId>org.thymeleaf</groupId>
           <artifactId>thymeleaf</artifactId>
           <version>3.1.1.RELEASE</version>
+          <scope>compile</scope>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+              </exclusion>
+          </exclusions>
       </dependency>
-
-
-      <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -70,8 +106,9 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
                 <configuration>
-                    <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
-                    <warName>myWar</warName>
+<!--                    <classesDirectory>${project.build.directory}/WEB-INF/classes</classesDirectory>-->
+<!--                    <webXml>${project.basedir}/src/main/webapp/WEB-INF/web.xml</webXml>-->
+                    <warName>ROOT</warName>
                 </configuration>
             </plugin>
             <plugin>
@@ -80,9 +117,12 @@
                 <version>3.1.0</version>
                 <configuration>
                     <directory>out</directory>
+                    <directory>target</directory>
 
                 </configuration>
+
             </plugin>
+
         </plugins>
     </build>
 </project>
