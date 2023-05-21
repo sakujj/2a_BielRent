@@ -391,7 +391,7 @@ public class ListingDaoImpl implements ListingDao {
 
                 System.out.println(sqlQuery);
                 ResultSet rs = statement.executeQuery();
-                while (rs.next()) {
+                while (rs.next()) {//тут ничего
                     ListingORM listingORM = new ListingORM();
 
                     Address address = new Address();

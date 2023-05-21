@@ -9,6 +9,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@EqualsAndHashCode
 public class Listing implements Entity {
 
     private Long id;

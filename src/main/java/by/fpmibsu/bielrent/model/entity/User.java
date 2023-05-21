@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 @Builder
+@EqualsAndHashCode
 public class User implements Entity {
     private Long id;
     // report list

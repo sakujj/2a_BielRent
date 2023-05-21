@@ -35,7 +35,6 @@ public class AddressDaoImplTest {
                         .build()}
         };
     }
-
     @DataProvider(name = "negativeSelectInput")
     public Object[][] createNegativeInput() {
         return new Object[][] {

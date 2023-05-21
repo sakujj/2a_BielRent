@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 @Builder
+@EqualsAndHashCode
 public class Filter implements Entity {
     private Long id;
     private Long listingId;
