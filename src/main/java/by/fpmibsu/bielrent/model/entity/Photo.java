@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@EqualsAndHashCode
 public class Photo implements Entity{
     private Long id;
     private Long listingId;
