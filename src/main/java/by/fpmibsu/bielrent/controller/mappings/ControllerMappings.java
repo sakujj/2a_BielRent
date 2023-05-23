@@ -10,26 +10,27 @@ import java.util.Map;
 @UtilityClass
 public class ControllerMappings {
 
-    private static Map<String, Controller> controllersByURL;
+    private static Map<String, Controller> controllersByURI;
 
 
     static {
-        controllersByURL = new HashMap<>();
-        controllersByURL.put(UriPatterns.HOME, new HomeController());
-        controllersByURL.put(UriPatterns.LOGIN, new LoginController());
-        controllersByURL.put(UriPatterns.REGISTRATION, new RegistrationController());
-        controllersByURL.put(UriPatterns.CREATE_LISTING, new CreateListingController());
-        controllersByURL.put(UriPatterns.IMAGES, new ImagesController());
+        controllersByURI = new HashMap<>();
+        controllersByURI.put(UriPatterns.HOME, new HomeController());
+        controllersByURI.put(UriPatterns.LOGIN, new LoginController());
+        controllersByURI.put(UriPatterns.REGISTRATION, new RegistrationController());
+        controllersByURI.put(UriPatterns.CREATE_LISTING, new CreateListingController());
+        controllersByURI.put(UriPatterns.IMAGES, new ImagesController());
+        controllersByURI.put(UriPatterns.LISTING_PAGE, new ListingPageController());
     }
 
 
 
     public static Controller resolveControllerByPath(String uri) {
-        Controller controller = controllersByURL.get(uri);
+        Controller controller = controllersByURI.get(uri);
         if (controller != null)
             return controller;
         else if (uri.startsWith(UriPatterns.IMAGES)) {
-            return controllersByURL.get(UriPatterns.IMAGES);
+            return controllersByURI.get(UriPatterns.IMAGES);
         }
 
         return null;

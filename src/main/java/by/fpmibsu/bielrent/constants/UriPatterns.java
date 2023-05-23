@@ -9,4 +9,5 @@ public class UriPatterns {
     public static final String IMAGES = "/images";
     public static final String LOGIN = "/" + HtmlPages.LOGIN;
     public static final String REGISTRATION = "/" + HtmlPages.REGISTRATION;
+    public static final String LISTING_PAGE = "/" + HtmlPages.LISTING_PAGE;
 }

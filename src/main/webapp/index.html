@@ -56,7 +56,7 @@
         <div class="mt-2 mb-0 pb-0 pt-2" th:insert="~{::copy-pagination}"></div>
         <div class="row justify-content-start main-body mt-2 pt-2" th:each="list, iterStat:${listings}"
         >
-            <a class="listing my-4" href="listing.html" th:classappend="${iterStat.index == 0 ? 'mt-0' :_}">
+            <a class="listing my-4" href="listing.html" th:href="@{listing.html(id=${list.getId()})}" th:classappend="${iterStat.index == 0 ? 'mt-0' :_}">
                 <div class="card col-md-9 listing-card">
                     <div class="row d-flex g-0 p-2">
                         <div class="col-md-4 align-self-center">
