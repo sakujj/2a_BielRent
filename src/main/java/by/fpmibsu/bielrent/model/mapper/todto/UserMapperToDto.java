@@ -19,6 +19,7 @@ public class UserMapperToDto implements Mapper<UserDto, User> {
         return UserDto.builder()
                 .id(obj.getId())
                 .email(obj.getEmail())
+                .name(obj.getName())
                 .role(obj.getRole().toString())
                 .rating(obj.getRating() == null ? null: obj.getRating().toString())
                 .build();

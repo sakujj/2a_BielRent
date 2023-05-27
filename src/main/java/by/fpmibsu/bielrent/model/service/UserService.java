@@ -1,5 +1,6 @@
 package by.fpmibsu.bielrent.model.service;
 
+import by.fpmibsu.bielrent.controller.dto.UserDto;
 import by.fpmibsu.bielrent.model.dao.UserDao;
 import by.fpmibsu.bielrent.model.dao.UserDaoImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
@@ -12,8 +13,11 @@ import by.fpmibsu.bielrent.model.mapper.todto.UserMapperToDto;
 import by.fpmibsu.bielrent.model.mapper.toentity.InsertUserMapperToEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserService {
@@ -24,16 +28,18 @@ public class UserService {
 
 
     private static final UserService INSTANCE = new UserService();
+
     public static UserService getInstance() {
         return INSTANCE;
     }
 
     /**
      * Validates InsertUserDto and inserts in database if it is valid.
+     *
      * @param insertUserDto
      * @return inserted entity id
      * @throws ValidationException if @param is not valid.
-     * @throws DaoException if database management system can not perform insertion.
+     * @throws DaoException        if database management system can not perform insertion.
      */
     public Long validateAndInsertIfValid(InsertUserDto insertUserDto) throws DaoException, ValidationException {
         ValidationResult vr = insertUserValidator.validate(insertUserDto);
@@ -48,6 +54,7 @@ public class UserService {
 
     /**
      * Checks if user by specified email is already in database.
+     *
      * @param email
      * @return true if email is reserved by any user.
      * @throws DaoException if database management system can not perform selection.
@@ -58,9 +65,18 @@ public class UserService {
 
     public Optional<User> login(String email, String password) {
         var sel = userDao.selectByEmailAndPassword(email, password);
-        if(sel.isEmpty()){
+        if (sel.isEmpty()) {
             return Optional.ofNullable(null);
         }
         return userDao.selectByEmailAndPassword(email, password);
+    }
+
+    @SneakyThrows
+    public List<Optional<UserDto>> getAllUsers() {
+        return userDao.selectAll()
+                .stream()
+                .map(userMapperToDto::mapFrom)
+                .map(Optional::of)
+                .collect(Collectors.toList());
     }
 }
