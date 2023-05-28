@@ -24,7 +24,7 @@ public class UsersResource {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
-        var jsonUsers = jsonMapper.ToJson(users);
+        var jsonUsers = jsonMapper.toJson(users);
         return Response.ok().entity(jsonUsers).build();
     }
 }

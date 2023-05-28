@@ -2,6 +2,11 @@ package by.fpmibsu.bielrent.model.dao;
 
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
+import by.fpmibsu.bielrent.model.dto.AddressDto;
+import by.fpmibsu.bielrent.model.dto.FilterDto;
+import by.fpmibsu.bielrent.model.dtomapper.todto.AddressMapperToDto;
+import by.fpmibsu.bielrent.model.dtomapper.toentity.AddressMapperToEntity;
+import by.fpmibsu.bielrent.model.dtomapper.toentity.FilterMapperToEntity;
 import by.fpmibsu.bielrent.model.entity.*;
 import lombok.SneakyThrows;
 
@@ -247,14 +252,14 @@ public class ListingDaoImpl implements ListingDao {
      * Selects ORM listings from database, that meet specified query
      *
      * @param query         data to filter entities (ids other than Listing.id doesn't mean a thing)
-     * @param rowsNumber          how many entities to select
+     * @param listingCount          how many entities to select
      * @param offset  how many entities to skip
      * @return List of ORM listings that meet specified query
      * @throws DaoException
      */
-    public List<ListingORM> selectRowsByListingDataWithOffset(ListingQuery query, long rowsNumber, long offset) throws DaoException {
-        Address addressQ = query.getAddress();
-        Filter filterQ = query.getFilter();
+    public List<ListingOrm> queryListings(ListingQuery query, long listingCount, long offset) throws DaoException {
+        Address addressQ = AddressMapperToEntity.getInstance().mapFrom(query.getAddress());
+        Filter filterQ = FilterMapperToEntity.getInstance().mapFrom(query.getFilter());
 
         String sqlQuery = "SELECT * FROM " +
                 " Listing l " +
@@ -368,7 +373,7 @@ public class ListingDaoImpl implements ListingDao {
         }
 
         params.add(offset);
-        params.add(rowsNumber);
+        params.add(listingCount);
         System.out.println(params);
 
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
@@ -382,7 +387,7 @@ public class ListingDaoImpl implements ListingDao {
                     System.out.println(params.get(i));
                 }
 
-                List<ListingORM> list = new ArrayList<>();
+                List<ListingOrm> list = new ArrayList<>();
 
                 AddressDaoImpl addressDao = AddressDaoImpl.getInstance();
                 UserDaoImpl userDao = UserDaoImpl.getInstance();
@@ -392,7 +397,7 @@ public class ListingDaoImpl implements ListingDao {
                 System.out.println(sqlQuery);
                 ResultSet rs = statement.executeQuery();
                 while (rs.next()) {//тут ничего
-                    ListingORM listingORM = new ListingORM();
+                    ListingOrm listingORM = new ListingOrm();
 
                     Address address = new Address();
                     addressDao.buildAddress(address, rs);

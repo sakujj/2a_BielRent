@@ -18,7 +18,7 @@ public class JsonMapper {
         return INSTANCE;
     }
 
-    public <T> String ToJson(T javaObj) {
+    public <T> String toJson(T javaObj) {
         try {
             return mapper.writeValueAsString(javaObj);
         } catch (JsonProcessingException e) {
@@ -26,7 +26,7 @@ public class JsonMapper {
         }
     }
 
-    public <T> T FromJson(String jsonObj, Class<T> clazz) {
+    public <T> T fromJson(String jsonObj, Class<T> clazz) {
         try {
             return mapper.readValue(jsonObj.getBytes(StandardCharsets.UTF_8), clazz);
         } catch (IOException e) {

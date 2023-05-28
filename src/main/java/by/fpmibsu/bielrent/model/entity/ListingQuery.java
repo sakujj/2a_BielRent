@@ -1,5 +1,7 @@
 package by.fpmibsu.bielrent.model.entity;
 
+import by.fpmibsu.bielrent.model.dto.AddressDto;
+import by.fpmibsu.bielrent.model.dto.FilterDto;
 import lombok.*;
 
 @AllArgsConstructor
@@ -10,8 +12,8 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode
 public class ListingQuery {
-    Address address;
-    Filter filter;
+    AddressDto address;
+    FilterDto filter;
     PropertyType propertyTypeName;
     Long priceFrom;
     Long priceTo;

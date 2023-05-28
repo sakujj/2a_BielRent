@@ -15,6 +15,9 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImageService {
     private static final ImageService INSTANCE = new ImageService();
+    public static ImageService getInstance() {
+        return INSTANCE;
+    }
 
     private final String BASE_PATH = PropertiesUtil.get("image.base.url");
 
@@ -29,6 +32,12 @@ public class ImageService {
         }
     }
 
+    @SneakyThrows
+    public Optional<InputStream> get(String path){
+        return Files.exists(Path.of(BASE_PATH, path)) ? Optional.of(Files.newInputStream(Path.of(BASE_PATH, path)))
+                : Optional.empty();
+    }
+
     public static String getFileExt(String fileName) {
         int index = fileName.lastIndexOf(".");
         String fileExt = "";
@@ -38,12 +47,5 @@ public class ImageService {
 
         return fileExt;
     }
-    @SneakyThrows
-    public Optional<InputStream> get(String path){
-        return Files.exists(Path.of(BASE_PATH, path)) ? Optional.of(Files.newInputStream(Path.of(BASE_PATH, path)))
-                : Optional.empty();
-    }
-    public static ImageService getInstance() {
-        return INSTANCE;
-    }
+
 }

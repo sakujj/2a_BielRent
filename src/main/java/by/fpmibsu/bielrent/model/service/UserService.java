@@ -1,16 +1,16 @@
 package by.fpmibsu.bielrent.model.service;
 
-import by.fpmibsu.bielrent.controller.dto.UserDto;
+import by.fpmibsu.bielrent.model.dto.UserDto;
 import by.fpmibsu.bielrent.model.dao.UserDao;
 import by.fpmibsu.bielrent.model.dao.UserDaoImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
-import by.fpmibsu.bielrent.controller.dto.InsertUserDto;
-import by.fpmibsu.bielrent.controller.dto.validator.InsertUserValidator;
-import by.fpmibsu.bielrent.controller.dto.validator.ValidationException;
-import by.fpmibsu.bielrent.controller.dto.validator.ValidationResult;
+import by.fpmibsu.bielrent.model.dto.InsertUserDto;
+import by.fpmibsu.bielrent.model.dto.validator.InsertUserValidator;
+import by.fpmibsu.bielrent.model.dto.validator.ValidationException;
+import by.fpmibsu.bielrent.model.dto.validator.ValidationResult;
 import by.fpmibsu.bielrent.model.entity.User;
-import by.fpmibsu.bielrent.model.mapper.todto.UserMapperToDto;
-import by.fpmibsu.bielrent.model.mapper.toentity.InsertUserMapperToEntity;
+import by.fpmibsu.bielrent.model.dtomapper.todto.UserMapperToDto;
+import by.fpmibsu.bielrent.model.dtomapper.toentity.InsertUserMapperToEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -41,7 +41,7 @@ public class UserService {
      * @throws ValidationException if @param is not valid.
      * @throws DaoException        if database management system can not perform insertion.
      */
-    public Long validateAndInsertIfValid(InsertUserDto insertUserDto) throws DaoException, ValidationException {
+    public Long insertIfValid(InsertUserDto insertUserDto) throws DaoException, ValidationException {
         ValidationResult vr = insertUserValidator.validate(insertUserDto);
         if (!vr.isValid()) {
             throw new ValidationException(vr.getErrors());

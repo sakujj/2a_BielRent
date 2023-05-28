@@ -62,13 +62,13 @@
                         <div class="col-md-4 align-self-center">
                             <div class="img">
                                 <img src="https://pro-dachnikov.com/uploads/posts/2023-01/1674014062_pro-dachnikov-com-p-vstroennii-kholodilnik-v-koridore-dizain-f-68.jpg"
-                                     th:src="@{|images/${list.photos.get(0).getPath()}|}" alt="" class="img-main-page">
+                                     th:src="@{|images/${list.getPhotos().get(0).getPath()}|}" alt="" class="img-main-page">
                             </div>
                         </div>
                         <div class="col-md-8 px-2">
                             <div class="card-body">
                                 <h5 class="card-title mt-md-2 pb-1"
-                                    th:text="|${list.getName()} - ${list.getFilter().getPriceMonthly()} BYN|">
+                                    th:text="|${list.getName()} - ${list.getFilter().getPriceMonthly()} BYN/месяц|">
                                     Замечательная квартира - 1000 BYN/месяц</h5>
                                 <div class="description px-2 mt-md-2">
                                     <div class="parameters card-text"

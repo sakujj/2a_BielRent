@@ -2,9 +2,9 @@ package by.fpmibsu.bielrent.controller.webcontroller;
 
 import by.fpmibsu.bielrent.constants.HtmlPages;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
-import by.fpmibsu.bielrent.controller.dto.InsertUserDto;
-import by.fpmibsu.bielrent.controller.dto.validator.InsertUserValidator;
-import by.fpmibsu.bielrent.controller.dto.validator.ValidationException;
+import by.fpmibsu.bielrent.model.dto.InsertUserDto;
+import by.fpmibsu.bielrent.model.dto.validator.InsertUserValidator;
+import by.fpmibsu.bielrent.model.dto.validator.ValidationException;
 import by.fpmibsu.bielrent.model.service.UserService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
 import org.thymeleaf.ITemplateEngine;
@@ -35,7 +35,7 @@ public class RegistrationController implements Controller {
 
         try {
             if (pass1.equals(pass2)) {
-                userService.validateAndInsertIfValid(userDto);
+                userService.insertIfValid(userDto);
             } else if (userService.isUserWithEmailInDB(userDto.getEmail())) {
                 error = InsertUserValidator.getInstance().EMAIL_ALREADY_EXISTS_ERROR.getMessage();
             } else {

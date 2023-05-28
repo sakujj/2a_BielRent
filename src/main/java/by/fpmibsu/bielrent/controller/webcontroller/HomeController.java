@@ -1,7 +1,7 @@
 package by.fpmibsu.bielrent.controller.webcontroller;
 
 import by.fpmibsu.bielrent.constants.HtmlPages;
-import by.fpmibsu.bielrent.model.entity.ListingORM;
+import by.fpmibsu.bielrent.model.dto.ListingOrmDto;
 import by.fpmibsu.bielrent.model.entity.ListingQuery;
 import by.fpmibsu.bielrent.model.service.ListingService;
 import by.fpmibsu.bielrent.utility.PropertiesUtil;
@@ -22,9 +22,9 @@ public class HomeController implements Controller {
 
         Map<Integer, Integer> pageMap = getPageNumbers(req);
 
-        List<ListingORM> list = listingService
-                .getRowsByQueryWithOffset(new ListingQuery(), 6, 5 * (pageMap.get(0) - 1));
-        List<ListingORM> subList = list.subList(0, list.size() >= 6 ? 5 : list.size());
+        var list = listingService
+                .queryListings(new ListingQuery(), 6, 5 * (pageMap.get(0) - 1));
+        var subList = list.subList(0, list.size() >= 6 ? 5 : list.size());
 
         Set<Integer> disabledNumbers = getDisabledPaginationNumbers(pageMap, list);
 
@@ -78,7 +78,7 @@ public class HomeController implements Controller {
      * NEXT_PAGE == 0, PREV_PAGE == -1, PAGE_i == i.
      */
     Set<Integer> getDisabledPaginationNumbers(Map<Integer, Integer> pageMap,
-                                              List<ListingORM> listings) {
+                                              List<ListingOrmDto> listings) {
         HashSet<Integer> disabledNumbers = new HashSet<>();
         //Next == 0
         //Prev == -1

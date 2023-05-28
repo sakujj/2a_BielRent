@@ -7,28 +7,27 @@ import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ConnectionPoolImpl implements ConnectionPool {
     private static final String URL_KEY = "db.url";
     private static final String USER_KEY = "db.user";
     private static final String PASSWORD_KEY = "db.password";
-    private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    private static final String DRIVER_KEY = "db.driver";
     private static final int MAX_POOL_SIZE = 10;
     private static final int MIN_IDLE = 10;
     private static final int MAX_LIFETIME = 1_800_000;
     private static final int IDLE_TIMEOUT = 600_000;
 
-    private static final ConnectionPoolImpl connectionPool = createPoolAndInitializeDataSource();
-    private HikariDataSource dataSource = null;
-
+    private static final ConnectionPoolImpl INSTANCE = new ConnectionPoolImpl();
+    private static HikariDataSource dataSource = getDataSource();
 
     private ConnectionPoolImpl() {
     }
 
-
     public static ConnectionPoolImpl getInstance() {
-        return connectionPool;
+        return INSTANCE;
     }
 
     public Connection getConnection() throws DaoException {
@@ -47,10 +46,10 @@ public class ConnectionPoolImpl implements ConnectionPool {
     }
 
     @SneakyThrows
-    private static ConnectionPoolImpl createPoolAndInitializeDataSource() {
+    private static HikariDataSource getDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
 
-        Class.forName(DRIVER);
+        Class.forName(PropertiesUtil.get(DRIVER_KEY));
         dataSource.setJdbcUrl(PropertiesUtil.get(URL_KEY));
         dataSource.setUsername(PropertiesUtil.get(USER_KEY));
         dataSource.setPassword(PropertiesUtil.get(PASSWORD_KEY));
@@ -59,8 +58,6 @@ public class ConnectionPoolImpl implements ConnectionPool {
         dataSource.setMaxLifetime(MAX_LIFETIME);
         dataSource.setIdleTimeout(IDLE_TIMEOUT);
 
-        ConnectionPoolImpl cp = new ConnectionPoolImpl();
-        cp.dataSource = dataSource;
-        return cp;
+        return dataSource;
     }
 }

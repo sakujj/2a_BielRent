@@ -3,11 +3,11 @@ package by.fpmibsu.bielrent.model.service;
 import by.fpmibsu.bielrent.model.dao.PhotoDao;
 import by.fpmibsu.bielrent.model.dao.PhotoDaoImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
-import by.fpmibsu.bielrent.controller.dto.PhotoDto;
-import by.fpmibsu.bielrent.controller.dto.validator.PhotoValidator;
-import by.fpmibsu.bielrent.controller.dto.validator.ValidationResult;
+import by.fpmibsu.bielrent.model.dto.InsertPhotoDto;
+import by.fpmibsu.bielrent.model.dto.validator.PhotoValidator;
+import by.fpmibsu.bielrent.model.dto.validator.ValidationResult;
 import by.fpmibsu.bielrent.model.entity.Photo;
-import by.fpmibsu.bielrent.model.mapper.toentity.PhotoMapperToEntity;
+import by.fpmibsu.bielrent.model.dtomapper.toentity.InsertPhotoMapperToEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,7 +15,7 @@ import lombok.SneakyThrows;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PhotoService {
     private static final ImageService imageService = ImageService.getInstance();
-    private static final PhotoMapperToEntity photoMapperToEntity = PhotoMapperToEntity.getInstance();
+    private static final InsertPhotoMapperToEntity photoMapperToEntity = InsertPhotoMapperToEntity.getInstance();
     private static final PhotoValidator photoValidator = PhotoValidator.getInstance();
     private static final PhotoDao photoDao = PhotoDaoImpl.getInstance();
 
@@ -25,15 +25,15 @@ public class PhotoService {
     }
 
     @SneakyThrows
-    public long insert(PhotoDto photoDto) throws DaoException {
+    public long insertIfValid(InsertPhotoDto insertPhotoDto) throws DaoException {
         long id = -1;
 
-        ValidationResult vr = photoValidator.validate(photoDto);
+        ValidationResult vr = photoValidator.validate(insertPhotoDto);
         if (!vr.isValid()) {
             return id;
         }
-        Photo photoEntity = photoMapperToEntity.mapFrom(photoDto);
-        imageService.upload(photoEntity.getPath(), photoDto.getPhoto().getInputStream());
+        Photo photoEntity = photoMapperToEntity.mapFrom(insertPhotoDto);
+        imageService.upload(photoEntity.getPath(), insertPhotoDto.getPhoto().getInputStream());
         id = photoDao.insert(photoEntity);
 
         return id;

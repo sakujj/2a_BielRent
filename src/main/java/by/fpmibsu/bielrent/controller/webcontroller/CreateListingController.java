@@ -1,8 +1,11 @@
 package by.fpmibsu.bielrent.controller.webcontroller;
 
 import by.fpmibsu.bielrent.constants.HtmlPages;
-import by.fpmibsu.bielrent.controller.dto.*;
-import by.fpmibsu.bielrent.controller.dto.validator.ValidationException;
+import by.fpmibsu.bielrent.model.dto.AddressDto;
+import by.fpmibsu.bielrent.model.dto.FilterDto;
+import by.fpmibsu.bielrent.model.dto.ListingDto;
+import by.fpmibsu.bielrent.model.dto.InsertPhotoDto;
+import by.fpmibsu.bielrent.model.dto.validator.ValidationException;
 import by.fpmibsu.bielrent.model.entity.User;
 import by.fpmibsu.bielrent.model.service.AddressService;
 import by.fpmibsu.bielrent.model.service.FilterService;
@@ -62,9 +65,8 @@ public class CreateListingController implements Controller {
                 .districtMicro(districtMicro)
                 .street(street)
                 .houseNumber(houseNumber).build();
-        Long addressId = -1l;
 
-        addressId = addressService.validateAndInsertIfValid(addressDto);
+        Long addressId = addressService.insertIfValid(addressDto);
 
         ListingDto listingDto = ListingDto.builder()
                 .name(listingTitle)
@@ -74,7 +76,7 @@ public class CreateListingController implements Controller {
                 .propertyTypeName(propertyType).build();
         Long listingId = -1l;
 
-        listingId = listingService.validateAndInsertIfValid(listingDto);
+        listingId = listingService.insertIfValid(listingDto);
 
 
         FilterDto filterDto = FilterDto.builder()
@@ -94,17 +96,17 @@ public class CreateListingController implements Controller {
                 .rentalPeriodEnd(rentalPeriodEnd)
                 .listingId(listingId).build();
         try {
-            filterService.validateAndInsertIfValid(filterDto);
+            filterService.insertIfValid(filterDto);
         } catch (ValidationException e) {
             System.out.println(e.getErrors().get(0).getCode());
         }
 
         var part = req.getPart("image");
-        PhotoDto photoDto = PhotoDto.builder()
+        InsertPhotoDto insertPhotoDto = InsertPhotoDto.builder()
                 .photo(part)
                 .listingId(listingId).build();
 
-        photoService.insert(photoDto);
+        photoService.insertIfValid(insertPhotoDto);
 
         resp.sendRedirect(UriPatterns.HOME);
     }

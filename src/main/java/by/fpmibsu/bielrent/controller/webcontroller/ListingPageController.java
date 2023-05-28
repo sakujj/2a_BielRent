@@ -2,7 +2,7 @@ package by.fpmibsu.bielrent.controller.webcontroller;
 
 import by.fpmibsu.bielrent.constants.HtmlPages;
 import by.fpmibsu.bielrent.constants.UriPatterns;
-import by.fpmibsu.bielrent.model.entity.ListingORM;
+import by.fpmibsu.bielrent.model.entity.ListingOrm;
 import by.fpmibsu.bielrent.model.service.ListingService;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -28,14 +28,14 @@ public class ListingPageController implements Controller{
             return;
         }
 
-        ListingORM listingORM = listingService.getListingById(id).get();
-        webContext.setVariable("photos", listingORM.getPhotos());
-        webContext.setVariable("user", listingORM.getUser());
-        webContext.setVariable("address", listingORM.getAddress());
-        webContext.setVariable("filter", listingORM.getFilter());
-        webContext.setVariable("name", listingORM.getName());
-        webContext.setVariable("description", listingORM.getDescription());
-        webContext.setVariable("propertyTypeName", listingORM.getPropertyTypeName());
+        var listingOrmDto = listingService.getListingById(id).get();
+        webContext.setVariable("photos", listingOrmDto.getPhotos());
+        webContext.setVariable("user", listingOrmDto.getUser());
+        webContext.setVariable("address", listingOrmDto.getAddress());
+        webContext.setVariable("filter", listingOrmDto.getFilter());
+        webContext.setVariable("name", listingOrmDto.getName());
+        webContext.setVariable("description", listingOrmDto.getDescription());
+        webContext.setVariable("propertyTypeName", listingOrmDto.getPropertyTypeName());
 
         templateEngine.process(HtmlPages.LISTING_PAGE, webContext, resp.getWriter());
     }
