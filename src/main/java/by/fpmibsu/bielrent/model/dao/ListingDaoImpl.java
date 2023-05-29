@@ -258,8 +258,8 @@ public class ListingDaoImpl implements ListingDao {
      * @throws DaoException
      */
     public List<ListingOrm> queryListings(ListingQuery query, long listingCount, long offset) throws DaoException {
-        Address addressQ = AddressMapperToEntity.getInstance().mapFrom(query.getAddress());
-        Filter filterQ = FilterMapperToEntity.getInstance().mapFrom(query.getFilter());
+        AddressDto addressQ = query.getAddress();
+        FilterDto filterQ = query.getFilter();
 
         String sqlQuery = "SELECT * FROM " +
                 " Listing l " +

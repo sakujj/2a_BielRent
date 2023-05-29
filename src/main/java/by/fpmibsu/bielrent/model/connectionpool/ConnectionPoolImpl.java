@@ -21,7 +21,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
     private static final int IDLE_TIMEOUT = 600_000;
 
     private static final ConnectionPoolImpl INSTANCE = new ConnectionPoolImpl();
-    private static HikariDataSource dataSource = getDataSource();
+    private static final HikariDataSource dataSource = getDataSource();
 
     private ConnectionPoolImpl() {
     }
