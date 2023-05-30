@@ -9,7 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.logging.Level;
+import org.apache.log4j.*;
 import static java.sql.Types.NULL;
 
 public class AddressDaoImpl implements AddressDao {
@@ -47,6 +48,7 @@ public class AddressDaoImpl implements AddressDao {
             "WHERE id = ?";
 
     private static final AddressDaoImpl INSTANCE = new AddressDaoImpl();
+    private Logger logger = Logger.getLogger(AddressDaoImpl.class.getName());
 
     private AddressDaoImpl() {
     }
@@ -76,11 +78,14 @@ public class AddressDaoImpl implements AddressDao {
 
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
+
             if (rs.next()) {
+                logger.info("Address was added");
                 id = rs.getLong(1);
             }
             return id;
         } catch (SQLException e) {
+            logger.error("Address wasn't added\n");
             throw new DaoException(e);
         }
     }

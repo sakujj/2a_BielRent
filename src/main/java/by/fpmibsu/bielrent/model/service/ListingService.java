@@ -67,6 +67,7 @@ public class ListingService {
 
         listingCount.incrementAndGet();
         return id;
+
     }
 
     public Long insertIfValid(ListingOrmReq listingOrmReq) throws DaoException, ValidationException, IOException {
@@ -143,6 +144,7 @@ public class ListingService {
             throw new DaoException(e);
         }
     }
+
 
     public Optional<ListingOrmResp> getListingById(long id, Connection conn) throws DaoException {
         try {

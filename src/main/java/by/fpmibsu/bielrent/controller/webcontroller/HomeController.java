@@ -19,14 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.*;
+import org.apache.log4j.*;
 
 public class HomeController implements Controller {
+    private static Logger logger = Logger.getLogger(HomeController.class);
     ListingService listingService = ListingService.getInstance();
 
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)
             throws IOException, ServletException {
-
+        logger.log(Level.INFO,"Hello");
         Map<Integer, Integer> pageMap = getPageNumbers(req);
 
         List<ListingOrmResp> list;
