@@ -25,7 +25,7 @@ public class DispatcherFilter extends HttpFilter {
         || UriPatterns.GET_USERS_REST_API.equals(uri)) {
             chain.doFilter(httpReq, httpResp);
         } else {
-            httpReq.getRequestDispatcher("/app" + uri).forward(httpReq, httpResp);
+            httpReq.getRequestDispatcher(UriPatterns.ROOT + uri).forward(httpReq, httpResp);
         }
     }
 }

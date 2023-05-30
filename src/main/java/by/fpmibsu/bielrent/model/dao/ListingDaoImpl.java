@@ -367,7 +367,7 @@ public class ListingDaoImpl implements ListingDao {
 
         params.add(offset);
         params.add(listingCount);
-        System.out.println(params);
+//        System.out.println(params);
 
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             try {
@@ -387,7 +387,7 @@ public class ListingDaoImpl implements ListingDao {
                 FilterDaoImpl filterDao = FilterDaoImpl.getInstance();
                 PhotoDaoImpl photoDao = PhotoDaoImpl.getInstance();
 
-                System.out.println(sqlQuery);
+//                System.out.println(sqlQuery);
                 ResultSet rs = statement.executeQuery();
                 while (rs.next()) {//тут ничего
                     ListingOrm listingORM = new ListingOrm();

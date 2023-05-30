@@ -54,12 +54,12 @@ public class DispatcherServlet extends HttpServlet {
         var httpReq = (HttpServletRequest) req;
         var httpResp = (HttpServletResponse) res;
 
-        String uri = ((HttpServletRequest) req).getRequestURI();
-        uri = uri.substring(4);
+        String uri = httpReq.getRequestURI();
+        uri = uri.substring(UriPatterns.ROOT.length());
 
         Controller controller = ControllerMappings.resolveControllerByPath(uri);
         if (controller == null) {
-            ErrorHandler.forwardToErrorPage(httpReq, httpResp, 404);
+            ErrorHandler.forwardToErrorPage(httpReq, httpResp, ErrorHandler.NOT_FOUND);
             return;
         }
 

@@ -23,8 +23,6 @@ public class LoginController implements Controller {
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)
             throws IOException, ServletException {
-        System.err.println(req.getRequestURI());
-        System.err.println(req.getParameter("logout") + " #$#$#$");
         if ("true".equals(req.getParameter("logout"))) {
             String isAuthorised = (String) req.getAttribute("isAuthorised");
             if ("false".equals(isAuthorised)) {
