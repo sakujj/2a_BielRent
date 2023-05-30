@@ -303,3 +303,14 @@ body {
 .page-item:last-child>.page-link:focus {
     box-shadow: 1px 1px 0 rgba(33, 37, 41, 0.15);
 }
+.profile {
+    border-bottom:1px solid rgba(33, 37, 41, 0.25);
+}
+.profile:disabled {
+    background-color: #f2f2f2;
+}
+.profile::placeholder {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    color: #333;
+}
