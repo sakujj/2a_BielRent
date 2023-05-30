@@ -3,6 +3,7 @@ package by.fpmibsu.bielrent.model.dao;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Filter;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.time.ZoneId;
@@ -53,6 +54,7 @@ public class FilterDaoImpl implements FilterDao {
     private final String SQL_DELETE_FILTER_BY_ID = "DELETE FROM [dbo].[Filter] WHERE id = ?";
 
     private static final FilterDaoImpl INSTANCE = new FilterDaoImpl();
+    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
 
     public FilterDaoImpl() {
     }
@@ -109,6 +111,7 @@ public class FilterDaoImpl implements FilterDao {
             }
             return id;
         } catch (SQLException e) {
+            logger.error("filter wasn't inserted\n");
             throw new DaoException(e);
         }
     }
@@ -140,6 +143,7 @@ public class FilterDaoImpl implements FilterDao {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("filter wasn't updated\n");
             throw new DaoException(e);
         }
     }
@@ -149,6 +153,7 @@ public class FilterDaoImpl implements FilterDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("filter wasn't deleted\n");
             throw new DaoException(e);
         }
     }
@@ -167,6 +172,7 @@ public class FilterDaoImpl implements FilterDao {
 
             return filter;
         } catch (SQLException e) {
+            logger.error("filter wasn't selected by id\n");
             throw new DaoException(e);
         }
     }
@@ -184,6 +190,7 @@ public class FilterDaoImpl implements FilterDao {
             }
             return filters;
         } catch (SQLException e) {
+            logger.error("filters werent selected\n");
             throw new DaoException(e);
         }
     }
@@ -201,6 +208,7 @@ public class FilterDaoImpl implements FilterDao {
 
             return Optional.ofNullable(filter);
         } catch (SQLException e) {
+            logger.error("filter wasn't selected by id\n");
             throw new RuntimeException(e);
         }
     }
@@ -210,6 +218,7 @@ public class FilterDaoImpl implements FilterDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
+            logger.error("filter wasn't inserted\n");
             throw new DaoException(e);
         }
     }
@@ -219,6 +228,7 @@ public class FilterDaoImpl implements FilterDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
+            logger.error("filters werent selected\n");
             throw new DaoException(e);
         }
     }
@@ -228,6 +238,7 @@ public class FilterDaoImpl implements FilterDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {
+            logger.error("filter wasn't selected by id\n");
             throw new DaoException(e);
         }
     }
@@ -237,6 +248,7 @@ public class FilterDaoImpl implements FilterDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
+            logger.error("filter wasn't updated\n");
             throw new DaoException(e);
         }
     }
@@ -246,6 +258,7 @@ public class FilterDaoImpl implements FilterDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
+            logger.error("filter wasn't deleted\n");
             throw new DaoException(e);
         }
     }
@@ -255,6 +268,7 @@ public class FilterDaoImpl implements FilterDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
+            logger.error("filter wasn't deleted\n");
             throw new DaoException(e);
         }
     }
@@ -264,6 +278,7 @@ public class FilterDaoImpl implements FilterDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectByListingId(listingId, conn);
         } catch (SQLException e) {
+            logger.error("filter wasn't selected by listing id\n");
             throw new DaoException(e);
         }
     }

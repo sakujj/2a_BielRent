@@ -5,6 +5,7 @@ import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Role;
 import by.fpmibsu.bielrent.model.entity.User;
 import lombok.SneakyThrows;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class UserDaoImpl implements UserDao {
             "WHERE email = ? AND password = ?";
 
     private static final UserDaoImpl INSTANCE = new UserDaoImpl();
+    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
 
     private UserDaoImpl() {
     }
@@ -84,6 +86,7 @@ public class UserDaoImpl implements UserDao {
             }
             return id;
         } catch (SQLException e) {
+            logger.error("user wasnt inserted");
             throw new DaoException(e);
         }
     }
@@ -101,6 +104,7 @@ public class UserDaoImpl implements UserDao {
 
             return user;
         } catch (SQLException e) {
+            logger.error("user wasnt selected");
             throw new DaoException(e);
         }
     }
@@ -118,6 +122,7 @@ public class UserDaoImpl implements UserDao {
 
             return users;
         } catch (SQLException e) {
+            logger.error("users werent selected all");
             throw new DaoException(e);
         }
 
@@ -136,6 +141,7 @@ public class UserDaoImpl implements UserDao {
 
             return user;
         } catch (SQLException e) {
+            logger.error("user wasnt selected by email");
             throw new DaoException(e);
         }
     }
@@ -153,6 +159,7 @@ public class UserDaoImpl implements UserDao {
 
             return Optional.ofNullable(user);
         } catch (SQLException e) {
+            logger.error("user wasnt selected by email and password");
             throw new DaoException(e);
         }
     }
@@ -168,6 +175,7 @@ public class UserDaoImpl implements UserDao {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("user wasnt updated");
             throw new DaoException(e);
         }
     }
@@ -178,6 +186,7 @@ public class UserDaoImpl implements UserDao {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("user wasnt deleted");
             throw new DaoException(e);
         }
     }
@@ -188,6 +197,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
+            logger.error("user wasnt inserted");
             throw new DaoException(e);
         }
     }
@@ -197,6 +207,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
+            logger.error("user werent selected all");
             throw new DaoException(e);
         }
     }
@@ -206,6 +217,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return Optional.ofNullable(select(id, conn));
         } catch (SQLException e) {
+            logger.error("user wasnt selected by id");
             throw new DaoException(e);
         }
     }
@@ -215,6 +227,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
+            logger.error("user wasnt updated");
             throw new DaoException(e);
         }
     }
@@ -224,6 +237,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
+            logger.error("user wasnt deleted");
             throw new DaoException(e);
         }
     }
@@ -233,6 +247,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
+            logger.error("user wasnt deleted");
             throw new DaoException(e);
         }
     }
@@ -242,6 +257,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return Optional.ofNullable(selectByEmail(email, conn));
         } catch (SQLException e) {
+            logger.error("user wasnt selected by email");
             throw new DaoException(e);
         }
     }
@@ -249,6 +265,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> selectByEmailAndPassword(String email, String password) {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            logger.error("user wasnt selected by email and password");
             return selectByEmailAndPassword(email, password, conn);
         }
     }
@@ -262,6 +279,7 @@ public class UserDaoImpl implements UserDao {
             user.setPassword(resultSet.getString("password"));
             user.setRole(Role.valueOf(resultSet.getString("role")));
         } catch (SQLException e) {
+            logger.error("user wasnt built");
             throw new DaoException(e);
         }
     }

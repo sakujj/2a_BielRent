@@ -8,6 +8,7 @@ import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.dto.resp.ListingOrmResp;
 import by.fpmibsu.bielrent.model.entity.ListingOrm;
 import by.fpmibsu.bielrent.model.service.ListingService;
+import org.apache.log4j.Logger;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 public class ListingPageController implements Controller {
 
     ListingService listingService = ListingService.getInstance();
+    Logger logger = org.apache.log4j.Logger.getLogger(ListingPageController.class);
 
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)
@@ -30,6 +32,7 @@ public class ListingPageController implements Controller {
         try {
             id = Long.parseLong(listingId);
         } catch (NumberFormatException e) {
+            logger.error("number format wrong in listing page controller");
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.NOT_FOUND);
             return;
         }
@@ -43,6 +46,7 @@ public class ListingPageController implements Controller {
         try {
             listingOrmResp = listingService.getListingById(id).get();
         } catch (DaoException e) {
+            logger.error("get listung by id service error");
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
             return;
         }

@@ -9,6 +9,7 @@ import by.fpmibsu.bielrent.model.dtovalidator.ValidationException;
 import by.fpmibsu.bielrent.model.entity.User;
 import by.fpmibsu.bielrent.model.service.ListingService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
+import org.apache.log4j.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class CreateListingController implements Controller {
+    private static Logger logger = Logger.getLogger(CreateListingController.class);
     ListingService listingService = ListingService.getInstance();
 
     @Override
@@ -82,8 +84,10 @@ public class CreateListingController implements Controller {
         try {
             listingService.insertIfValid(listingOrmReq);
         } catch (ValidationException ve) {
+            logger.error("listing service insert if valid error\n");
             resp.setStatus(HttpsURLConnection.HTTP_BAD_REQUEST);
             parser.parse(HtmlPages.CREATE_LISTING_PAGE, resp.getWriter());
+
             return;
         } catch (DaoException e) {
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
