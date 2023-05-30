@@ -27,7 +27,7 @@ public class PhotoDaoTest {
         @ParameterizedTest
         @MethodSource("test.fpmibsu.bielrent.dao.PhotoDaoTest#getSelectArgs")
         @DisplayName("selects a photo")
-        void selectUser(Photo expected) throws DaoException {
+        void selectPhoto(Photo expected) throws DaoException {
             try (var conn = testConnPool.getConnection()) {
                 var actual = photoDao.select(expected.getId(), conn);
                 assertThat(actual.get()).isEqualTo(expected);
@@ -51,5 +51,4 @@ public class PhotoDaoTest {
                         .build())
         );
     }
-
 }
