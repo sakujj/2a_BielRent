@@ -3,6 +3,7 @@ package by.fpmibsu.bielrent.model.dao;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Photo;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class PhotoDaoImpl implements PhotoDao {
             "WHERE listingId = ?";
 
     private static final PhotoDaoImpl INSTANCE = new PhotoDaoImpl();
+    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
 
     public static PhotoDaoImpl getInstance() {
         return INSTANCE;
@@ -51,6 +53,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return id;
         } catch (SQLException e) {
+            logger.error("photo wasnt inserted");
             throw new DaoException(e);
         }
     }
@@ -68,6 +71,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return Optional.ofNullable(photo);
         } catch (SQLException e) {
+            logger.error("photo wasnt selected by id");
             throw new DaoException(e);
         }
     }
@@ -85,6 +89,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return photos;
         } catch (SQLException e) {
+            logger.error("photos werent selected");
             throw new DaoException(e);
         }
     }
@@ -103,6 +108,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return photos;
         } catch (SQLException e) {
+            logger.error("photo werebt selected by listing id");
             throw new DaoException(e);
         }
     }
@@ -117,6 +123,7 @@ public class PhotoDaoImpl implements PhotoDao {
             statement.setLong(2, record.getListingId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("photo wasnt updated");
             throw new DaoException(e);
         }
     }
@@ -126,6 +133,7 @@ public class PhotoDaoImpl implements PhotoDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("photo wasnt deleted");
             throw new DaoException(e);
         }
     }
@@ -135,6 +143,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAllByListingId(listingId, conn);
         } catch (SQLException e) {
+            logger.error("photo wasnt selected by listing id");
             throw new DaoException(e);
         }
     }
@@ -144,6 +153,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
+            logger.error("photo wasnt inserted");
             throw new DaoException(e);
         }
     }
@@ -153,6 +163,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
+            logger.error("photos werent selected all");
             throw new DaoException(e);
         }
     }
@@ -162,6 +173,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {
+            logger.error("photo wasnt selected by id");
             throw new DaoException(e);
         }
     }
@@ -171,6 +183,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
+            logger.error("photo wasnt updated");
             throw new DaoException(e);
         }
     }
@@ -180,6 +193,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
+            logger.error("photo wasnt deleted");
             throw new DaoException(e);
         }
     }
@@ -189,6 +203,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
+            logger.error("photo wasnt deleted");
             throw new DaoException(e);
         }
     }
@@ -199,6 +214,7 @@ public class PhotoDaoImpl implements PhotoDao {
             photo.setPath(resultSet.getString("path"));
             photo.setListingId(resultSet.getLong("listingId"));
         } catch (SQLException e) {
+            logger.error("photo wasnt builded");
             throw new DaoException(e);
         }
     }

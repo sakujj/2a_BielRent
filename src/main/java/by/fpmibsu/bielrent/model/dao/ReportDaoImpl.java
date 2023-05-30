@@ -3,6 +3,7 @@ package by.fpmibsu.bielrent.model.dao;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Report;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class ReportDaoImpl implements ReportDao {
     public static ReportDaoImpl getInstance() {
         return INSTANCE;
     }
+    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
 
     public ReportDaoImpl() {
 
@@ -46,6 +48,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return id;
         } catch (SQLException e) {
+            logger.error("report wasnt inserted");
             throw new DaoException(e);
         }
     }
@@ -63,6 +66,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return Optional.ofNullable(report);
         } catch (SQLException e) {
+            logger.error("report wasnt selected by id");
             throw new DaoException(e);
         }
     }
@@ -80,6 +84,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return reports;
         } catch (SQLException e) {
+            logger.error("reports werent selected all");
             throw new DaoException(e);
         }
     }
@@ -98,6 +103,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return reports;
         } catch (SQLException e) {
+            logger.error("report wasnt selected all by user id");
             throw new DaoException(e);
         }
     }
@@ -110,6 +116,7 @@ public class ReportDaoImpl implements ReportDao {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("report wasnt updated");
             throw new DaoException(e);
         }
     }
@@ -119,6 +126,7 @@ public class ReportDaoImpl implements ReportDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            logger.error("report wasnt deleted by id\n");
             throw new DaoException(e);
         }
     }
@@ -128,6 +136,7 @@ public class ReportDaoImpl implements ReportDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAllByUserId(userId, conn);
         } catch (SQLException e) {
+            logger.error("report wasnt selected all by user id\n");
             throw new DaoException(e);
         }
     }
@@ -137,6 +146,7 @@ public class ReportDaoImpl implements ReportDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
+            logger.error("report wasnt inserted\n");
             throw new DaoException(e);
         }
     }
@@ -146,6 +156,7 @@ public class ReportDaoImpl implements ReportDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
+            logger.error("report wasnt selected all\n");
             throw new DaoException(e);
         }
     }
@@ -155,6 +166,7 @@ public class ReportDaoImpl implements ReportDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {
+            logger.error("report wasnt selected by id\n");
             throw new DaoException(e);
         }
     }
@@ -164,6 +176,7 @@ public class ReportDaoImpl implements ReportDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
+            logger.error("report wasnt updated\n");
             throw new DaoException(e);
         }
     }
@@ -173,6 +186,7 @@ public class ReportDaoImpl implements ReportDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
+            logger.error("report wasnt deleted\n");
             throw new DaoException(e);
         }
     }
@@ -182,6 +196,7 @@ public class ReportDaoImpl implements ReportDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
+            logger.error("report wasnt deleted\n");
             throw new DaoException(e);
         }
     }
@@ -192,6 +207,7 @@ public class ReportDaoImpl implements ReportDao {
             report.setDescription(resultSet.getString("description"));
             report.setUserId(resultSet.getLong("userId"));
         } catch (SQLException e) {
+            logger.error("report wasnt built\n");
             throw new DaoException(e);
         }
     }

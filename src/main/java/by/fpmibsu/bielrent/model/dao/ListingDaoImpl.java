@@ -6,6 +6,7 @@ import by.fpmibsu.bielrent.model.dto.req.AddressReq;
 import by.fpmibsu.bielrent.model.dto.req.FilterReq;
 import by.fpmibsu.bielrent.model.entity.*;
 import lombok.SneakyThrows;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class ListingDaoImpl implements ListingDao {
             "FROM dbo.[Listing] " +
             "WHERE addressId = ? ";
     private static final ListingDaoImpl INSTANCE = new ListingDaoImpl();
+    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
 
     private ListingDaoImpl() {
     }
@@ -67,6 +69,7 @@ public class ListingDaoImpl implements ListingDao {
             rs.next();
             return rs.getInt("cnt");
         } catch (SQLException e) {
+            logger.error("listings werent counted");
             throw new DaoException(e);
         }
     }
@@ -89,6 +92,7 @@ public class ListingDaoImpl implements ListingDao {
 
             return id;
         } catch (SQLException e) {
+            logger.error("listing wasnt inserted");
             throw new DaoException(e);
         }
     }
@@ -108,9 +112,12 @@ public class ListingDaoImpl implements ListingDao {
             conn.commit();
             return Optional.ofNullable(listing);
         } catch (SQLException e) {
+            logger.error("listing wasnt added");
             try {
                 conn.rollback();
+
             } catch (SQLException ex) {
+                logger.error("rollback failed");
                 throw new DaoException(ex);
             }
             throw new DaoException(e);
@@ -118,6 +125,7 @@ public class ListingDaoImpl implements ListingDao {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
+                logger.error("autocomit set failed");
                 throw new DaoException(e);
             }
         }
@@ -139,9 +147,11 @@ public class ListingDaoImpl implements ListingDao {
             conn.commit();
             return listings;
         } catch (SQLException e) {
+            logger.error("listings werent added");
             try {
                 conn.rollback();
             } catch (SQLException ex) {
+                logger.error("rollback failed");
                 throw new DaoException(ex);
             }
             throw new DaoException(e);
@@ -149,6 +159,7 @@ public class ListingDaoImpl implements ListingDao {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
+                logger.error("set ac failed");
                 throw new DaoException(e);
             }
         }
