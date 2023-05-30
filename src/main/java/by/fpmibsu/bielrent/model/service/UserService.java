@@ -13,6 +13,7 @@ import by.fpmibsu.bielrent.model.dtomapper.UserMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,12 +35,14 @@ public class UserService {
     public static UserService getInstance() {
         return INSTANCE;
     }
+    Logger logger = Logger.getLogger(UserService.class);
 
 
     public Long insertIfValid(UserReq userReq) throws DaoException, ValidationException {
         try (var conn = connPool.getConnection()) {
             return insertIfValid(userReq, conn);
         } catch (SQLException e) {
+            logger.error("insert if valid in user service failed\n");
             throw new DaoException(e);
         }
     }

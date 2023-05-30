@@ -84,6 +84,7 @@ public class CreateListingController implements Controller {
         try {
             listingService.insertIfValid(listingOrmReq);
         } catch (ValidationException ve) {
+            logger.error("listing service insert if valid error\n");
             resp.setStatus(HttpsURLConnection.HTTP_BAD_REQUEST);
             parser.parse(HtmlPages.CREATE_LISTING_PAGE, resp.getWriter());
 

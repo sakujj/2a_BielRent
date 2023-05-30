@@ -14,6 +14,7 @@ import by.fpmibsu.bielrent.model.entity.*;
 import by.fpmibsu.bielrent.model.dtomapper.ListingMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -48,11 +49,13 @@ public class ListingService {
 
 
     private static final ListingValidator listingValidator = ListingValidator.getInstance();
+    private Logger logger = Logger.getLogger(AddressService.class);
 
     public Long insertIfValid(ListingReq listingReq, Long addressId, Long userId) throws DaoException, ValidationException {
         try (var conn = connPool.getConnection()) {
             return insertIfValid(listingReq, addressId, userId, conn);
         } catch (SQLException e) {
+            logger.error("insert if valid listing service error\n");
             throw new DaoException(e);
         }
     }
@@ -74,6 +77,7 @@ public class ListingService {
         try (var conn = connPool.getConnection()) {
             return insertIfValid(listingOrmReq, conn);
         } catch (SQLException e) {
+            logger.error("insert if valid listingORM service error\n");
             throw new DaoException(e);
         }
     }
@@ -107,9 +111,11 @@ public class ListingService {
 
             return listingId;
         } catch (Exception e) {
+            logger.error("insert if valid listingORM service error\n");
             try {
                 conn.rollback();
             } catch (SQLException ex) {
+                logger.error("insert if valid listing service error(connection rollback failed\n)");
                 throw new DaoException(ex);
             }
 
@@ -141,6 +147,7 @@ public class ListingService {
         try (var conn = connPool.getConnection()) {
             return getListingById(id, conn);
         } catch (SQLException e) {
+            logger.error("get listing by id service error\n");
             throw new DaoException(e);
         }
     }
@@ -171,9 +178,12 @@ public class ListingService {
             conn.commit();
             return Optional.ofNullable(listingOrmResp);
         } catch (Exception e) {
+            logger.error("get listing by id service error\n");
             try {
+
                 conn.rollback();
             } catch (SQLException ex) {
+                logger.error("connection rollback failed\n");
                 throw new DaoException(ex);
             }
             throw new DaoException(e);
@@ -181,6 +191,7 @@ public class ListingService {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
+                logger.error("set autocommit failed\n");
                 throw new DaoException(e);
             }
         }

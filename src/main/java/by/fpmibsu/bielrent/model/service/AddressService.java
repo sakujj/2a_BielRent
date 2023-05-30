@@ -11,6 +11,7 @@ import by.fpmibsu.bielrent.model.entity.Address;
 import by.fpmibsu.bielrent.model.dtomapper.AddressMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,11 +26,13 @@ public class AddressService {
     private static final AddressDaoImpl addressDao = AddressDaoImpl.getInstance();
     private static final AddressValidator addressValidator = AddressValidator.getInstance();
     private static final ConnectionPoolImpl connPool = ConnectionPoolImpl.getInstance();
+    private Logger logger = Logger.getLogger(AddressService.class);
 
     public Long insertIfValid (AddressReq addressReq) throws DaoException, ValidationException {
         try (var conn = connPool.getConnection()) {
             return insertIfValid(addressReq, conn);
         } catch (SQLException e) {
+            logger.error("address service ins if valid error");
             throw new DaoException(e);
         }
     }

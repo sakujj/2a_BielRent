@@ -12,6 +12,7 @@ import by.fpmibsu.bielrent.model.entity.Filter;
 import by.fpmibsu.bielrent.model.dtomapper.FilterMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,11 +27,13 @@ public class FilterService {
     private static final FilterMapper filterMapper = FilterMapper.getInstance();
     private static final FilterValidator filterValidator = FilterValidator.getInstance();
     private static final ConnectionPool connPool = ConnectionPoolImpl.getInstance();
+    private Logger logger = Logger.getLogger(FilterService.class);
 
     public Long insertIfValid(FilterReq filterReq, Long listingId) throws DaoException, ValidationException {
         try (var conn = connPool.getConnection()) {
             return insertIfValid(filterReq, listingId, conn);
         } catch (SQLException e) {
+            logger.error("insert if valid filter error");
             throw new DaoException(e);
         }
     }

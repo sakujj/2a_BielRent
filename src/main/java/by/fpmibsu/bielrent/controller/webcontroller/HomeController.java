@@ -28,7 +28,6 @@ public class HomeController implements Controller {
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)
             throws IOException, ServletException {
-        logger.log(Level.INFO,"Hello");
         Map<Integer, Integer> pageMap = getPageNumbers(req);
 
         List<ListingOrmResp> list;
@@ -71,6 +70,7 @@ public class HomeController implements Controller {
                     pageNumbers.put(0, 1);
                 }
             } catch (NumberFormatException e) {
+                logger.error("number format wrong in home controller\n");
             }
         }
 

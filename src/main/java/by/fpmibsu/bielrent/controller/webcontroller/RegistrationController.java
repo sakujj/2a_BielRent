@@ -9,6 +9,7 @@ import by.fpmibsu.bielrent.model.dtovalidator.InsertUserValidator;
 import by.fpmibsu.bielrent.model.dtovalidator.ValidationException;
 import by.fpmibsu.bielrent.model.service.UserService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
+import org.apache.log4j.Logger;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 
 public class RegistrationController implements Controller {
     private final UserService userService = UserService.getInstance();
+    Logger logger = Logger.getLogger(RegistrationController.class);
 
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser) throws IOException {
@@ -48,9 +50,11 @@ public class RegistrationController implements Controller {
                 error = "Пароли не совпадают";
             }
         } catch (DaoException e) {
+            logger.error("dao error in registration controller");
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
             return;
         } catch (ValidationException e) {
+            logger.error("invalid data in registration controller");
             error = e.getErrors().get(0).getMessage();
         }
 
