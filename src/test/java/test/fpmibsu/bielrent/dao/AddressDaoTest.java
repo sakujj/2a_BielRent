@@ -37,6 +37,27 @@ public class AddressDaoTest {
             }
         }
     }
+    @Nested
+    @Tag("insert_delete")
+    class InsertAndDelete {
+        @ParameterizedTest
+        @MethodSource("test.fpmibsu.bielrent.dao.AddressDaoTest#getInsertArgs")
+        @DisplayName("insert and delete an address")
+        void insertAndDeleteAddress(Address expected) throws DaoException {
+            try (var conn = testConnPool.getConnection()) {
+                long actualID = addressDao.insert(expected, conn);
+                var actual = addressDao.select(actualID, conn);
+                expected.setId(actualID);
+                assertThat(actual.get()).isEqualTo(expected);
+                addressDao.delete(actualID, conn);
+                actual = addressDao.select(actualID, conn);
+                assertThat(actual.orElse(null)).isEqualTo(null);
+            }
+            catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
 
     static Stream<Arguments> getSelectArgs() {
         return Stream.of(
@@ -68,5 +89,24 @@ public class AddressDaoTest {
                         .houseNumber(1448)
                         .build())
         );
+    }
+
+    static Stream<Arguments> getInsertArgs() {
+        return Stream.of(
+                Arguments.of(Address.builder()
+                        .regionName(Region.MINSK_REGION)
+                        .city("Sluck")
+                        .street("vul. y")
+                        .houseNumber(13)
+                        .build()),
+                Arguments.of(Address.builder()
+                        .regionName(Region.MINSK_CITY)
+                        .city("Minsk")
+                        .districtAdministrative("Zavodskoy rajon")
+                        .districtMicro("Chizhovka")
+                        .street("vul. x")
+                        .houseNumber(24)
+                        .build())
+                );
     }
 }

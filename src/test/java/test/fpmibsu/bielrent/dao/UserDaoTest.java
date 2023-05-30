@@ -38,6 +38,28 @@ class UserDaoTest {
         }
     }
 
+    @Nested
+    @Tag("insert_delete")
+    class InsertAndDelete {
+        @ParameterizedTest
+        @MethodSource("test.fpmibsu.bielrent.dao.UserDaoTest#getInsertArgs")
+        @DisplayName("selects and delete a user")
+        void insertAndDeleteUser(User expected) throws DaoException {
+            try (var conn = testConnPool.getConnection()) {
+                long actualID = userDao.insert(expected, conn);
+                var actual = userDao.select(actualID, conn);
+                expected.setId(actualID);
+                assertThat(actual).isEqualTo(expected);
+                userDao.delete(actualID, conn);
+                actual = userDao.select(actualID, conn);
+                assertThat(actual).isEqualTo(null);
+            }
+            catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
+
     static Stream<Arguments> getSelectArgs() {
         return Stream.of(
                 Arguments.of(User.builder()
@@ -67,4 +89,22 @@ class UserDaoTest {
         );
     }
 
+    static Stream<Arguments> getInsertArgs() {
+        return Stream.of(
+                Arguments.of(User.builder()
+                        .email("linux@gmail.com")
+                        .password("123")
+                        .name("Linux")
+                        .rating(BigDecimal.valueOf(3.3))
+                        .role(Role.CLIENT)
+                        .build()),
+                Arguments.of(User.builder()
+                        .email("organ@gmail.com")
+                        .password("1w3")
+                        .name("Organ")
+                        .rating(BigDecimal.valueOf(2.1))
+                        .role(Role.ADMIN)
+                        .build())
+        );
+    }
 }

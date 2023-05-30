@@ -37,6 +37,28 @@ public class ReportDaoTest {
         }
     }
 
+    @Nested
+    @Tag("insert_delete")
+    class InsertAndDelete {
+        @ParameterizedTest
+        @MethodSource("test.fpmibsu.bielrent.dao.ReportDaoTest#getInsertArgs")
+        @DisplayName("selects and delete a report")
+        void insertAndDeleteReport(Report expected) throws DaoException {
+            try (var conn = testConnPool.getConnection()) {
+                long actualID = reportDao.insert(expected, conn);
+                var actual = reportDao.select(actualID, conn);
+                expected.setId(actualID);
+                assertThat(actual.get()).isEqualTo(expected);
+                reportDao.delete(actualID, conn);
+                actual = reportDao.select(actualID, conn);
+                assertThat(actual.orElse(null)).isEqualTo(null);
+            }
+            catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
+
     static Stream<Arguments> getSelectArgs() {
         return Stream.of(
                 Arguments.of(Report.builder()
@@ -53,26 +75,20 @@ public class ReportDaoTest {
                         .id(3L)
                         .userId(2L)
                         .description("Имеется жалоба")
+                        .build())
+        );
+    }
+
+    static Stream<Arguments> getInsertArgs() {
+        return Stream.of(
+                Arguments.of(Report.builder()
+                        .userId(1L)
+                        .description("report 1")
                         .build()),
                 Arguments.of(Report.builder()
-                        .id(4L)
-                        .userId(4L)
-                        .description("Сообщаю о ...")
-                        .build()),
-                Arguments.of(Report.builder()
-                        .id(5L)
-                        .userId(4L)
-                        .description("Вот так вот")
-                        .build()),
-                Arguments.of(Report.builder()
-                        .id(6L)
-                        .userId(4L)
-                        .description("Вот как бывает")
-                        .build()),
-                Arguments.of(Report.builder()
-                        .id(7L)
-                        .userId(5L)
-                        .description("Все плачевно")
+                        .id(2L)
+                        .userId(3L)
+                        .description("report 2")
                         .build())
         );
     }

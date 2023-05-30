@@ -37,6 +37,27 @@ public class PhotoDaoTest {
         }
     }
 
+    @Nested
+    @Tag("insert_delete")
+    class InsertAndDelete {
+        @ParameterizedTest
+        @MethodSource("test.fpmibsu.bielrent.dao.PhotoDaoTest#getInsertArgs")
+        @DisplayName("selects and delete a photo")
+        void insertAndDeletePhoto(Photo expected) throws DaoException {
+            try (var conn = testConnPool.getConnection()) {
+                long actualID = photoDao.insert(expected, conn);
+                var actual = photoDao.select(actualID, conn);
+                expected.setId(actualID);
+                assertThat(actual.get()).isEqualTo(expected);
+                photoDao.delete(actualID, conn);
+                actual = photoDao.select(actualID, conn);
+                assertThat(actual.orElse(null)).isEqualTo(null);
+            }
+            catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
     static Stream<Arguments> getSelectArgs() {
         return Stream.of(
                 Arguments.of(Photo.builder()
@@ -48,6 +69,19 @@ public class PhotoDaoTest {
                         .id(3L)
                         .listingId(2L)
                         .path("path21")
+                        .build())
+        );
+    }
+
+    static Stream<Arguments> getInsertArgs() {
+        return Stream.of(
+                Arguments.of(Photo.builder()
+                        .listingId(2L)
+                        .path("path13")
+                        .build()),
+                Arguments.of(Photo.builder()
+                        .listingId(3L)
+                        .path("path01")
                         .build())
         );
     }
