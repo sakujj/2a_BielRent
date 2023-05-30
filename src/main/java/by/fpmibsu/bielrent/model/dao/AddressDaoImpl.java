@@ -145,6 +145,7 @@ public class AddressDaoImpl implements AddressDao {
         }
     }
 
+
     public boolean delete(Address record, Connection conn) throws DaoException {
         return delete(record.getId());
     }

@@ -18,7 +18,7 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top p-0">
     <div class="container-xxl">
-        <a class="navbar-brand" href="#" th:href="@{|${HOME_URI}|}">BielRent</a>
+        <a class="navbar-brand" href="#" th:href="@{${HOME_URI}}">BielRent</a>
 
         <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav">
             <span class="navbar-toggler-icon"></span>
@@ -27,15 +27,18 @@
         <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
             <ul class="navbar-nav align-items-center m-0 p-0">
                 <li class="nav-item my-1 my-md-0">
-                    <a class="nav-link p-0" href="/create-listing.html" th:href="@{|${CREATE_LISTING_URI}|}">
+                    <a class="nav-link p-0" href="/create-listing.html" th:href="@{${CREATE_LISTING_URI}}">
                         <button type="button" class="my-bt p-2 m-0">
                             Добавить объявление
                         </button>
                     </a>
                 </li>
                 <li class="nav-item my-1 my-md-0">
-                    <a class="nav-link p-0" href="/login.html" th:href="@{|${LOGIN_URI}|}">
+                    <a class="nav-link p-0" href="/login.html" th:if="${!isAuthorised}" th:href="@{${LOGIN_URI}}">
                         <button type="button" class="my-bt p-2 m-0">Войти</button>
+                    </a>
+                    <a class="nav-link p-0" href="/login.html" th:if="${isAuthorised}" th:href="@{${LOGIN_URI}(logout=true)}">
+                        <button type="button" class="my-bt p-2 m-0">Выйти</button>
                     </a>
                 </li>
                 <li class="nav-item my-1 my-md-0">
@@ -56,7 +59,7 @@
         <div class="mt-2 mb-0 pb-0 pt-2" th:insert="~{::copy-pagination}"></div>
         <div class="row justify-content-start main-body mt-2 pt-2" th:each="list, iterStat:${listings}"
         >
-            <a class="listing my-4" href="listing.html" th:href="@{listing.html(id=${list.getId()})}" th:classappend="${iterStat.index == 0 ? 'mt-0' :_}">
+            <a class="listing my-4" href="listing.html" th:href="@{${LISTING_URI}(id=${list.getId()})}" th:classappend="${iterStat.index == 0 ? 'mt-0' :_}">
                 <div class="card col-md-9 listing-card">
                     <div class="row d-flex g-0 p-2">
                         <div class="col-md-4 align-self-center">

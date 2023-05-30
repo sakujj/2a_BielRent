@@ -10,27 +10,28 @@ import java.util.Map;
 @UtilityClass
 public class ControllerMappings {
 
-    private static Map<String, Controller> controllersByURI;
+    private static Map<String, Controller> controllersByUri;
 
 
     static {
-        controllersByURI = new HashMap<>();
-        controllersByURI.put(UriPatterns.HOME, new HomeController());
-        controllersByURI.put(UriPatterns.LOGIN, new LoginController());
-        controllersByURI.put(UriPatterns.REGISTRATION, new RegistrationController());
-        controllersByURI.put(UriPatterns.CREATE_LISTING, new CreateListingController());
-        controllersByURI.put(UriPatterns.IMAGES, new ImagesController());
-        controllersByURI.put(UriPatterns.LISTING_PAGE, new ListingPageController());
+        controllersByUri = new HashMap<>();
+        controllersByUri.put(UriPatterns.HOME, new HomeController());
+        controllersByUri.put(UriPatterns.LOGIN, new LoginController());
+        controllersByUri.put(UriPatterns.REGISTRATION, new RegistrationController());
+        controllersByUri.put(UriPatterns.CREATE_LISTING, new CreateListingController());
+        controllersByUri.put(UriPatterns.IMAGES, new ImagesController());
+        controllersByUri.put(UriPatterns.LISTING_PAGE, new ListingPageController());
+        controllersByUri.put(UriPatterns.ERROR_PAGE, new ErrorPageController());
     }
 
 
 
     public static Controller resolveControllerByPath(String uri) {
-        Controller controller = controllersByURI.get(uri);
+        Controller controller = controllersByUri.get(uri);
         if (controller != null)
             return controller;
         else if (uri.startsWith(UriPatterns.IMAGES)) {
-            return controllersByURI.get(UriPatterns.IMAGES);
+            return controllersByUri.get(UriPatterns.IMAGES);
         }
 
         return null;

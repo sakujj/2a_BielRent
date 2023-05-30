@@ -15,5 +15,8 @@
         <module name="BielRent" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="2a_BielRent" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

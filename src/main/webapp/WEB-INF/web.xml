@@ -3,4 +3,34 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <filter>
+        <filter-name>DispatcherFilter</filter-name> <!-- mandatory -->
+        <filter-class>by.fpmibsu.bielrent.controller.filter.DispatcherFilter</filter-class> <!-- mandatory -->
+    </filter>
+    <filter-mapping>
+        <filter-name>DispatcherFilter</filter-name> <!-- mandatory -->
+        <url-pattern>/*</url-pattern> <!-- either url-pattern or servlet-name is mandatory -->
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>BasicFilter</filter-name> <!-- mandatory -->
+        <filter-class>by.fpmibsu.bielrent.controller.filter.BasicFilter</filter-class> <!-- mandatory -->
+    </filter>
+    <filter-mapping>
+        <filter-name>BasicFilter</filter-name> <!-- mandatory -->
+        <url-pattern>/app/*</url-pattern> <!-- either url-pattern or servlet-name is mandatory -->
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+<!--    <filter>-->
+<!--        <filter-name>AuthorisationFilter</filter-name> &lt;!&ndash; mandatory &ndash;&gt;-->
+<!--        <filter-class>by.fpmibsu.bielrent.controller.filter.AuthorisationFilter</filter-class> &lt;!&ndash; mandatory &ndash;&gt;-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>AuthorisationFilter</filter-name> &lt;!&ndash; mandatory &ndash;&gt;-->
+<!--        <url-pattern>/*</url-pattern> &lt;!&ndash; either url-pattern or servlet-name is mandatory &ndash;&gt;-->
+<!--        <dispatcher>REQUEST</dispatcher>-->
+<!--    </filter-mapping>-->
+
 </web-app>

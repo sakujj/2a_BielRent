@@ -1,5 +1,7 @@
 package by.fpmibsu.bielrent.controller.servlet;
 
+import by.fpmibsu.bielrent.controller.errorhandler.ErrorHandler;
+import by.fpmibsu.bielrent.controller.templateparser.TemplateParser;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.controller.webcontroller.Controller;
 import by.fpmibsu.bielrent.controller.mappings.ControllerMappings;
@@ -12,6 +14,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.WebApplicationTemplateResolver;
 import org.thymeleaf.web.servlet.JavaxServletWebApplication;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -23,9 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @MultipartConfig()
-@WebServlet(urlPatterns = {"*.html", "/images/*"})
+@WebServlet("/app/*")
 public class DispatcherServlet extends HttpServlet {
-    private UserService userService = UserService.getInstance();
     private JavaxServletWebApplication webApplication;
     private TemplateEngine templateEngine;
     private WebApplicationTemplateResolver templateResolver;
@@ -52,24 +54,26 @@ public class DispatcherServlet extends HttpServlet {
         var httpReq = (HttpServletRequest) req;
         var httpResp = (HttpServletResponse) res;
 
-            String uri = ((HttpServletRequest) req).getRequestURI();
+        String uri = ((HttpServletRequest) req).getRequestURI();
+        uri = uri.substring(4);
 
-            Controller controller = ControllerMappings.resolveControllerByPath(uri);
-            if (controller == null) {
-                httpResp.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                return;
-            }
+        Controller controller = ControllerMappings.resolveControllerByPath(uri);
+        if (controller == null) {
+            ErrorHandler.forwardToErrorPage(httpReq, httpResp, 404);
+            return;
+        }
 
-            var webExchange = this.webApplication.buildExchange(httpReq, httpResp);
-            var webContext = new WebContext(webExchange, webExchange.getLocale());
-            putUriPatternsInContext(webContext);
+        var webExchange = this.webApplication.buildExchange(httpReq, httpResp);
+        var webContext = new WebContext(webExchange, webExchange.getLocale());
 
-            String method = httpReq.getMethod();
-            if (method.equals("GET")) {
-                controller.processGet(httpReq, httpResp, this.templateEngine, webContext);
-            } else if (method.equals("POST")) {
-                controller.processPost(httpReq, httpResp, this.templateEngine, webContext);
-            }
+        putUriPatternsInContext(webContext);
+        webContext.setVariable("isAuthorised", req.getAttribute("isAuthorised"));
+
+        TemplateParser parser = new TemplateParser(webContext, this.templateEngine);
+        switch (httpReq.getMethod()) {
+            case "GET" -> controller.processGet(httpReq, httpResp, parser);
+            case "POST" -> controller.processPost(httpReq, httpResp, parser);
+        }
 
     }
 
@@ -77,6 +81,7 @@ public class DispatcherServlet extends HttpServlet {
     void putUriPatternsInContext(WebContext context) {
         context.setVariable("HOME_URI", UriPatterns.HOME);
         context.setVariable("LOGIN_URI", UriPatterns.LOGIN);
+        context.setVariable("LISTING_URI", UriPatterns.LISTING_PAGE);
         context.setVariable("REGISTRATION_URI", UriPatterns.REGISTRATION);
         context.setVariable("CREATE_LISTING_URI", UriPatterns.CREATE_LISTING);
         context.setVariable("IMAGES_URI", UriPatterns.IMAGES);

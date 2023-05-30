@@ -45,7 +45,7 @@
     <main class="container-xxl">
       <div class="py-5 px-3 my-3">
         <div class="row main-header mb-3">
-          <div class="col py-2 listing-main" th:text="${name}">Замечательная квартира:</div>
+          <div class="col-md-8 justify-content-start py-2 listing-main text-center" th:text="|${name} - ${filter.getPriceMonthly()} BYN / Месяц|">Замечательная квартира 1000 BYN / Месяц:</div>
         </div>
         <div class="row">
           <div class="col-md-8">
@@ -70,9 +70,8 @@
           </div>
           <div class="col-md-4 listing-information">
             <div class="card-body">
-              <h5 class="listing-price mt-md-2 pb-1 text-center" th:text="|${name} - ${filter.getPriceMonthly()} BYN|">1000 BYN/месяц</h5>
               <div class="description px-2 mt-md-2">
-                <div class="parameters listing-text" th:text="${name}">Квартира</div>
+                <div class="parameters listing-text" th:text="${propertyTypeName} == 'FLAT'? 'Квартира' : 'Дом' ">Квартира</div>
                 <div class="parameters listing-text" th:text="|Сдаётся с | + ${filter.getRentalPeriodStart()} + | по | + ${filter.getRentalPeriodEnd()}">
                   Сдается с 03.05.2006 по ...</div>
                 <p class="listing-text" >
@@ -102,7 +101,7 @@
           <div class="col-md-6">
             <table class="table text-roboto-400">
               <tbody>
-                <tr>
+                <tr th:if="${address.getDistrictMicro() != ''}">
                   <td>Микрорайон:</td>
                   <td  th:text="${address.getDistrictMicro()}">Сухарево</td>
                 </tr>

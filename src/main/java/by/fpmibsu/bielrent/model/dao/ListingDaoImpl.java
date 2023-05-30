@@ -2,11 +2,8 @@ package by.fpmibsu.bielrent.model.dao;
 
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
-import by.fpmibsu.bielrent.model.dto.AddressDto;
-import by.fpmibsu.bielrent.model.dto.FilterDto;
-import by.fpmibsu.bielrent.model.dtomapper.todto.AddressMapperToDto;
-import by.fpmibsu.bielrent.model.dtomapper.toentity.AddressMapperToEntity;
-import by.fpmibsu.bielrent.model.dtomapper.toentity.FilterMapperToEntity;
+import by.fpmibsu.bielrent.model.dto.req.AddressReq;
+import by.fpmibsu.bielrent.model.dto.req.FilterReq;
 import by.fpmibsu.bielrent.model.entity.*;
 import lombok.SneakyThrows;
 
@@ -105,8 +102,7 @@ public class ListingDaoImpl implements ListingDao {
             Listing listing = null;
             if (resultSet.next()) {
                 listing = new Listing();
-                buildListingWOFilterId(listing, resultSet);
-                listing.setFilterId(FilterDaoImpl.getInstance().selectByListingId(listing.getId()).getId());
+                buildListing(listing, resultSet);
             }
 
             conn.commit();
@@ -136,8 +132,7 @@ public class ListingDaoImpl implements ListingDao {
             var filterDao = FilterDaoImpl.getInstance();
             while (resultSet.next()) {
                 Listing listing = new Listing();
-                buildListingWOFilterId(listing, resultSet);
-                listing.setFilterId(filterDao.selectByListingId(listing.getId()).getId());
+                buildListing(listing, resultSet);
                 listings.add(listing);
             }
 
@@ -169,8 +164,7 @@ public class ListingDaoImpl implements ListingDao {
             var filterDao = FilterDaoImpl.getInstance();
             while (resultSet.next()) {
                 Listing listing = new Listing();
-                buildListingWOFilterId(listing, resultSet);
-                listing.setFilterId(filterDao.selectByListingId(listing.getId()).getId());
+                buildListing(listing, resultSet);
                 listings.add(listing);
             }
 
@@ -202,8 +196,7 @@ public class ListingDaoImpl implements ListingDao {
             var filterDao = FilterDaoImpl.getInstance();
             while (resultSet.next()) {
                 Listing listing = new Listing();
-                buildListingWOFilterId(listing, resultSet);
-                listing.setFilterId(filterDao.selectByListingId(listing.getId()).getId());
+                buildListing(listing, resultSet);
                 listings.add(listing);
             }
 
@@ -258,8 +251,8 @@ public class ListingDaoImpl implements ListingDao {
      * @throws DaoException
      */
     public List<ListingOrm> queryListings(ListingQuery query, long listingCount, long offset) throws DaoException {
-        AddressDto addressQ = query.getAddress();
-        FilterDto filterQ = query.getFilter();
+        AddressReq addressQ = query.getAddress();
+        FilterReq filterQ = query.getFilter();
 
         String sqlQuery = "SELECT * FROM " +
                 " Listing l " +
@@ -519,7 +512,7 @@ public class ListingDaoImpl implements ListingDao {
         }
     }
 
-    private void buildListingWOFilterId(Listing listing, ResultSet resultSet) throws DaoException {
+    private void buildListing(Listing listing, ResultSet resultSet) throws DaoException {
         try {
             listing.setId(resultSet.getLong("id"));
             listing.setName(resultSet.getString("name"));

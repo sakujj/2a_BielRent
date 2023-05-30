@@ -1,5 +1,6 @@
 package by.fpmibsu.bielrent.model.service;
 
+import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.utility.PropertiesUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -20,8 +21,9 @@ public class ImageService {
     }
 
     private final String BASE_PATH = PropertiesUtil.get("image.base.url");
+    private static final ConnectionPoolImpl connPool = ConnectionPoolImpl.getInstance();
 
-    public void upload(String imagePath, InputStream imageContent) {
+    public void uploadImage(String imagePath, InputStream imageContent) {
         Path imageFullPath = Path.of(BASE_PATH, imagePath);
         try (imageContent) {
             Files.createDirectories(imageFullPath.getParent());
@@ -33,7 +35,7 @@ public class ImageService {
     }
 
     @SneakyThrows
-    public Optional<InputStream> get(String path){
+    public Optional<InputStream> getImage(String path){
         return Files.exists(Path.of(BASE_PATH, path)) ? Optional.of(Files.newInputStream(Path.of(BASE_PATH, path)))
                 : Optional.empty();
     }
