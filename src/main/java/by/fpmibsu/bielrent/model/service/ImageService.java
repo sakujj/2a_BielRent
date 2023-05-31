@@ -32,7 +32,7 @@ public class ImageService {
             Files.write(imageFullPath, imageContent.readAllBytes(),
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            logger.error("upload image error");
+            logger.error(e);
             throw new RuntimeException(e);
         }
     }

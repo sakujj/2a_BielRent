@@ -23,7 +23,7 @@ public class LoginController implements Controller {
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)
             throws IOException, ServletException {
-        logger.info("QQQQQQQQQQQQQQQQQQQQQQQQQQQq");
+
         if ("true".equals(req.getParameter("logout"))) {
             String isAuthorised = (String) req.getAttribute("isAuthorised");
             if ("false".equals(isAuthorised)) {
@@ -35,17 +35,21 @@ public class LoginController implements Controller {
                 resp.setStatus(HttpsURLConnection.HTTP_OK);
                 resp.sendRedirect(UriPatterns.HOME);
             } else {
+                logger.error("error while logging");
                 ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.NOT_FOUND);
             }
         } else if (null == req.getParameter("logout")) {
             String isAuthorised = (String) req.getAttribute("isAuthorised");
+            logger.error("error while logging");
             if ("true".equals(isAuthorised)) {
+                logger.error("error while logging: user authorized");
                 resp.sendRedirect(UriPatterns.HOME);
             } else {
                 resp.setStatus(HttpsURLConnection.HTTP_OK);
                 parser.parse(HtmlPages.LOGIN_PAGE, resp.getWriter());
             }
         } else {
+            logger.error("error while logging");
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.NOT_FOUND);
         }
     }

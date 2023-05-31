@@ -126,7 +126,7 @@ public class ListingDaoImpl implements ListingDao {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
-                logger.error("autocomit set failed");
+                logger.error(e);
                 throw new DaoException(e);
             }
         }
@@ -148,7 +148,7 @@ public class ListingDaoImpl implements ListingDao {
             conn.commit();
             return listings;
         } catch (SQLException e) {
-            logger.error("listings werent added");
+            logger.error(e);
             try {
                 conn.rollback();
             } catch (SQLException ex) {
@@ -160,7 +160,7 @@ public class ListingDaoImpl implements ListingDao {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
-                logger.error("set ac failed");
+                logger.error(e);
                 throw new DaoException(e);
             }
         }
@@ -259,7 +259,7 @@ public class ListingDaoImpl implements ListingDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAllByUserId(userId, conn);
         } catch (SQLException e) {
-
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -268,7 +268,7 @@ public class ListingDaoImpl implements ListingDao {
     public List<Listing> selectAllByAddressId(long addressId) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAllByAddressId(addressId, conn);
-        } catch (SQLException e) {
+        } catch (SQLException e) {logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -277,7 +277,7 @@ public class ListingDaoImpl implements ListingDao {
     public long insert(Listing record) throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
-        } catch (SQLException e) {
+        } catch (SQLException e) {logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -286,7 +286,7 @@ public class ListingDaoImpl implements ListingDao {
     public List<Listing> selectAll() throws DaoException {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
-        } catch (SQLException e) {
+        } catch (SQLException e) {logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -296,6 +296,7 @@ public class ListingDaoImpl implements ListingDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -305,6 +306,7 @@ public class ListingDaoImpl implements ListingDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -314,6 +316,7 @@ public class ListingDaoImpl implements ListingDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -323,6 +326,7 @@ public class ListingDaoImpl implements ListingDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -336,6 +340,7 @@ public class ListingDaoImpl implements ListingDao {
             listing.setAddressId(resultSet.getLong("addressId"));
             listing.setUserId(resultSet.getLong("userId"));
         } catch (SQLException e) {
+            logger.error(e);
             throw new DaoException(e);
         }
     }

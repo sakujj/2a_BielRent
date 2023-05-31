@@ -53,7 +53,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return id;
         } catch (SQLException e) {
-            logger.error("photo wasnt inserted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -71,7 +71,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return Optional.ofNullable(photo);
         } catch (SQLException e) {
-            logger.error("photo wasnt selected by id");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -89,7 +89,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return photos;
         } catch (SQLException e) {
-            logger.error("photos werent selected");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -108,7 +108,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
             return photos;
         } catch (SQLException e) {
-            logger.error("photo werebt selected by listing id");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -123,7 +123,7 @@ public class PhotoDaoImpl implements PhotoDao {
             statement.setLong(2, record.getListingId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("photo wasnt updated");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -133,7 +133,7 @@ public class PhotoDaoImpl implements PhotoDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("photo wasnt deleted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -143,7 +143,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAllByListingId(listingId, conn);
         } catch (SQLException e) {
-            logger.error("photo wasnt selected by listing id");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -153,7 +153,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
-            logger.error("photo wasnt inserted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -163,7 +163,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
-            logger.error("photos werent selected all");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -173,7 +173,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {
-            logger.error("photo wasnt selected by id");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -183,7 +183,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
-            logger.error("photo wasnt updated");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -193,7 +193,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
-            logger.error("photo wasnt deleted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -203,7 +203,7 @@ public class PhotoDaoImpl implements PhotoDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
-            logger.error("photo wasnt deleted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -214,7 +214,7 @@ public class PhotoDaoImpl implements PhotoDao {
             photo.setPath(resultSet.getString("path"));
             photo.setListingId(resultSet.getLong("listingId"));
         } catch (SQLException e) {
-            logger.error("photo wasnt builded");
+            logger.error(e);
             throw new DaoException(e);
         }
     }

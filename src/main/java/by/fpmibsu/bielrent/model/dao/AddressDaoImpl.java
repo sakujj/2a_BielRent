@@ -84,7 +84,7 @@ public class AddressDaoImpl implements AddressDao {
             }
             return id;
         } catch (SQLException e) {
-            logger.error("Address wasn't added\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -147,7 +147,7 @@ public class AddressDaoImpl implements AddressDao {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("Address wasn't updated\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -162,7 +162,7 @@ public class AddressDaoImpl implements AddressDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("Address wasn't deleted\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -172,7 +172,7 @@ public class AddressDaoImpl implements AddressDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
-            logger.error("Address wasn't inserted\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -182,7 +182,7 @@ public class AddressDaoImpl implements AddressDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
-            logger.error("Addresses werent selected by id\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -192,7 +192,7 @@ public class AddressDaoImpl implements AddressDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return select(id, conn);
         } catch (SQLException e) {
-            logger.error("Address selected by id\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -202,7 +202,7 @@ public class AddressDaoImpl implements AddressDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
-            logger.error("Address wasn't updated\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -212,7 +212,7 @@ public class AddressDaoImpl implements AddressDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record, conn);
         } catch (SQLException e) {
-            logger.error("Address wasn't deleted\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -222,7 +222,7 @@ public class AddressDaoImpl implements AddressDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
-            logger.error("Address wasn't deleted\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -238,7 +238,7 @@ public class AddressDaoImpl implements AddressDao {
             address.setStreet(resultSet.getString("street"));
         } catch (SQLException e) {
 
-            logger.error("Address wasn't builded\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }

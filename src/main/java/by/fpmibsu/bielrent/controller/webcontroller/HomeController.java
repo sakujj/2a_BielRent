@@ -74,7 +74,7 @@ public class HomeController implements Controller {
                     pageNumbers.put(0, 1);
                 }
             } catch (NumberFormatException e) {
-                logger.error("number format wrong in home controller\n");
+                logger.error("number format wrong\n");
             }
         }
 

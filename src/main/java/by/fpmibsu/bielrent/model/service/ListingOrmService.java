@@ -286,8 +286,10 @@ public class ListingOrmService {
 
             } catch (SQLException e) {
                 try {
+
                     conn.rollback();
                 } catch (SQLException ex) {
+                    logger.error("rollback failed");
                     throw new DaoException(ex);
                 }
                 throw new DaoException(e);
@@ -295,6 +297,7 @@ public class ListingOrmService {
                 try {
                     conn.setAutoCommit(true);
                 } catch (SQLException e) {
+                    logger.error("set auto commit failed");
                     throw new DaoException(e);
                 }
             }
@@ -308,7 +311,7 @@ public class ListingOrmService {
         try (var conn = connPool.getConnection()) {
             return insertIfValid(listingOrmReq, conn);
         } catch (SQLException e) {
-            logger.error("insert if valid listingORM service error\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -378,7 +381,7 @@ public class ListingOrmService {
         try (var conn = connPool.getConnection()) {
             return getListingById(id, conn);
         } catch (SQLException e) {
-            logger.error("get listing by id service error\n");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -409,12 +412,12 @@ public class ListingOrmService {
             conn.commit();
             return Optional.ofNullable(listingOrmResp);
         } catch (Exception e) {
-            logger.error("get listing by id service error\n");
+            logger.error(e);
             try {
 
                 conn.rollback();
             } catch (SQLException ex) {
-                logger.error("connection rollback failed\n");
+                logger.error(e);
                 throw new DaoException(ex);
             }
             throw new DaoException(e);
@@ -422,7 +425,7 @@ public class ListingOrmService {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
-                logger.error("set autocommit failed\n");
+                logger.error(e);
                 throw new DaoException(e);
             }
         }
