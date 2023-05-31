@@ -1,5 +1,7 @@
 package by.fpmibsu.bielrent.controller;
 
+import by.fpmibsu.bielrent.controller.webcontroller.CreateListingController;
+import by.fpmibsu.bielrent.controller.webcontroller.ListingPageController;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.controller.webcontroller.Controller;
 import by.fpmibsu.bielrent.constants.UriPatterns;
@@ -48,14 +50,15 @@ public class DispatcherServlet extends HttpServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         var httpReq = (HttpServletRequest) req;
         var httpResp = (HttpServletResponse) res;
+        System.out.println(httpReq.getParameter("city") + " param city");
         String uri = httpReq.getRequestURI();
         uri = uri.substring(UriPatterns.ROOT.length());
+        System.out.println(uri);
         Controller controller = ControllerMappings.resolveControllerByPath(uri);
         if (controller == null) {
             ErrorHandler.forwardToErrorPage(httpReq, httpResp, ErrorHandler.NOT_FOUND);
             return;
         }
-
         var webExchange = this.webApplication.buildExchange(httpReq, httpResp);
         var webContext = new WebContext(webExchange, webExchange.getLocale());
 

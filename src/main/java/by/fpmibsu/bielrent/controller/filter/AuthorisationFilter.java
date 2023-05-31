@@ -41,7 +41,6 @@ public class AuthorisationFilter extends HttpFilter {
         }
 
         var user = (User) httpReq.getSession().getAttribute("user");
-        System.out.println(uri);
         if (user == null || userService.getUser(user.getEmail(), user.getPassword()).isEmpty()) {
             httpReq.setAttribute("isAuthorised", "false");
             if (urisRequiringAuthorisation.contains(httpReq.getRequestURI())) {

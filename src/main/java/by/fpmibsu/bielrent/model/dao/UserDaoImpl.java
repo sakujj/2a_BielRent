@@ -271,7 +271,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    void buildUser(User user, ResultSet resultSet) throws DaoException {
+    public void buildUser(User user, ResultSet resultSet) throws DaoException {
         try {
             user.setId(resultSet.getLong("id"));
             user.setEmail(resultSet.getString("email"));

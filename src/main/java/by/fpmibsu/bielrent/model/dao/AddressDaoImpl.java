@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import static java.sql.Types.NULL;
@@ -228,7 +227,7 @@ public class AddressDaoImpl implements AddressDao {
         }
     }
 
-    void buildAddress(Address address, ResultSet resultSet) throws DaoException {
+    public void buildAddress(Address address, ResultSet resultSet) throws DaoException {
         try {
             address.setId(resultSet.getLong("id"));
             address.setCity(resultSet.getString("city"));

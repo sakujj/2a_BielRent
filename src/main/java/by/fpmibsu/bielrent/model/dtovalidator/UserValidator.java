@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class InsertUserValidator implements Validator<UserReq>{
+public class UserValidator implements Validator<UserReq>{
 
     private static final Error PASSWORD_MIN_LENGTH_ERROR = Error.of("invalid.password", "Введите пароль длиной не менее 8 символов");
     public final Error EMAIL_LENGTH_ERROR= Error.of("invalid.email", "Введите email длиной менее 50 символов");
@@ -18,8 +18,8 @@ public class InsertUserValidator implements Validator<UserReq>{
 
     private static final UserDao userDao = UserDaoImpl.getInstance();
 
-    private static final InsertUserValidator INSTANCE = new InsertUserValidator();
-    public static InsertUserValidator getInstance() {
+    private static final UserValidator INSTANCE = new UserValidator();
+    public static UserValidator getInstance() {
         return INSTANCE;
     }
 
@@ -29,9 +29,9 @@ public class InsertUserValidator implements Validator<UserReq>{
         ValidationResult vr = new ValidationResult();
 
         try {
-            System.out.println(userDao.selectByEmail(obj.getEmail()).isPresent());
+           // System.out.println(userDao.selectByEmail(obj.getEmail()).isPresent());
             if (userDao.selectByEmail(obj.getEmail()).isPresent()) {
-                System.out.println("3q4");
+             //   System.out.println("3q4");
                 vr.add(EMAIL_ALREADY_EXISTS_ERROR);
             }
         } catch (DaoException e) {

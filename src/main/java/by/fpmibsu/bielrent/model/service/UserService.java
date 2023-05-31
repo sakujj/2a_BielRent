@@ -5,7 +5,7 @@ import by.fpmibsu.bielrent.model.dto.resp.UserResp;
 import by.fpmibsu.bielrent.model.dao.UserDaoImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.dto.req.UserReq;
-import by.fpmibsu.bielrent.model.dtovalidator.InsertUserValidator;
+import by.fpmibsu.bielrent.model.dtovalidator.UserValidator;
 import by.fpmibsu.bielrent.model.dtovalidator.ValidationException;
 import by.fpmibsu.bielrent.model.dtovalidator.ValidationResult;
 import by.fpmibsu.bielrent.model.entity.User;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserService {
-    private static final InsertUserValidator insertUserValidator = InsertUserValidator.getInstance();
+    private static final UserValidator insertUserValidator = UserValidator.getInstance();
     private static final UserMapper insertUserMapperToEntity = UserMapper.getInstance();
     private static final UserDaoImpl userDao = UserDaoImpl.getInstance();
     private static final UserMapper userMapper = UserMapper.getInstance();

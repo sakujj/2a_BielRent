@@ -5,7 +5,7 @@ import by.fpmibsu.bielrent.controller.ErrorHandler;
 import by.fpmibsu.bielrent.controller.TemplateParser;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.dto.req.UserReq;
-import by.fpmibsu.bielrent.model.dtovalidator.InsertUserValidator;
+import by.fpmibsu.bielrent.model.dtovalidator.UserValidator;
 import by.fpmibsu.bielrent.model.dtovalidator.ValidationException;
 import by.fpmibsu.bielrent.model.service.UserService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
@@ -44,7 +44,7 @@ public class RegistrationController implements Controller {
             if (pass1.equals(pass2)) {
                 userService.insertIfValid(userDto);
             } else if (userService.isUserWithEmailInDB(userDto.getEmail())) {
-                error = InsertUserValidator.getInstance().EMAIL_ALREADY_EXISTS_ERROR.getMessage();
+                error = UserValidator.getInstance().EMAIL_ALREADY_EXISTS_ERROR.getMessage();
             } else {
                 error = "Пароли не совпадают";
             }

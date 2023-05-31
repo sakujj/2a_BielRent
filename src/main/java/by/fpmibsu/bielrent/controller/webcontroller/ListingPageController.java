@@ -5,6 +5,7 @@ import by.fpmibsu.bielrent.controller.ErrorHandler;
 import by.fpmibsu.bielrent.controller.TemplateParser;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.dto.resp.ListingOrmResp;
+import by.fpmibsu.bielrent.model.service.ListingOrmService;
 import by.fpmibsu.bielrent.model.service.ListingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ListingPageController implements Controller {
+    private static final ListingOrmService listingOrmService = ListingOrmService.getInstance();
 
     private static final ListingService listingService = ListingService.getInstance();
     private static final Logger logger = LogManager.getLogger(ListingPageController.class);
@@ -35,16 +37,16 @@ public class ListingPageController implements Controller {
         }
 
         if (id <= 0 || id > listingService.getListingCount()) {
-            logger.error("Specified page does not exist" + " [ListingPageController]");
+            logger.error("Specified page does not exist");
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.NOT_FOUND);
             return;
         }
 
         ListingOrmResp listingOrmResp;
         try {
-            listingOrmResp = listingService.getListingById(id).get();
+            listingOrmResp = listingOrmService.getListingById(id).get();
         } catch (DaoException e) {
-            logger.error(e + " [ListingPageController]");
+            logger.error(e);
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
             return;
         }

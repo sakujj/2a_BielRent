@@ -7,6 +7,7 @@ import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.dto.req.*;
 import by.fpmibsu.bielrent.model.dtovalidator.ValidationException;
 import by.fpmibsu.bielrent.model.entity.User;
+import by.fpmibsu.bielrent.model.service.ListingOrmService;
 import by.fpmibsu.bielrent.model.service.ListingService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
 
@@ -22,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 public class CreateListingController implements Controller {
     private static final Logger logger = LogManager.getLogger(CreateListingController.class);
     private static final ListingService listingService = ListingService.getInstance();
+    private static final ListingOrmService listingOrmService = ListingOrmService.getInstance();
 
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser) throws IOException {
@@ -41,6 +43,7 @@ public class CreateListingController implements Controller {
                 .houseNumber(req.getParameter("houseNumber"))
                 .build();
 
+        ;
         FilterReq filterReq = FilterReq.builder()
                 .hasBathroom(String.valueOf(req.getParameter("hasBathroom") != null))
                 .hasElevator(String.valueOf(req.getParameter("hasElevator") != null))
@@ -83,7 +86,7 @@ public class CreateListingController implements Controller {
 
 
         try {
-            listingService.insertIfValid(listingOrmReq);
+            listingOrmService.insertIfValid(listingOrmReq);
         } catch (ValidationException ve) {
             logger.error(ve.getErrors().get(0).getMessage());
             resp.setStatus(HttpsURLConnection.HTTP_BAD_REQUEST);
