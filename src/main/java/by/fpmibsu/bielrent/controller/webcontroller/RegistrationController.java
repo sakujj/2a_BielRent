@@ -49,11 +49,11 @@ public class RegistrationController implements Controller {
                 error = "Пароли не совпадают";
             }
         } catch (DaoException e) {
-            logger.error("dao error in registration controller");
+            logger.error(e);
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
             return;
         } catch (ValidationException e) {
-            logger.error("invalid data in registration controller");
+            logger.error(e);
             error = e.getErrors().get(0).getMessage();
         }
 

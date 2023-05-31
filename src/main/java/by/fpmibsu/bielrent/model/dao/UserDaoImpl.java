@@ -87,7 +87,7 @@ public class UserDaoImpl implements UserDao {
             }
             return id;
         } catch (SQLException e) {
-            logger.error("user wasnt inserted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -105,7 +105,7 @@ public class UserDaoImpl implements UserDao {
 
             return user;
         } catch (SQLException e) {
-            logger.error("user wasnt selected");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -123,7 +123,7 @@ public class UserDaoImpl implements UserDao {
 
             return users;
         } catch (SQLException e) {
-            logger.error("users werent selected all");
+            logger.error(e);
             throw new DaoException(e);
         }
 
@@ -142,7 +142,7 @@ public class UserDaoImpl implements UserDao {
 
             return user;
         } catch (SQLException e) {
-            logger.error("user wasnt selected by email");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -160,7 +160,7 @@ public class UserDaoImpl implements UserDao {
 
             return Optional.ofNullable(user);
         } catch (SQLException e) {
-            logger.error("user wasnt selected by email and password");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -176,7 +176,7 @@ public class UserDaoImpl implements UserDao {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("user wasnt updated");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -187,7 +187,7 @@ public class UserDaoImpl implements UserDao {
 
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error("user wasnt deleted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -198,7 +198,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return insert(record, conn);
         } catch (SQLException e) {
-            logger.error("user wasnt inserted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -208,7 +208,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return selectAll(conn);
         } catch (SQLException e) {
-            logger.error("user werent selected all");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -218,7 +218,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return Optional.ofNullable(select(id, conn));
         } catch (SQLException e) {
-            logger.error("user wasnt selected by id");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -228,7 +228,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return update(record, conn);
         } catch (SQLException e) {
-            logger.error("user wasnt updated");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -238,7 +238,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(record.getId(), conn);
         } catch (SQLException e) {
-            logger.error("user wasnt deleted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -248,7 +248,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return delete(id, conn);
         } catch (SQLException e) {
-            logger.error("user wasnt deleted");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -258,7 +258,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             return Optional.ofNullable(selectByEmail(email, conn));
         } catch (SQLException e) {
-            logger.error("user wasnt selected by email");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
@@ -266,7 +266,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> selectByEmailAndPassword(String email, String password) {
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
-            logger.error("user wasnt selected by email and password");
             return selectByEmailAndPassword(email, password, conn);
         }
     }
@@ -280,7 +279,7 @@ public class UserDaoImpl implements UserDao {
             user.setPassword(resultSet.getString("password"));
             user.setRole(Role.valueOf(resultSet.getString("role")));
         } catch (SQLException e) {
-            logger.error("user wasnt built");
+            logger.error(e);
             throw new DaoException(e);
         }
     }
