@@ -50,18 +50,26 @@ public class ProfileController implements Controller {
             return;
         }
 
-        Optional<User> userResp;
-        try {
-            userResp = UserService.getInstance().getUser(id);
-        } catch (DaoException e) {
-            logger.error(e);
-            ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
+//        Optional<User> userResp;
+//        try {
+//            userResp = UserService.getInstance().getUser(id);
+//        } catch (DaoException e) {
+//            logger.error(e);
+//            ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
+//            return;
+//        }
+
+        var currentUser = (User) req.getSession().getAttribute("user");
+        if (currentUser == null  || currentUser.getId() != id) {
+            ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.UNAUTHORIZED);
             return;
         }
-        if (userResp.isEmpty() || userResp.get().getId() != id) {
-            ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.NOT_FOUND);
-            return;
-        }
+
+//        if (userResp.isEmpty()) {
+//            ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.NOT_FOUND);
+//            return;
+//        }
+
 
 
         List<ListingOrmResp> listings;
@@ -79,7 +87,7 @@ public class ProfileController implements Controller {
         webContext.setVariable("imageBaseUrl", PropertiesUtil.get("image.base.url"));
         webContext.setVariable("listings", listings);
         if (webContext.getVariable("isAuthorised") == "true") {
-            webContext.setVariable("user", (User) req.getSession().getAttribute("user"));
+            webContext.setVariable("user", currentUser);
         }
 
         resp.setStatus(HttpsURLConnection.HTTP_OK);

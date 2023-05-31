@@ -142,9 +142,6 @@ public class HomeController implements Controller {
 
         int listingCount = listingService.getListingCount();
         int curOffset = (listingsPerPage * (pageMap.get(0)));
-        logger.error(listingCount);
-        logger.error(curOffset);
-        logger.error( listingCount - curOffset);
         if ((listingCount - curOffset) <= 0) {
             disabledNumbers.add(3);
             disabledNumbers.add(0);
