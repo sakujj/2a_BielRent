@@ -20,9 +20,9 @@ public class DispatcherFilter extends HttpFilter {
         String uri = httpReq.getRequestURI();
 
         if (uri.startsWith("/css")
-        || uri.startsWith("/js")
-        || uri.startsWith("/webfonts")
-        || UriPatterns.GET_USERS_REST_API.equals(uri)) {
+                || uri.startsWith("/js")
+                || uri.startsWith("/webfonts")
+                || uri.startsWith("/api")) {
             chain.doFilter(httpReq, httpResp);
         } else {
             httpReq.getRequestDispatcher(UriPatterns.ROOT + uri).forward(httpReq, httpResp);

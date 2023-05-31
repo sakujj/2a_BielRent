@@ -5,7 +5,8 @@ import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Role;
 import by.fpmibsu.bielrent.model.entity.User;
 import lombok.SneakyThrows;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class UserDaoImpl implements UserDao {
             "WHERE email = ? AND password = ?";
 
     private static final UserDaoImpl INSTANCE = new UserDaoImpl();
-    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
+    Logger logger = LogManager.getLogger(FilterDaoImpl.class);
 
     private UserDaoImpl() {
     }

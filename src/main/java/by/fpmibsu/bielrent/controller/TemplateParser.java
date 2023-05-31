@@ -1,4 +1,4 @@
-package by.fpmibsu.bielrent.controller.templateparser;
+package by.fpmibsu.bielrent.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

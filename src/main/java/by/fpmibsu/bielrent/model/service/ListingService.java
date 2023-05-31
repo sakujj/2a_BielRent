@@ -14,7 +14,8 @@ import by.fpmibsu.bielrent.model.entity.*;
 import by.fpmibsu.bielrent.model.dtomapper.ListingMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -49,7 +50,7 @@ public class ListingService {
 
 
     private static final ListingValidator listingValidator = ListingValidator.getInstance();
-    private Logger logger = Logger.getLogger(AddressService.class);
+    private Logger logger = LogManager.getLogger(AddressService.class);
 
     public Long insertIfValid(ListingReq listingReq, Long addressId, Long userId) throws DaoException, ValidationException {
         try (var conn = connPool.getConnection()) {

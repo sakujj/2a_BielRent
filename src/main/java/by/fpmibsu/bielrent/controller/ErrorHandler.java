@@ -1,4 +1,4 @@
-package by.fpmibsu.bielrent.controller.errorhandler;
+package by.fpmibsu.bielrent.controller;
 
 import by.fpmibsu.bielrent.constants.UriPatterns;
 import lombok.experimental.UtilityClass;

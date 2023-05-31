@@ -1,39 +1,38 @@
 package by.fpmibsu.bielrent.controller.webcontroller;
 
 import by.fpmibsu.bielrent.constants.HtmlPages;
-import by.fpmibsu.bielrent.constants.UriPatterns;
-import by.fpmibsu.bielrent.controller.errorhandler.ErrorHandler;
-import by.fpmibsu.bielrent.controller.templateparser.TemplateParser;
+import by.fpmibsu.bielrent.controller.ErrorHandler;
+import by.fpmibsu.bielrent.controller.TemplateParser;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.dto.resp.ListingOrmResp;
 import by.fpmibsu.bielrent.model.entity.ListingQuery;
 import by.fpmibsu.bielrent.model.service.ListingService;
 import by.fpmibsu.bielrent.utility.PropertiesUtil;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.WebContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.*;
-import org.apache.log4j.*;
 
 public class HomeController implements Controller {
-    private static Logger logger = Logger.getLogger(HomeController.class);
-    ListingService listingService = ListingService.getInstance();
+    private static final Logger logger = LogManager.getLogger(HomeController.class);
+    private static final ListingService listingService = ListingService.getInstance();
 
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)
             throws IOException, ServletException {
         Map<Integer, Integer> pageMap = getPageNumbers(req);
-
+        logger.info("dsfdfasdf");
+        logger.error("Fdsafdsfsdafsdfsdf@@@@@@@@@@@@2");
         List<ListingOrmResp> list;
         try {
             list = listingService.queryListings(new ListingQuery(), 6, 5 * (pageMap.get(0) - 1));
         } catch (DaoException e) {
+            logger.error(e);
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.INTERNAL_ERROR);
             return;
         }

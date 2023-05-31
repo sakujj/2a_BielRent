@@ -1,15 +1,15 @@
 package by.fpmibsu.bielrent.controller.webcontroller;
 
 import by.fpmibsu.bielrent.constants.HtmlPages;
-import by.fpmibsu.bielrent.controller.errorhandler.ErrorHandler;
-import by.fpmibsu.bielrent.controller.templateparser.TemplateParser;
+import by.fpmibsu.bielrent.controller.ErrorHandler;
+import by.fpmibsu.bielrent.controller.TemplateParser;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.User;
 import by.fpmibsu.bielrent.model.service.UserService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
 import lombok.SneakyThrows;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.WebContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
@@ -19,15 +19,18 @@ import java.io.IOException;
 
 public class LoginController implements Controller {
     UserService userService = UserService.getInstance();
-
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)
             throws IOException, ServletException {
+        logger.info("QQQQQQQQQQQQQQQQQQQQQQQQQQQq");
         if ("true".equals(req.getParameter("logout"))) {
             String isAuthorised = (String) req.getAttribute("isAuthorised");
             if ("false".equals(isAuthorised)) {
                 ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.UNAUTHORIZED);
             } else if ("true".equals(isAuthorised)) {
+                User user = (User) req.getSession().getAttribute("user");
+                logger.info("USER " +  user.getName() + " " + user.getEmail() + " LOGGED OUT");
                 req.getSession().invalidate();
                 resp.setStatus(HttpsURLConnection.HTTP_OK);
                 resp.sendRedirect(UriPatterns.HOME);
@@ -64,6 +67,7 @@ public class LoginController implements Controller {
     @SneakyThrows
     private void onLoginSuccess(HttpServletRequest req, HttpServletResponse resp, User user) {
         req.getSession().setAttribute("user", user);
+        logger.info("USER " +  user.getName() + " " + user.getEmail() + " LOGGED IN");
         resp.setStatus(HttpsURLConnection.HTTP_OK);
         resp.sendRedirect(UriPatterns.HOME);
     }

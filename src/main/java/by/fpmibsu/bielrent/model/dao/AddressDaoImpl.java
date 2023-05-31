@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import static java.sql.Types.NULL;
 
 public class AddressDaoImpl implements AddressDao {
@@ -48,7 +49,7 @@ public class AddressDaoImpl implements AddressDao {
             "WHERE id = ?";
 
     private static final AddressDaoImpl INSTANCE = new AddressDaoImpl();
-    private Logger logger = Logger.getLogger(AddressDaoImpl.class.getName());
+    private Logger logger = LogManager.getLogger(AddressDaoImpl.class.getName());
 
     private AddressDaoImpl() {
     }

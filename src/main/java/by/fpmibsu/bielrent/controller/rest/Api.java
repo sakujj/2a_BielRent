@@ -5,7 +5,7 @@ import javax.ws.rs.core.Application;
 
 
 @ApplicationPath("/api")
-public class BielRentApplication extends Application {
+public class Api extends Application {
 
 }
 

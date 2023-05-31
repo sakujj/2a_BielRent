@@ -1,0 +1,110 @@
+openapi: 3.0.3
+info:
+  title: BielRent - OpenAPI 3.0
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: User
+    description: search for a user
+paths:
+  /users:
+    get:
+      tags:
+        - User
+      summary: get all users
+      description: get all users on the website
+      operationId: getUsers
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResp'
+        '500':
+          description: server error
+  /user{id}:
+    get:
+      tags:
+        - User
+      summary: get a user by id
+      description: get all users on the website
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: 'The id that needs to be fetched.'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResp'
+        '404':
+          description: user does not exist
+        '500':
+          description: server internal error
+  /user:
+    post:
+      tags:
+        - User
+      summary: create a user
+      description: create a user
+      operationId: insertUser
+      requestBody:
+        description: Create a user
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/UserReq'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+components:
+  schemas:
+    UserResp:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        email:
+          type: string
+          example: userr@gmail.com
+        name:
+          type: string
+          example: username123
+        role:
+          type: string
+          enum:
+            - CLIENT
+            - ADMIN
+            - MODERATOR
+        rating:
+          type: number
+          format: double
+          example: 4.5
+    UserReq:
+      type: object
+      properties:
+        email:
+          type: string
+          example: userr@gmail.com
+        name:
+          type: string
+          example: username123
+        password:
+          type: string
+          example: 12345678

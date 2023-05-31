@@ -6,7 +6,8 @@ import by.fpmibsu.bielrent.model.dto.req.AddressReq;
 import by.fpmibsu.bielrent.model.dto.req.FilterReq;
 import by.fpmibsu.bielrent.model.entity.*;
 import lombok.SneakyThrows;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class ListingDaoImpl implements ListingDao {
             "FROM dbo.[Listing] " +
             "WHERE addressId = ? ";
     private static final ListingDaoImpl INSTANCE = new ListingDaoImpl();
-    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
+    Logger logger = LogManager.getLogger(FilterDaoImpl.class);
 
     private ListingDaoImpl() {
     }

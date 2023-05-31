@@ -13,8 +13,8 @@ import by.fpmibsu.bielrent.model.dtomapper.UserMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +35,7 @@ public class UserService {
     public static UserService getInstance() {
         return INSTANCE;
     }
-    Logger logger = Logger.getLogger(UserService.class);
+    Logger logger = LogManager.getLogger(UserService.class);
 
 
     public Long insertIfValid(UserReq userReq) throws DaoException, ValidationException {
@@ -61,6 +61,14 @@ public class UserService {
 
     public boolean isUserWithEmailInDB(String email) throws DaoException {
         return userDao.selectByEmail(email).isPresent();
+    }
+
+    public Optional<User> getUser(long id) throws DaoException {
+        try (var conn = connPool.getConnection()) {
+            return userDao.select(id);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     public Optional<User> getUser(String email, String password) throws DaoException {

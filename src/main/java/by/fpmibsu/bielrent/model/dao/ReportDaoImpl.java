@@ -3,8 +3,8 @@ package by.fpmibsu.bielrent.model.dao;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Report;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ReportDaoImpl implements ReportDao {
     public static ReportDaoImpl getInstance() {
         return INSTANCE;
     }
-    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
+    Logger logger = LogManager.getLogger(FilterDaoImpl.class);
 
     public ReportDaoImpl() {
 

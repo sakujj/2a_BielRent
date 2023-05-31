@@ -1,11 +1,7 @@
-package by.fpmibsu.bielrent.controller.servlet;
+package by.fpmibsu.bielrent.controller;
 
-import by.fpmibsu.bielrent.controller.errorhandler.ErrorHandler;
-import by.fpmibsu.bielrent.controller.templateparser.TemplateParser;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.controller.webcontroller.Controller;
-import by.fpmibsu.bielrent.controller.mappings.ControllerMappings;
-import by.fpmibsu.bielrent.model.service.UserService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
 import lombok.SneakyThrows;
 import org.thymeleaf.TemplateEngine;
@@ -14,7 +10,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.WebApplicationTemplateResolver;
 import org.thymeleaf.web.servlet.JavaxServletWebApplication;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -53,10 +48,8 @@ public class DispatcherServlet extends HttpServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         var httpReq = (HttpServletRequest) req;
         var httpResp = (HttpServletResponse) res;
-
         String uri = httpReq.getRequestURI();
         uri = uri.substring(UriPatterns.ROOT.length());
-
         Controller controller = ControllerMappings.resolveControllerByPath(uri);
         if (controller == null) {
             ErrorHandler.forwardToErrorPage(httpReq, httpResp, ErrorHandler.NOT_FOUND);

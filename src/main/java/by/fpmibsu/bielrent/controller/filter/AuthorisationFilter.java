@@ -10,12 +10,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -37,7 +35,7 @@ public class AuthorisationFilter extends HttpFilter {
                 || uri.startsWith("/js")
                 || uri.startsWith("/webfonts")
                 || uri.startsWith("/images")
-                || UriPatterns.GET_USERS_REST_API.equals(uri)) {
+                || uri.startsWith("/api")) {
             chain.doFilter(httpReq, httpResp);
             return;
         }

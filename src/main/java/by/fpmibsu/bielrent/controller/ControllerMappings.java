@@ -1,4 +1,4 @@
-package by.fpmibsu.bielrent.controller.mappings;
+package by.fpmibsu.bielrent.controller;
 
 import by.fpmibsu.bielrent.controller.webcontroller.*;
 import by.fpmibsu.bielrent.constants.UriPatterns;

@@ -3,7 +3,8 @@ package by.fpmibsu.bielrent.model.dao;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Filter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.time.ZoneId;
@@ -54,7 +55,7 @@ public class FilterDaoImpl implements FilterDao {
     private final String SQL_DELETE_FILTER_BY_ID = "DELETE FROM [dbo].[Filter] WHERE id = ?";
 
     private static final FilterDaoImpl INSTANCE = new FilterDaoImpl();
-    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
+    Logger logger = LogManager.getLogger(FilterDaoImpl.class);
 
     public FilterDaoImpl() {
     }

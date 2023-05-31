@@ -11,7 +11,8 @@ import by.fpmibsu.bielrent.model.entity.Photo;
 import by.fpmibsu.bielrent.model.dtomapper.PhotoMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -30,7 +31,7 @@ public class PhotoService {
     public static PhotoService getInstance(){
         return INSTANCE;
     }
-    Logger logger = Logger.getLogger(PhotoService.class);
+    Logger logger = LogManager.getLogger(PhotoService.class);
 
     public long insertIfValid(PhotoReq photoReq, Long listingId) throws DaoException, ValidationException, IOException{
         try (var conn = connPool.getConnection()) {

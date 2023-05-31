@@ -1,15 +1,12 @@
 package by.fpmibsu.bielrent.controller.webcontroller;
 
-import by.fpmibsu.bielrent.controller.templateparser.TemplateParser;
+import by.fpmibsu.bielrent.controller.TemplateParser;
 import by.fpmibsu.bielrent.model.service.ImageService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
 import lombok.SneakyThrows;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.WebContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 

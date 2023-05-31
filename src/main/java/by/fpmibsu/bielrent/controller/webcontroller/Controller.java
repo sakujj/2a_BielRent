@@ -1,8 +1,6 @@
 package by.fpmibsu.bielrent.controller.webcontroller;
 
-import by.fpmibsu.bielrent.controller.templateparser.TemplateParser;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.WebContext;
+import by.fpmibsu.bielrent.controller.TemplateParser;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

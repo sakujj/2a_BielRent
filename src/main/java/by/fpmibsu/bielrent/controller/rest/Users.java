@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 
 @Path("/users")
-public class UsersResource {
+public class Users {
     UserService userService = UserService.getInstance();
     JsonMapper jsonMapper = JsonMapper.getInstance();
 
@@ -27,4 +27,6 @@ public class UsersResource {
         var jsonUsers = jsonMapper.toJson(users);
         return Response.ok().entity(jsonUsers).build();
     }
+
+
 }

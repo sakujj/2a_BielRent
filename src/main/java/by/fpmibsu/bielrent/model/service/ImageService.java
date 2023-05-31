@@ -5,8 +5,8 @@ import by.fpmibsu.bielrent.utility.PropertiesUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -23,7 +23,7 @@ public class ImageService {
 
     private final String BASE_PATH = PropertiesUtil.get("image.base.url");
     private static final ConnectionPoolImpl connPool = ConnectionPoolImpl.getInstance();
-    private Logger logger = Logger.getLogger(ImageService.class);
+    private Logger logger = LogManager.getLogger(ImageService.class);
 
     public void uploadImage(String imagePath, InputStream imageContent) {
         Path imageFullPath = Path.of(BASE_PATH, imagePath);

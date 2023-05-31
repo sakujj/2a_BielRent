@@ -1,17 +1,16 @@
 package by.fpmibsu.bielrent.controller.webcontroller;
 
 import by.fpmibsu.bielrent.constants.HtmlPages;
-import by.fpmibsu.bielrent.controller.errorhandler.ErrorHandler;
-import by.fpmibsu.bielrent.controller.templateparser.TemplateParser;
+import by.fpmibsu.bielrent.controller.ErrorHandler;
+import by.fpmibsu.bielrent.controller.TemplateParser;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.dto.req.UserReq;
 import by.fpmibsu.bielrent.model.dtovalidator.InsertUserValidator;
 import by.fpmibsu.bielrent.model.dtovalidator.ValidationException;
 import by.fpmibsu.bielrent.model.service.UserService;
 import by.fpmibsu.bielrent.constants.UriPatterns;
-import org.apache.log4j.Logger;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.context.WebContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ import java.io.IOException;
 
 public class RegistrationController implements Controller {
     private final UserService userService = UserService.getInstance();
-    Logger logger = Logger.getLogger(RegistrationController.class);
+    Logger logger = LogManager.getLogger(RegistrationController.class);
 
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser) throws IOException {
@@ -65,6 +64,8 @@ public class RegistrationController implements Controller {
             resp.setStatus(HttpsURLConnection.HTTP_BAD_REQUEST);
             parser.parse(HtmlPages.REGISTRATION_PAGE, resp.getWriter());
         } else {
+            logger.info("NEW USER REGISTERED: \n" + req.getParameter("email\n")
+                    + req.getParameter("name"));
             resp.setStatus(HttpsURLConnection.HTTP_ACCEPTED);
             resp.sendRedirect(UriPatterns.HOME);
         }

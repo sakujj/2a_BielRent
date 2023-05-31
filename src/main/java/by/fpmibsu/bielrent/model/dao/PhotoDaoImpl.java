@@ -3,8 +3,8 @@ package by.fpmibsu.bielrent.model.dao;
 import by.fpmibsu.bielrent.model.connectionpool.ConnectionPoolImpl;
 import by.fpmibsu.bielrent.model.dao.exception.DaoException;
 import by.fpmibsu.bielrent.model.entity.Photo;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class PhotoDaoImpl implements PhotoDao {
             "WHERE listingId = ?";
 
     private static final PhotoDaoImpl INSTANCE = new PhotoDaoImpl();
-    Logger logger = org.apache.log4j.Logger.getLogger(FilterDaoImpl.class);
+    Logger logger = LogManager.getLogger(FilterDaoImpl.class);
 
     public static PhotoDaoImpl getInstance() {
         return INSTANCE;
