@@ -28,6 +28,8 @@ public class CreateListingController implements Controller {
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser) throws IOException {
         resp.setStatus(HttpsURLConnection.HTTP_OK);
+        var user = (User)req.getSession().getAttribute("user");
+        parser.getContext().setVariable("user", user);
         parser.parse(HtmlPages.CREATE_LISTING_PAGE, resp.getWriter());
     }
 

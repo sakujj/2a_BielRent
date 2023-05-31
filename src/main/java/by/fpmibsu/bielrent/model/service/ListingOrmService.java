@@ -111,10 +111,7 @@ public class ListingOrmService {
         }
         return list;
     };
-    public List<ListingOrm> queryListings(ListingQuery query, long listingCount, long offset) throws DaoException {
-        AddressReq addressQ = query.getAddress();
-        FilterReq filterQ = query.getFilter();
-
+    public List<ListingOrm> getListingsWithOffset(long listingCount, long offset) throws DaoException {
         String sqlQuery = "SELECT * FROM " +
                 " Listing l " +
                 " LEFT JOIN Filter f ON f.listingId = l.id " +
@@ -123,115 +120,8 @@ public class ListingOrmService {
                 " ORDER BY l.id DESC OFFSET (?) ROWS " +
                 " FETCH NEXT (?) ROWS ONLY ";
         List<Object> params = new ArrayList<>();
-
-        if (query.getUserId() != null) {
-            sqlQuery += " AND userId = ? ";
-            params.add(query.getUserId());
-        }
-
-        if (query.getPropertyTypeName() != null) {
-            sqlQuery += " AND propertyTypeName = ? ";
-            params.add(query.getPropertyTypeName().toString());
-        }
-
-        if (addressQ != null) {
-            if (addressQ.getStreet() != null) {
-                sqlQuery += " AND street = ? ";
-                params.add(addressQ.getStreet());
-            }
-            if (addressQ.getCity() != null) {
-                sqlQuery += " AND city = ? ";
-                params.add(addressQ.getCity());
-            }
-            if (addressQ.getDistrictAdministrative() != null) {
-                sqlQuery += " AND districtAdministrative = ? ";
-                params.add(addressQ.getDistrictAdministrative());
-            }
-            if (addressQ.getDistrictMicro() != null) {
-                sqlQuery += " AND districtMicro = ? ";
-                params.add(addressQ.getDistrictMicro());
-            }
-            if (addressQ.getRegionName() != null) {
-                sqlQuery += " AND regionName = ? ";
-                params.add(addressQ.getRegionName().toString());
-            }
-            if (addressQ.getHouseNumber() != null) {
-                sqlQuery += " AND houseNumber = ? ";
-                params.add(addressQ.getHouseNumber());
-            }
-        }
-
-        if (filterQ != null) {
-            if (filterQ.getBedroomCount() != null) {
-                sqlQuery += " AND bedroomCount = ? ";
-                params.add(filterQ.getBedroomCount());
-            }
-            if (filterQ.getBalconyCount() != null) {
-                sqlQuery += " AND balconyCount = ? ";
-                params.add(filterQ.getBalconyCount());
-            }
-            if (filterQ.getRoomCount() != null) {
-                sqlQuery += " AND roomCount = ? ";
-                params.add(filterQ.getRoomCount());
-            }
-            if (filterQ.getFloorCount() != null) {
-                sqlQuery += " AND floorCount = ? ";
-                params.add(filterQ.getFloorCount());
-            }
-
-            if (filterQ.getHasBathroom() != null) {
-                sqlQuery += " AND hasBathroom = ? ";
-                params.add(filterQ.getHasBathroom());
-            }
-            if (filterQ.getHasFurniture() != null) {
-                sqlQuery += " AND hasFurniture = ? ";
-                params.add(filterQ.getHasFurniture());
-            }
-            if (filterQ.getHasWifi() != null) {
-                sqlQuery += " AND hasWifi = ? ";
-                params.add(filterQ.getHasWifi());
-            }
-            if (filterQ.getHasElevator() != null) {
-                sqlQuery += " AND hasElevator = ? ";
-                params.add(filterQ.getHasElevator());
-            }
-            if (filterQ.getHasWashingMachine() != null) {
-                sqlQuery += " AND hasWashingMachine = ? ";
-                params.add(filterQ.getHasWashingMachine());
-            }
-
-            if (filterQ.getBuildYear() != null) {
-                sqlQuery += " AND buildYear = ? ";
-                params.add(filterQ.getBuildYear());
-            }
-            if (filterQ.getSquareArea() != null) {
-                sqlQuery += " AND squareArea = ? ";
-                params.add(filterQ.getSquareArea());
-            }
-
-            if (filterQ.getRentalPeriodStart() != null) {
-                sqlQuery += " AND rentalPeriodStart >= ? ";
-                params.add(Date.valueOf(filterQ.getRentalPeriodStart()));
-            }
-            if (filterQ.getRentalPeriodEnd() != null) {
-                sqlQuery += " AND rentalPeriodEnd <= ? ";
-                params.add(Date.valueOf(filterQ.getRentalPeriodEnd()));
-            }
-
-        }
-
-        if (query.getPriceFrom() != null) {
-            sqlQuery += " AND priceMonthly >= ? ";
-            params.add(query.getPriceFrom());
-        }
-        if (query.getPriceTo() != null) {
-            sqlQuery += " AND priceMonthly <= ? ";
-            params.add(query.getPriceTo());
-        }
-
         params.add(offset);
         params.add(listingCount);
-//        System.out.println(params);
 
         try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
             try {
@@ -251,7 +141,6 @@ public class ListingOrmService {
                 FilterDaoImpl filterDao = FilterDaoImpl.getInstance();
                 PhotoDaoImpl photoDao = PhotoDaoImpl.getInstance();
 
-//                System.out.println(sqlQuery);
                 ResultSet rs = statement.executeQuery();
                 while (rs.next()) {//тут ничего
                     ListingOrm listingORM = new ListingOrm();
@@ -370,8 +259,8 @@ public class ListingOrmService {
         }
     }
 
-    public List<ListingOrmResp> queryListingsResp(ListingQuery query, int listingCount, int offset) throws DaoException {
-        return queryListings(query, listingCount, offset)
+    public List<ListingOrmResp> getListingsRespWithOffset(int listingCount, int offset) throws DaoException {
+        return getListingsWithOffset(listingCount, offset)
                 .stream()
                 .map(listingOrmMapper::fromEntity)
                 .collect(Collectors.toList());

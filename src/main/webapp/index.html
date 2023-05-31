@@ -24,7 +24,6 @@
         <div class="row main-header">
             <div class="col py-2 main-h1">Все объявления:</div>
         </div>
-        <div class="mt-2 mb-0 pb-0 pt-2" th:if="${listings.size() > 0}" th:insert="~{WEB-INF/fragments.html::pagination}"></div>
         <div class="row justify-content-start main-body mt-2 pt-2" th:each="list, iterStat:${listings}"
         >
             <a class="listing my-4" href="listing.html" th:href="@{${LISTING_URI}(id=${list.getId()})}" th:classappend="${iterStat.index == 0 ? 'mt-0' :_}">
