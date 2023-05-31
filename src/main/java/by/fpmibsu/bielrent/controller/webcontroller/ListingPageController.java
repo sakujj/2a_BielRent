@@ -36,7 +36,7 @@ public class ListingPageController implements Controller {
             return;
         }
 
-        if (id <= 0 || id > listingService.getListingCount()) {
+        if (id <= 0) {
             logger.error("Specified page does not exist");
             ErrorHandler.forwardToErrorPage(req, resp, ErrorHandler.NOT_FOUND);
             return;

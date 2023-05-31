@@ -38,6 +38,6 @@ public class ErrorHandler {
     public void forwardToErrorPage(HttpServletRequest req, HttpServletResponse resp, int statusCode) throws ServletException, IOException {
         resp.setStatus(statusCode);
         req.setAttribute("ERROR_INFO", statusCodeInfo.get(statusCode));
-        req.getRequestDispatcher(UriPatterns.ROOT + UriPatterns.ERROR_PAGE).forward(req, resp);
+        req.getRequestDispatcher(UriPatterns.ERROR_PAGE).forward(req, resp);
     }
 }

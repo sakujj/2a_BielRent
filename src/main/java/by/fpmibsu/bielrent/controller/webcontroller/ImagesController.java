@@ -15,7 +15,7 @@ public class ImagesController implements Controller {
 
     @Override
     public void processGet(HttpServletRequest req, HttpServletResponse resp, TemplateParser parser)  {
-        var r = req.getRequestURI().substring(4);
+        var r = req.getRequestURI();
 
         var imagePath = r.replace(UriPatterns.IMAGES, "");
         imageService.getImage(imagePath).ifPresentOrElse(image -> {
