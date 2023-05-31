@@ -8,3 +8,5 @@ src/main/webapp/package-lock.json
 src/main/webapp/node_modules/
 src/main/webapp/imgs/
 src/main/webapp/index2.html
+*.properties
+*.log

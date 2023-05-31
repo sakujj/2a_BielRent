@@ -79,6 +79,7 @@ public class DispatcherServlet extends HttpServlet {
         context.setVariable("REGISTRATION_URI", UriPatterns.REGISTRATION);
         context.setVariable("CREATE_LISTING_URI", UriPatterns.CREATE_LISTING);
         context.setVariable("IMAGES_URI", UriPatterns.IMAGES);
+        context.setVariable("PROFILE_URI", UriPatterns.PROFILE_PAGE);
     }
 
     @Override

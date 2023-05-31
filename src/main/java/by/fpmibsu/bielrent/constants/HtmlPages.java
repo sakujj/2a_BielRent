@@ -10,4 +10,5 @@ public class HtmlPages {
     public static final String INDEX_PAGE = "index.html";
     public static final String LISTING_PAGE = "listing.html";
     public static final String ERROR_PAGE = "error.html";
+    public static final String PROFILE_PAGE = "profile.html";
 }

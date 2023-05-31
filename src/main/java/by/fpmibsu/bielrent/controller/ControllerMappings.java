@@ -22,6 +22,7 @@ public class ControllerMappings {
         controllersByUri.put(UriPatterns.IMAGES, new ImagesController());
         controllersByUri.put(UriPatterns.LISTING_PAGE, new ListingPageController());
         controllersByUri.put(UriPatterns.ERROR_PAGE, new ErrorPageController());
+        controllersByUri.put(UriPatterns.PROFILE_PAGE, new ProfileController());
     }
 
 

@@ -13,4 +13,5 @@ public class UriPatterns {
     public static final String ERROR_PAGE = "/" + HtmlPages.ERROR_PAGE;
     public static final String GET_USERS_REST_API = "/api/users";
     public static final String ROOT = "/app";
+    public static final String PROFILE_PAGE = "/" + HtmlPages.PROFILE_PAGE;
 }

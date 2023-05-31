@@ -17,4 +17,5 @@ public class ListingQuery {
     PropertyType propertyTypeName;
     Long priceFrom;
     Long priceTo;
+    Long userId;
 }

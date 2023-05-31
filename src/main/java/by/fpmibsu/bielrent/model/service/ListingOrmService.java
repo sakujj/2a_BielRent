@@ -51,6 +51,66 @@ public class ListingOrmService {
     private Logger logger = LogManager.getLogger(AddressService.class);
     private static final ListingOrmService INSTANCE = new ListingOrmService();
 
+    public List<ListingOrm> getListingsByUserId(Long userId) throws DaoException {
+        String sqlQuery = "SELECT * FROM " +
+                " Listing l " +
+                " LEFT JOIN Filter f ON f.listingId = l.id " +
+                " LEFT JOIN Address a ON l.addressId = a.id " +
+                " LEFT JOIN [dbo].[User] u ON l.userId = u.id WHERE userId = (?) ";
+        List<ListingOrm> list= new ArrayList<ListingOrm>();
+        try (Connection conn = ConnectionPoolImpl.getInstance().getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                PreparedStatement statement = conn.prepareStatement(sqlQuery);
+                statement.setLong(1, userId);
+
+
+                AddressDaoImpl addressDao = AddressDaoImpl.getInstance();
+                UserDaoImpl userDao = UserDaoImpl.getInstance();
+                FilterDaoImpl filterDao = FilterDaoImpl.getInstance();
+                PhotoDaoImpl photoDao = PhotoDaoImpl.getInstance();
+
+//                System.out.println(sqlQuery);
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {//тут ничего
+                    ListingOrm listingORM = new ListingOrm();
+
+                    Address address = new Address();
+                    addressDao.buildAddress(address, rs);
+                    listingORM.setAddress(address);
+
+                    User user = new User();
+                    userDao.buildUser(user, rs);
+                    listingORM.setUser(user);
+
+
+                    listingORM.setPropertyTypeName(PropertyType.valueOf(rs.getString("propertyTypeName")));
+
+                    Filter filter = new Filter();
+                    filterDao.buildFilter(filter, rs);
+                    listingORM.setFilter(filter);
+
+                    listingORM.setId(rs.getLong("id"));
+                    listingORM.setName(rs.getString("name"));
+                    listingORM.setDescription(rs.getString("description"));
+
+                    List<Photo> photos = photoDao.selectAllByListingId(listingORM.getId());
+                    listingORM.setPhotos(photos);
+
+                    list.add(listingORM);
+                }
+
+                conn.commit();
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return list;
+    };
     public List<ListingOrm> queryListings(ListingQuery query, long listingCount, long offset) throws DaoException {
         AddressReq addressQ = query.getAddress();
         FilterReq filterQ = query.getFilter();
@@ -64,7 +124,10 @@ public class ListingOrmService {
                 " FETCH NEXT (?) ROWS ONLY ";
         List<Object> params = new ArrayList<>();
 
-
+        if (query.getUserId() != null) {
+            sqlQuery += " AND userId = ? ";
+            params.add(query.getUserId());
+        }
 
         if (query.getPropertyTypeName() != null) {
             sqlQuery += " AND propertyTypeName = ? ";
