@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 import java.io.*;
 
+@WebFilter("/*")
 public class BasicFilter extends HttpFilter {
 
     @Override

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @MultipartConfig()
-@WebServlet("/app/*")
+@WebServlet(urlPatterns = {"*.html", "/images/*"})
 public class DispatcherServlet extends HttpServlet {
     private JavaxServletWebApplication webApplication;
     private TemplateEngine templateEngine;
@@ -50,9 +50,7 @@ public class DispatcherServlet extends HttpServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         var httpReq = (HttpServletRequest) req;
         var httpResp = (HttpServletResponse) res;
-        System.out.println(httpReq.getParameter("city") + " param city");
         String uri = httpReq.getRequestURI();
-        uri = uri.substring(UriPatterns.ROOT.length());
         System.out.println(uri);
         Controller controller = ControllerMappings.resolveControllerByPath(uri);
         if (controller == null) {
