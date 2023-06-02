@@ -1,0 +1,147 @@
+USE master
+GO
+
+CREATE DATABASE bielrentTest
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'bielrentTest', FILENAME = N'C:\db\bielrentTest.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+GO
+
+USE bielrentTest
+GO
+
+CREATE TABLE dbo.[Role] (
+    name varchar(20) NOT NULL,
+
+    CONSTRAINT CHK_Role_name CHECK (name IN('ADMIN', 'CLIENT', 'MODERATOR')),
+    CONSTRAINT PK_Role PRIMARY KEY(name)
+)
+GO
+
+CREATE TABLE dbo.[Region] (
+    name varchar(20) NOT NULL,
+
+    CONSTRAINT CHK_Region_name CHECK (name IN('BREST_REGION', 'VITEBSK_REGION','GOMEL_REGION', 'GRODNO_REGION','MINSK_REGION', 'MOGILEV_REGION', 'MINSK_CITY')),
+    CONSTRAINT PK_Region PRIMARY KEY(name)
+)
+GO
+
+CREATE TABLE dbo.[PropertyType](
+    name varchar(20) NOT NULL,
+
+    CONSTRAINT CHK_PropertyType_name CHECK(name IN('FLAT', 'HOUSE')),
+    CONSTRAINT PK_PropertyType PRIMARY KEY(name)
+) 
+GO
+
+CREATE TABLE dbo.[User] (
+    id bigint IDENTITY(1,1) NOT NULL,
+    email varchar(50) NOT NULL,
+    password varchar(50) NOT NULL,
+    name nvarchar(50) NOT NULL,
+    rating decimal(2,1),
+    role varchar(20) NOT NULL,
+
+    CONSTRAINT CHK_User_rating CHECK(0.0 <= rating AND rating <= 5.0),
+    CONSTRAINT UC_User_email UNIQUE(email),
+    CONSTRAINT FK_User_Role FOREIGN KEY (role) REFERENCES dbo.[Role](name) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT PK_User PRIMARY KEY(id ASC)
+)
+GO
+
+CREATE TABLE dbo.[Report] (
+    id bigint IDENTITY(1,1) NOT NULL,
+    userId bigint NOT NULL,
+    description nvarchar(1000),
+
+    CONSTRAINT FK_Report_User FOREIGN KEY (userId) REFERENCES dbo.[User](id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT PK_Report PRIMARY KEY(id)
+)
+GO
+
+CREATE TABLE dbo.[Address](
+    id bigint IDENTITY(1,1) NOT NULL,
+    regionName varchar(20) NOT NULL,
+    city nvarchar(30) NOT NULL,
+    districtAdministrative nvarchar(20),
+    districtMicro nvarchar(20),
+    street nvarchar(30) NOT NULL,
+    houseNumber int NOT NULL,
+
+    CONSTRAINT CHK_Address_houseNumber CHECK(houseNumber > 0),
+	CONSTRAINT FK_Address_Region FOREIGN KEY(regionName) REFERENCES dbo.[Region](name) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT PK_Address PRIMARY KEY(id)
+)
+GO
+
+CREATE TABLE dbo.[Listing](
+    id bigint IDENTITY(1,1) NOT NULL,
+	name nvarchar(300) NOT NULL,
+    propertyTypeName varchar(20) NOT NULL,
+    userId bigint NOT NULL,
+    addressId bigint NOT NULL,
+    description nvarchar(1000) NOT NULL,
+
+    CONSTRAINT FK_Listing_PropertyType FOREIGN KEY(propertyTypeName) REFERENCES dbo.[PropertyType](name) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_Listing_User FOREIGN KEY(userId) REFERENCES dbo.[User](id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_Listing_Address FOREIGN KEY(addressId) REFERENCES dbo.[Address](id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT PK_Listing PRIMARY KEY(id)
+)
+GO
+
+CREATE TABLE dbo.[Filter] (
+    id bigint IDENTITY(1,1) NOT NULL,
+    roomCount int NOT NULL,
+    floorCount int NOT NULL,
+    bedroomCount int NOT NULL,
+    squareArea real NOT NULL,
+    balconyCount int NOT NULL, 
+    buildYear int NOT NULL,
+    rentalPeriodStart date NOT NULL,
+    rentalPeriodEnd date NOT NULL,
+    priceMonthly bigint NOT NULL, 
+    hasBathroom bit NOT NULL,
+    hasWifi bit NOT NULL,
+    hasWashingMachine bit NOT NULL,
+    hasFurniture bit NOT NULL,
+    hasElevator bit NOT NULL,
+    listingId bigint NOT NULL,
+
+    CONSTRAINT FK_Filter_Listing FOREIGN KEY (listingId) REFERENCES Listing(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT UC_Filter_listingId UNIQUE(listingId),
+    CONSTRAINT CHK_Filter_roomCount CHECK(roomCount >= 0),
+    CONSTRAINT CHK_Filter_floorCount CHECK(floorCount >= 0),
+    CONSTRAINT CHK_Filter_bedroomCount CHECK(bedroomCount >= 0),
+    CONSTRAINT CHK_Filter_buildYear CHECK(buildYear > 1700 AND buildYear <= YEAR(GETDATE())),
+    CONSTRAINT CHK_Filter_priceMonthly CHECK(priceMonthly >= 0),
+    CONSTRAINT CHK_Filter_squareArea CHECK(squareArea >= 0),
+    CONSTRAINT CHK_Filter_balconyCount CHECK(balconyCount >= 0),
+    CONSTRAINT PK_Filter PRIMARY KEY(id)
+)
+GO
+
+
+CREATE TABLE dbo.[Photo](
+    id bigint IDENTITY(1,1) NOT NULL,
+    listingId bigint NOT NULL,
+    path varchar(255) NOT NULL,
+
+    CONSTRAINT PK_Photo PRIMARY KEY(id),
+    CONSTRAINT FK_Photo_Listing FOREIGN KEY(listingId) REFERENCES dbo.[Listing](id) ON DELETE CASCADE ON UPDATE CASCADE
+)
+GO
+
+INSERT INTO dbo.[Role] VALUES ('ADMIN');
+INSERT INTO dbo.[Role] VALUES ('MODERATOR');
+INSERT INTO dbo.[Role] VALUES ('CLIENT');
+
+INSERT INTO dbo.[PropertyType] VALUES ('FLAT');
+INSERT INTO dbo.[PropertyType] VALUES ('HOUSE');
+
+INSERT INTO dbo.[Region] VALUES ('BREST_REGION');
+INSERT INTO dbo.[Region] VALUES ('VITEBSK_REGION');
+INSERT INTO dbo.[Region] VALUES ('GOMEL_REGION');
+INSERT INTO dbo.[Region] VALUES ('GRODNO_REGION');
+INSERT INTO dbo.[Region] VALUES ('MINSK_REGION');
+INSERT INTO dbo.[Region] VALUES ('MOGILEV_REGION');
+INSERT INTO dbo.[Region] VALUES ('MINSK_CITY');
