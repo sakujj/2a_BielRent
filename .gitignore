@@ -10,3 +10,5 @@ src/main/webapp/imgs/
 src/main/webapp/index2.html
 *.properties
 *.log
+photos/
+*.iml
