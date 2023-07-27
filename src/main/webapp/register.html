@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/vendor/custom.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Registration</title>
+</head>
+<body style="padding: 0 2rem;">
+
+<div class="container-my">
+    <div class="reg-card" >
+        <div class="reg-card-header" >
+            <h1 class="text-mont reg-text">Регистрация</h1>
+        </div>
+        <form class="reg-form" action="/register.html" th:action="@{|${REGISTRATION_URI}|}" method="post">
+            <div class="reg-card-body">
+                <div class="input">
+                    <label for="inputNameReg" class="input-label text-mont">Имя</label>
+                    <input type="text" class="input-field form-control" id="inputNameReg" name="name" th:value="${param.name}">
+                </div>
+                <div class="input">
+                    <label for="inputEmailReg" class="input-label text-mont">Email</label>
+                    <input type="email" class="input-field form-control" id="inputEmailReg" name="email" th:value="${param.email}">
+                </div>
+                <div class="input">
+                    <label for="inputPasswordReg" class="input-label text-mont">Пароль</label>
+                    <input type="password" class="input-field form-control" id="inputPasswordReg" name="password1">
+                </div>
+                <div class="input">
+                    <label for="inputRepeatPasswordReg" class="input-label text-mont">Повторите пароль</label>
+                    <input type="password" class="input-field form-control" id="inputRepeatPasswordReg" name="password2">
+                </div>
+            </div>
+            <div class="bg-black" style="text-align: center" th:if="${error}" th:utext="'<strong> Oops</strong> ' + ${error}"></div>
+
+            <div class="reg-cart-footer justify-content-center">
+                <button type="submit" class="button reg-btn my-bt">
+                    Зарегистрироваться
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="js/bootstrap.js"></script>
+</body>
+</html>

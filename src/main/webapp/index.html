@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BielRent</title>
+    <link rel="stylesheet" href="css/vendor/custom.css">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        * {
+            -webkit-border-radius: 0 !important;
+            -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="~{WEB-INF/fragments.html::navbar}"> </div>
+
+<main class="container-xxl">
+    <div class="py-5 px-3">
+        <div class="row main-header">
+            <div class="col py-2 main-h1">Все объявления:</div>
+        </div>
+        <div class="row justify-content-start main-body mt-2 pt-2" th:each="list, iterStat:${listings}"
+        >
+            <a class="listing my-4" href="listing.html" th:href="@{${LISTING_URI}(id=${list.getId()})}" th:classappend="${iterStat.index == 0 ? 'mt-0' :_}">
+                <div class="card col-md-9 listing-card">
+                    <div class="row d-flex g-0 p-2">
+                        <div class="col-md-4 align-self-center">
+                            <div class="img">
+                                <img src="https://pro-dachnikov.com/uploads/posts/2023-01/1674014062_pro-dachnikov-com-p-vstroennii-kholodilnik-v-koridore-dizain-f-68.jpg"
+                                     th:src="@{|images/${list.getPhotos().get(0).getPath()}|}" alt="" class="img-main-page">
+                            </div>
+                        </div>
+                        <div class="col-md-8 px-2">
+                            <div class="card-body">
+                                <h5 class="card-title mt-md-2 pb-1"
+                                    th:text="|${list.getName()} - ${list.getFilter().getPriceMonthly()} BYN/месяц|">
+                                    Замечательная квартира - 1000 BYN/месяц</h5>
+                                <div class="description px-2 mt-md-2">
+                                    <div class="parameters card-text"
+                                         th:text="|Площадь ${list.getFilter().getSquareArea()} кв. м|">Площадь: 64 кв. м
+                                    </div>
+                                    <div class="parameters card-text"
+                                         th:text="|Комнат: ${list.getFilter().getRoomCount()}|">Комнат: 3
+                                    </div>
+                                    <div class="parameters card-text"
+                                         th:text="|Год строительства: ${list.getFilter().getBuildYear()}|">Год
+                                        строительства: 2000
+                                    </div>
+                                    <p class="card-text">
+                                        <i class="fa-solid fa-location-dot"
+                                           th:text="|${list.getAddress().getCity()},
+                                               ул. ${list.getAddress().getStreet()},
+                                               д. ${list.getAddress().getHouseNumber()}|">
+                                            Минск, ул. Иванова, д.43
+                                        </i>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="mt-2 mb-0 pb-0 pt-2" th:insert="~{WEB-INF/fragments.html::pagination}"></div>
+    </div>
+</main>
+<script src="js/bootstrap.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+INSERT INTO dbo.[User](email, password, name, rating, role) VALUES('pierce@gmail.com', '123', 'Pierce', 4.3, 'CLIENT');
+INSERT INTO  dbo.[User](email, password, name, rating, role) VALUES('morgan@gmail.com', '1q3', 'Morgan', 3.1, 'CLIENT');
+INSERT INTO  dbo.[User](email, password, name, rating, role) VALUES('freeman@gmail.com', '1q33333', 'Freeman', 0.0, 'CLIENT');
+INSERT INTO  dbo.[User](email, password, name, rating, role) VALUES('aboba@mail.ru', 'mail12', 'Matt', 2.0, 'CLIENT');
+INSERT INTO  dbo.[User](email, password, name, rating, role) VALUES('fos@mail.ru', 'mai123l12', N'Димитрий', 4.6, 'ADMIN');
+
+
+INSERT INTO dbo.[Report](userId, description) VALUES(1, N'Меня обманули...');
+INSERT INTO dbo.[Report](userId, description) VALUES(1, N'Все плёхо');
+INSERT INTO dbo.[Report](userId, description) VALUES(2, N'Имеется жалоба');
+INSERT INTO dbo.[Report](userId, description) VALUES(4, N'Сообщаю о ...');
+INSERT INTO dbo.[Report](userId, description) VALUES(4, N'Вот так вот');
+INSERT INTO dbo.[Report](userId, description) VALUES(4, N'Вот как бывает');
+INSERT INTO dbo.[Report](userId, description) VALUES(5, N'Все плачевно');
+
+
+INSERT INTO dbo.[Address](regionName, city, districtAdministrative, districtMicro, street, houseNumber) 
+VALUES('MINSK_CITY', 'Minsk', 'Frunzenski rajon', 'Suharevo', 'vul. Lobanka', 79);
+
+INSERT INTO dbo.[Address](regionName, city, districtAdministrative, districtMicro, street, houseNumber) 
+VALUES('GRODNO_REGION', 'Grodno', 'X rajon', 'XX mikrorajon', 'vul. XXX', 13);
+
+INSERT INTO dbo.[Address](regionName, city, districtAdministrative, districtMicro, street, houseNumber) 
+VALUES('MINSK_REGION', 'Zaslavl', NULL, NULL, 'vul. Y', 1448);
+
+INSERT INTO dbo.[Listing](propertyTypeName, userId, addressId, description, name)
+VALUES('HOUSE', 1, 3, N'1 Очень хороший дом', N'Описание дома 1');
+INSERT INTO dbo.[Listing](propertyTypeName, userId, addressId, description, name)
+VALUES('HOUSE', 2, 1, N'2 Очень хороший дом', N'Описание дома 2');
+INSERT INTO dbo.[Listing](propertyTypeName, userId, addressId, description, name)
+VALUES('FLAT', 1, 2, N'1 Очень хорошая квартира', N'Описание квартиры 1');
+INSERT INTO dbo.[Listing](propertyTypeName, userId, addressId, description, name)
+VALUES('FLAT', 3, 2, N'3 Очень хорошая квартира 1', N'Описание квартиры 3 1');
+INSERT INTO dbo.[Listing](propertyTypeName, userId, addressId, description, name)
+VALUES('FLAT', 3, 2, N'3 Очень хорошая квартира 2', N'Описание квартиры 3 2');
+INSERT INTO dbo.[Listing](propertyTypeName, userId, addressId, description, name)
+VALUES('FLAT', 3, 2, N'3 Очень хорошая квартира 3', N'Описание квартиры 3 3');
+INSERT INTO dbo.[Listing](propertyTypeName, userId, addressId, description, name)
+VALUES('FLAT', 4, 2, N'4 Очень хорошая квартира', N'Описание квартиры 4');
+
+SET DATEFORMAT dmy;
+
+INSERT INTO dbo.[Filter](
+roomCount,
+    floorCount,
+    bedroomCount,
+    squareArea,
+    balconyCount,
+    buildYear,
+    rentalPeriodStart,
+    rentalPeriodEnd,
+    priceMonthly,
+    hasBathroom,
+    hasWifi,
+    hasWashingMachine,
+    hasFurniture,
+    hasElevator,
+    listingId
+) VALUES (
+4, 3, 2, 80, 1, 1900, '14-09-2000', '14-09-2001', 5555, 'true', 'true', 'false', 'false', 'true', 1  
+) 
+
+
+INSERT INTO dbo.[Filter](
+roomCount,
+    floorCount,
+    bedroomCount,
+    squareArea,
+    balconyCount,
+    buildYear,
+    rentalPeriodStart,
+    rentalPeriodEnd,
+    priceMonthly,
+    hasBathroom,
+    hasWifi,
+    hasWashingMachine,
+    hasFurniture,
+    hasElevator,
+    listingId
+) VALUES (
+2, 2, 1, 15, 5, 1950, '14-09-2010', '14-09-2013', 10090, 'true', 'true', 'false', 'false', 'true', 2  
+) 
+
+INSERT INTO dbo.[Filter](
+roomCount,
+    floorCount,
+    bedroomCount,
+    squareArea,
+    balconyCount,
+    buildYear,
+    rentalPeriodStart,
+    rentalPeriodEnd,
+    priceMonthly,
+    hasBathroom,
+    hasWifi,
+    hasWashingMachine,
+    hasFurniture,
+    hasElevator,
+    listingId
+) VALUES (
+2, 2, 1, 15, 5, 2000, '14-09-2010', '14-09-2013', 10090, 'true', 'true', 'false', 'false', 'true', 4
+) 
+
+INSERT INTO dbo.[Filter](
+roomCount,
+    floorCount,
+    bedroomCount,
+    squareArea,
+    balconyCount,
+    buildYear,
+    rentalPeriodStart,
+    rentalPeriodEnd,
+    priceMonthly,
+    hasBathroom,
+    hasWifi,
+    hasWashingMachine,
+    hasFurniture,
+    hasElevator,
+    listingId
+) VALUES (
+1, 1, 1, 15, 5, 2000, '14-09-2010', '14-09-2013', 10090, 'true', 'true', 'false', 'false', 'true', 5
+) 
+
+INSERT INTO dbo.[Filter](
+roomCount,
+    floorCount,
+    bedroomCount,
+    squareArea,
+    balconyCount,
+    buildYear,
+    rentalPeriodStart,
+    rentalPeriodEnd,
+    priceMonthly,
+    hasBathroom,
+    hasWifi,
+    hasWashingMachine,
+    hasFurniture,
+    hasElevator,
+    listingId
+) VALUES (
+3, 3, 1, 15, 5, 2000, '14-09-2010', '14-09-2013', 10090, 'true', 'true', 'false', 'false', 'true', 6
+) 
+
+INSERT INTO dbo.[Filter](
+roomCount,
+    floorCount,
+    bedroomCount,
+    squareArea,
+    balconyCount,
+    buildYear,
+    rentalPeriodStart,
+    rentalPeriodEnd,
+    priceMonthly,
+    hasBathroom,
+    hasWifi,
+    hasWashingMachine,
+    hasFurniture,
+    hasElevator,
+    listingId
+) VALUES (
+4, 4, 1, 15, 5, 2000, '14-09-2010', '14-09-2013', 10090, 'true', 'true', 'false', 'false', 'true', 7
+) 
+
+INSERT INTO dbo.[Filter](
+roomCount,
+    floorCount,
+    bedroomCount,
+    squareArea,
+    balconyCount,
+    buildYear,
+    rentalPeriodStart,
+    rentalPeriodEnd,
+    priceMonthly,
+    hasBathroom,
+    hasWifi,
+    hasWashingMachine,
+    hasFurniture,
+    hasElevator,
+    listingId
+) VALUES (
+222, 222, 1, 15, 5, 2000, '14-09-2010', '14-09-2013', 10090, 'true', 'true', 'false', 'false', 'true', 3
+) 
+
+
+INSERT INTO dbo.[Photo](listingId, path) VALUES(1, 'path11');
+INSERT INTO dbo.[Photo](listingId, path) VALUES(1, 'path12');
+INSERT INTO dbo.[Photo](listingId, path) VALUES(2, 'path21');
+INSERT INTO dbo.[Photo](listingId, path) VALUES(3, 'path31');

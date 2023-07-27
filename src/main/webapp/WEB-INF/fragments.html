@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BielRent</title>
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    * {
+      -webkit-border-radius: 0 !important;
+      -moz-border-radius: 0 !important;
+      border-radius: 0 !important;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top p-0" th:fragment="navbar">
+  <div class="container-xxl">
+    <a class="navbar-brand" href="#" th:href="@{${HOME_URI}}">BielRent</a>
+
+    <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
+      <ul class="navbar-nav align-items-center m-0 p-0">
+        <li class="nav-item my-1 my-md-0">
+          <a class="nav-link p-0" href="/create-listing.html" th:href="@{${CREATE_LISTING_URI}}">
+            <button type="button" class="my-bt p-2 m-0">
+              Добавить объявление
+            </button>
+          </a>
+        </li>
+        <li class="nav-item my-1 my-md-0">
+          <a class="nav-link p-0" href="/login.html" th:if="${!isAuthorised}" th:href="@{${LOGIN_URI}}">
+            <button type="button" class="my-bt p-2 m-0">Войти</button>
+          </a>
+          <a class="nav-link p-0" href="/login.html" th:if="${isAuthorised}" th:href="@{${LOGIN_URI}(logout=true)}">
+            <button type="button" class="my-bt p-2 m-0">Выйти</button>
+          </a>
+        </li>
+        <li class="nav-item my-1 my-md-0">
+          <a class="nav-link p-0" href="profile.html"  th:if="${isAuthorised}" th:href="@{${PROFILE_URI}(id=${user.getId()})}">
+            <button type="button" class="my-bt p-2 m-0">Профиль</button>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page row  justify-content-start" th:fragment="pagination">
+  <ul class="pagination mb-0 justify-content-center col-md-9">
+    <li
+            class="page-item "
+    >
+      <a
+              class="page-link"
+              th:classappend="${disabledPaginationNumbers.contains(-1)}
+                            ? 'disabled'
+                            : _"
+              href="#"
+              th:href="@{/(page=${pageMap.get(1).intValue()})}"
+      >
+        Предыдущая
+      </a>
+    </li>
+
+    <li
+            class="page-item"
+            th:classappend="${pageMap.get(1).intValue() == pageMap.get(0).intValue()}
+                        ? 'active bg-dark'
+                        : _"
+    >
+      <a
+              class="page-link"
+              th:text="${pageMap.get(1).intValue()}"
+              href="#"
+              th:href="@{/(page=${pageMap.get(1).intValue()})}"
+
+      >
+        1
+      </a>
+    </li>
+
+    <li
+            class="page-item"
+            aria-current="page"
+            th:classappend="${pageMap.get(1).intValue() != pageMap.get(0).intValue()}
+                        ? 'active bg-dark'
+                        : _"
+    >
+      <a
+              class="page-link"
+              th:href="@{/(page=${pageMap.get(2).intValue()})}"
+              th:text="${pageMap.get(2).intValue()}"
+              th:classappend="${disabledPaginationNumbers.contains(2)}
+                            ? 'disabled'
+                            : _"
+      >
+        2
+      </a>
+    </li>
+
+    <li class="page-item">
+      <a
+              class="page-link"
+              href="#"
+              th:href="@{/(page=${pageMap.get(3).intValue()})}"
+              th:text="${pageMap.get(3).intValue()}"
+              th:classappend="${disabledPaginationNumbers.contains(3)}
+                            ? 'disabled'
+                            : _"
+      >
+        3
+      </a>
+    </li>
+    <li class="page-item">
+      <a
+              class="page-link"
+              href="#"
+              th:href="@{/(page=${pageMap.get(1).intValue() != pageMap.get(0).intValue()
+                            ? pageMap.get(3).intValue()
+                            : pageMap.get(2).intValue()})}"
+              th:classappend="${disabledPaginationNumbers.contains(0)}
+                            ? 'disabled'
+                            : _"
+      >
+        Следующая
+      </a>
+    </li>
+  </ul>
+</div>
+</body>
+</html>

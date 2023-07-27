@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BielRent</title>
+    <link rel="stylesheet" href="css/vendor/custom.css" />
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+      textarea {
+        resize: none;
+      }
+      -webkit-outer-spin-button.no-arrows,
+      input[type="number"].no-arrows {
+        -webkit-appearance: none;
+        margin: 0;
+        -moz-appearance: textfield;
+      }
+
+
+      * {
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
+        border-radius: 0 !important;
+      }
+      body {
+        padding-top: 60px;
+      }
+      @media screen and (max-width: 768px) {
+        body {
+          padding-top: 80px;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-success">
+    <header>
+
+      <div th:insert="~{WEB-INF/fragments.html::navbar}"> </div>
+
+    </header>
+
+    <main class="container container-fluid justify-content-center">
+      <div class="row justify-content-center">
+        <form action="/create-listing" th:action="@{|${CREATE_LISTING_URI}|}"
+              method="post" class="col-md-10  justify-content-center" enctype="multipart/form-data">
+          <div class="container-md bg-secondary text-dark justify-content-center">
+            <div class="row justify-content-center">
+              <p class="text-center fw-bold mt-4 my-md-4 col-xl-8 col-md-6 text-md-nowrap">
+                <span class="text-dark h3 p-1">Создание объявления</span>
+              </p>
+            </div>
+            <div class="row justify-content-center">
+              <div class="form-floating col-12 mb-3 col-xxl-10">
+                <input
+                  type="text"
+                  class="form-control text-dark border-5 border-dark"
+                  id="floatingInput"
+                  placeholder="Название объявления"
+                  required
+                  name="listingTitle"
+                />
+                <label for="floatingInput" class="text-dark py-2">&nbsp;&nbsp;Название:</label>
+              </div>
+
+              <div class="row justify-content-center px-0">
+                <div class="col-12 col-sm-6 col-xxl-5">
+                  <div class="row">
+                    <div class="input-group flex-nowrap mb-3">
+                      <span
+                        class="input-group-text col-4 justify-content-center border border-1 border-dark border-end-0"
+                        >Регион</span
+                      >
+                      <select name="region" id="regionSelect" class="form-select bg-secondary col-8 border border-1 border-dark">
+                        <option value="BREST_REGION">Брестская обл.</option>
+                        <option value="VITEBSK_REGION">Витебская обл.</option>
+                        <option value="GOMEL_REGION">Гомельская обл.</option>
+                        <option value="GRODNO_REGION">Гродненская обл.</option>
+                        <option value="MINSK_REGION">Минская обл.</option>
+                        <option value="MOGILEV_REGION">Могилёвская обл.</option>
+                        <option value="MINSK_CITY" selected>г. Минск</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-xxl-5">
+                  <div class="row">
+                    <div class="input-group flex-nowrap mb-3">
+                      <span
+                          class="input-group-text col-8 col-md-7 col-xl-5 justify-content-center border border-1 border-dark border-end-0"
+                      >Населённый пункт</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control col-8 bg-secondary border border-1 border-dark"
+                        placeholder="Минск"
+                        required
+                        name="city"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row justify-content-center px-0">
+                <div class="col-12 col-sm-6 col-xxl-5">
+                  <div class="row">
+                    <div class="input-group flex-nowrap mb-3">
+                      <span
+                        class="input-group-text col-4 justify-content-center border border-1 border-dark border-end-0"
+                        >Район</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control col-8 bg-secondaryborder border-1 border-dark"
+                        placeholder="Фрунзенский"
+                        name="districtAdministrative"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xxl-5">
+                  <div class="row">
+                    <div class="input-group flex-nowrap mb-3">
+                      <span
+                        class="input-group-text col-8 col-sm-7 col-xl-5 justify-content-center border border-1 border-dark border-end-0"
+                        >Микрорайон</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control col-7 bg-secondary border border-1 border-dark"
+                        placeholder="Сухарево"
+                        name="districtMicro"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row justify-content-center px-0">
+                <div class="col-12 col-sm-6 col-xxl-5">
+                  <div class="row">
+                    <div class="input-group flex-nowrap mb-3">
+                      <span
+                        class="input-group-text col-4 justify-content-center border border-1 border-dark border-end-0"
+                        >Улица</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control col-8 bg-secondary border border-1 border-dark"
+                        placeholder="Шамякина"
+                        name="street"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xxl-5">
+                  <div class="row">
+                    <div class="input-group flex-nowrap mb-3">
+                      <span
+                        class="input-group-text col-4 justify-content-center border border-1 border-dark border-end-0"
+                        >Дом №</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control bg-secondary col-8 border border-1 border-dark"
+                        placeholder="14"
+                        pattern="[0-9]*"
+                        required
+                        name="houseNumber"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-xxl-10">
+                <div class="form-floating mb-3 text-dark">
+                  <textarea
+                    class="form-control border-5 border-dark"
+                    id="floatingTextarea2"
+                    style="height: 150px"
+                    maxlength="1000"
+                    placeholder="Оставьте описание."
+                    name="description"
+                  ></textarea>
+                  <label for="floatingTextarea2" class="py-2">Описание:</label>
+                </div>
+              </div>
+
+              <div class="row pb-3 pt-4">
+                <div class="col offset-xxl-1">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input rounded-pill border-1 border-dark"
+                      type="radio"
+                      name="propertyType"
+                      value="FLAT"
+                      id="isFlat"
+                      checked
+                    />
+                    <label class="form-check-label" for="isFlat"> Квартира </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input rounded-pill border-1 border-dark"
+                      type="radio"
+                      name="propertyType"
+                      value="HOUSE"
+                      id="isHouse"
+                    />
+                    <label class="form-check-label" for="isHouse"> Дом </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row pb-3 pt-4 justify-content-center">
+                <div class="form-check col-6 col-md-3 offset-xxl-1">
+                  <input
+                    class="form-check-input border border-2 border-dark"
+                    type="checkbox"
+                    value=""
+                    name="hasElevator"
+                    id="checkElevator"
+                  />
+                  <label class="form-check-label" for="checkElevator"> Есть лифт </label>
+                </div>
+                <div class="form-check col-6 col-md-3 offset-xl-0">
+                  <input
+                    class="form-check-input border border-2 border-dark"
+                    type="checkbox"
+                    value=""
+                    id="checkWifi"
+                    name="hasWiFi"
+                  />
+                  <label class="form-check-label" for="checkWifi"> Есть WiFi </label>
+                </div>
+                <div class="form-check col-6 col-md-3">
+                  <input
+                    class="form-check-input border border-2 border-dark"
+                    type="checkbox"
+                    value=""
+                    id="checkFurniture"
+                    name="hasFurniture"
+                  />
+                  <label class="form-check-label text-nowrap" for="checkFurniture">
+                    Есть мебель
+                  </label>
+                </div>
+                <div class="form-check col-6 col-md-3 offset-md-1 offset-xxl-2">
+                  <input
+                    class="form-check-input border border-2 border-dark"
+                    type="checkbox"
+                    value=""
+                    id="checkBathroom"
+                    name="hasBathroom"
+                  />
+                  <label class="form-check-label text-nowrap" for="checkBathroom">
+                    Есть ванная
+                  </label>
+                </div>
+                <div class="form-check col-12 col-md-7 offset-0">
+                  <input
+                    class="form-check-input border border-2 border-dark"
+                    type="checkbox"
+                    value=""
+                    name="hasWashingMachine"
+                    id="checkWashingMachine"
+                  />
+                  <label class="form-check-label" for="checkWashingMachine">
+                    Есть посудомоечная машина</label
+                  >
+                </div>
+              </div>
+              <div class="row pb-3 pt-5">
+                <div class="col-4 text-end">
+                  <label for="roomCount" class="form-label pt-1 mr-0 text-end">Комнат</label>
+                </div>
+                <div class="col-2">
+                  <input
+                    type="text"
+                    id="roomCount"
+                    class="form-control border border-1 border-dark"
+                    value="1"
+                    pattern="[0-9]*"
+                    min="1"
+                    name="roomCount"
+                    required
+                  />
+                </div>
+                <div class="col-md-2 col-3 text-end pb-2">
+                  <label for="bedroomCount" class="form-label pt-1 mr-0 text-end">Спален</label>
+                </div>
+                <div class="col-2">
+                  <input
+                    type="text"
+                    value="0"
+                    min="0"
+                    pattern="[0-9]*"
+                    id="bedroomCount"
+                    class="form-control border border-1 border-dark"
+                    name="bedroomCount"
+                    required
+                  />
+                </div>
+
+                <div class="col-4 text-end">
+                  <label for="floorCount" class="form-label pt-1 mr-0 text-end">Этажей</label>
+                </div>
+                <div class="col-2">
+                  <input
+                    type="text"
+                    id="floorCount"
+                    pattern="[0-9]*"
+                    value="1"
+                    min="1"
+                    class="form-control border border-1 border-dark"
+                    name="floorCount"
+                    required
+                  />
+                </div>
+                <div class="col-md-2 col-3 text-end">
+                  <label for="balconyCount" class="form-label pt-1 mr-0">Балконов</label>
+                </div>
+                <div class="col-2">
+                  <input
+                    type="text"
+                    pattern="[0-9]*"
+                    value="0"
+                    min="0"
+                    id="balconyCount"
+                    class="form-control border border-1 border-dark"
+                    name="balconyCount"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="row pb-3 pt-5 justify-content-center">
+                <div class="form-floating text-dark col-12 col-md-10 col-xl-8 col-xxl-6">
+                  <input
+                    type="text"
+                    placeholder="2000"
+                    id="buildYear"
+                    pattern="[12][0-9][0-9][0-9]"
+                    class="form-control border border-1 border-dark"
+                    name="buildYear"
+                    required
+                  />
+                  <label for="buildYear" class="form-label pt-1"
+                    >&nbsp;&nbsp;Год строительства:</label
+                  >
+                </div>
+              </div>
+              <div class="row pb-3 justify-content-center">
+                <div class="form-floating text-dark col-12 col-md-10 col-xl-8 col-xxl-6">
+                  <input
+                    type="text"
+                    placeholder="64.6"
+                    id="squareArea"
+                    pattern="[0-9]*(\.[0-9]*)?"
+                    class="form-control border border-1 border-dark"
+                    name="squareArea"
+                    required
+                  />
+                  <label for="squareArea" class="form-label pt-1"
+                    >&nbsp;&nbsp;Квадратная площадь:</label
+                  >
+                </div>
+              </div>
+              <div class="row pb-3 justify-content-center">
+                <div class="form-floating text-dark col-12 col-md-10 col-xl-8 col-xxl-6">
+                  <input
+                    type="text"
+                    placeholder="64.6"
+                    id="priceMonthly"
+                    pattern="[0-9]*(\.[0-9]*)?"
+                    class="form-control border border-1 border-dark"
+                    required
+                    name="priceMonthly"
+                  />
+                  <label for="priceMonthly" class="form-label pt-1"
+                    >&nbsp;&nbsp;Месячная стоимость аренды:</label
+                  >
+                </div>
+              </div>
+
+              <div class="row pb-1 justify-content-center pt-4 pb-3">
+                <div class="col-6 col-md-5 col-xl-4 col-xxl-3 text-start">
+                  <label for="rentalPeriodStart" class="form-label pt-1 text-nowrap"
+                    >Сдаётся в аренду с:</label
+                  >
+                  <input
+                    type="date"
+                    id="rentalPeriodStart"
+                    class="form-control border border-1 border-dark"
+                    name="rentalPeriodStart"
+                  />
+                </div>
+
+                <div class="col-6 col-md-5 col-xl-4 col-xxl-3 text-start">
+                  <label for="rentalPeriodEnd" class="form-label pt-1 text-nowrap"> по:</label>
+                  <input
+                    type="date"
+                    id="rentalPeriodEnd"
+                    class="form-control border border-1 border-dark"
+                    name="rentalPeriodEnd"
+                  />
+                </div>
+              </div>
+
+              <div class="row pb-1 justify-content-center pb-3 pt-4">
+                <div class="form-floating text-dark col-12 col-md-12 col-xl-10">
+                  <div class="">
+                    <label for="formFile" class="form-label my-0">Фотография №1</label>
+                    <input
+                      class="form-control border border-1 border-dark mt-0"
+                      type="file"
+                      id="formFile"
+                      name="image"
+                      required
+                    />
+                  </div>
+                  <div class="text-center bg-success mt-1 pt-0" style="overflow: hidden">
+                    <img src="" class="img-fluid" alt="фотография недвижимости" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row pb-3 pt-5 justify-content-center">
+              <div class="col-xl-6 col-8 text-center">
+                <button
+                  type="submit"
+                  class="btn btn-lg btn-dark border border-1 border-dark btn-secondary"
+                >
+                  Загрузить объявление
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="js/bootstrap.js"></script>
+  </body>
+</html>
